@@ -3,21 +3,16 @@ PHP mvc web Framework
 
 
 <p align="center">
+  <a href="https://php.net/"><img src="https://img.shields.io/badge/php-%3E%3D%207.1-8892BF.svg" alt="php"></a>
 <a href="https://travis-ci.org/broosaction/aria"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
 <a href="https://packagist.org/packages/broosaction/aria"><img src="https://poser.pugx.org/broosaction/aria/d/total.svg" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/broosaction/aria"><img src="https://poser.pugx.org/broosaction/aria/v/stable.svg" alt="Latest Stable Version"></a>
+  <a href="https://packagist.org/packages/broosaction/aria"><img src="https://poser.pugx.org/broosaction/aria/v/unstable.svg" alt="Latest unStable Version"></a>
+  <a href="https://packagist.org/packages/broosaction/aria"><img src="https://poser.pugx.org/broosaction/aria/composerlock.svg" alt=" Composer lock"></a>
 <a href="https://packagist.org/packages/broosaction/aria"><img src="https://img.shields.io/github/license/broosaction/aria.svg" alt="License"></a>
-  </p>
-  [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.1-8892BF.svg)](https://php.net/)
-  [![License](https://poser.pugx.org/broosaction/aria/license)](https://packagist.org/packages/broosaction/aria)
-  [![composer.lock available](https://poser.pugx.org/broosaction/aria/composerlock)](https://packagist.org/packages/broosaction/aria)
-  [![Latest Unstable Version](https://poser.pugx.org/broosaction/aria/v/unstable)](//packagist.org/packages/broosaction/aria)
-  [![GitHub license](https://img.shields.io/github/license/broosaction/aria.svg)](https://github.com/broosaction/aria/blob/master/LICENSE)
-
-
-
-
-
+ </p>
+ 
+ 
 
 
 ## About Aria
