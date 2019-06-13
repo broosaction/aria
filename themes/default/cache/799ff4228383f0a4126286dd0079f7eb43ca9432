@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="http://brooshost:8081/bot/frame/themes/default/assets/css/broos-ui.css" rel="stylesheet">
+    <link href="http://brooshost:8081/bot/frame/themes/default/assets/css/styles.css" type="text/css" rel="stylesheet" >
+    <link href="http://brooshost:8081/bot/frame/themes/default/assets/fonts/font-awesome-4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" >
+    <style>
+        .bg-black  {
+            background-color: #383838!important
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="hmenu" class="navbar-push">
+    <nav id="nav_f" class="hmenu naz z-depth-4 bg-black" data-target="hmenu" role="navigation">
+        <div class="col">
+
+            <div id="logo-container" class="brand-logo  white-text">
+                <a href="#" class="left text-grey sidebar-toggle d-md-down-none">
+                    <i class=" fa fa-bars"></i>
+                </a>
+                <div class="hide-on-med-and-down">
+                    <?php try{ echo @self::callModifier("contextOutTag",$config->app_name,""); } catch(\Exception $e) { echo $e->getMessage(); } ?>
+
+                </div>
+                <div class="hide-on-large-only left">
+                    <?php try{ echo @self::callModifier("contextOutTag",$config->app_name,""); } catch(\Exception $e) { echo $e->getMessage(); } ?>
+
+                </div>
+
+            </div>
+
+
+
+
+            <ul class="right hide-on-med-and-down ">
+
+
+                <li><a href="#" class="white-text "><span class="white-text fa fa-home"></span> Home</a></li>
+
+                <li><a href="#" class="white-text "><span class="white-text fa fa-user"></span> Users</a></li>
+                <li><a href="#" class="white-text "><span class="white-text fa fa-plus"></span> Add Project</a></li>
+
+
+
+                <li class="nav-item dropdown">
+                    <a class="dropdown-toggle dropdown-button" href="#" role="button" data-activates="bar-drop" aria-haspopup="true" aria-expanded="false">
+                        <i class=" teal-text fa fa-user"></i>
+                        <span class="small ml-1 d-md-down-none dark-grey-text">kim</span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-content left" style="width: 250px" id="bar-drop">
+                        <div class="dropdown-header">Account</div>
+
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-user"></i> Profile
+                        </a>
+
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-envelope"></i> Messages
+                        </a>
+
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-bell"></i> Notifications
+                        </a>
+
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-wrench"></i> Settings
+                        </a>
+
+                        <a href="logout" class="dropdown-item">
+                            <i class="fa fa-lock"></i> Logout
+                        </a>
+                    </div>
+                </li>
+
+                <li><a href="#" class="white-text "><span class="white-text fa fa-sign-out"></span> Logout</a></li>
+                <li></li>
+            </ul>
+
+            <ul class="right">
+
+                <li class="right"> <a href="#" class="right text-grey  sidebar-mobile-toggle d-lg-none mr-auto">
+                    <i class="fa fa-bars"></i>
+                </a>
+                </li>
+            </ul>
+
+            <ul id="nav-mobile" class="side-nav side-nav">
+                <div class="bg-dark-grey  row">
+                    <div class="col m4 s4 center">
+                        <h1 class="red-text"><span class=" fa fa-cubes"></span> </h1>
+                    </div>
+                </div>
+                <li><a href="#" class="grey-text "><span class="grey-text fa fa-home"></span> Home</a></li>
+
+                <li><a href="#" class="grey-text "><span class="grey-text fa fa-user"></span> Users</a></li>
+                <li><a href="#" class="grey-text "><span class="grey-text fa fa-plus"></span> Add Project</a></li>
+
+                <li><a href="#" class="grey-text "><span class="grey-text fa fa-sign-out"></span> Logout</a></li>
+
+
+                <hr>
+                <li><a href="#" target="_blank">Terms of service</a></li>
+            </ul>
+
+            <a href="#" data-activates="nav-mobile" class="button-collapse d-grey-text"><i class="fa fa-bars"></i></a>
+            <!--<h5 data-activates="nav-mobile" class="button-collapse hide-on-large-only fa fa-cube"></h5> -->
+            <div id="navigation-bar" class="navigation-bar">
+                <div class="">
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="center" style="font-size: xx-large">PHP <?php try{ echo @self::callModifier("contextOutTag",self::callModifier("firstupper",$config->app_name,""),""); } catch(\Exception $e) { echo $e->getMessage(); } ?> ...</h1>
+        <p class="lead">The Fastest, Secure and Friendly php web framework </p>
+
+    </div>
+</div>
+
+
+<p>Today is <?php try{ echo @self::callModifier("contextOutTag",self::callModifier("date",$my_date,"Y-m-d h:i a"),""); } catch(\Exception $e) { echo $e->getMessage(); } ?></p>
+<br>
+<?php try{ echo @self::callModifier("contextOutTag",$config->app_name,""); } catch(\Exception $e) { echo $e->getMessage(); } ?>
+
+http://brooshost:8081/bot/frame/themes/default
+
+
+footer here
+<?php try{ echo @self::callModifier("contextOutTag",self::callModifier("date",$my_date,"Y-m-d h:i a"),""); } catch(\Exception $e) { echo $e->getMessage(); } ?>
+
+<script src="http://brooshost:8081/bot/frame/themes/default/assets/js/jquery-3.3.1.js" type="text/javascript"></script>
+<script src="http://brooshost:8081/bot/frame/themes/default/assets/js/jquery.ui.min.js"></script>
+<script src="http://brooshost:8081/bot/frame/themes/default/assets/js/broos-ui.js"></script>
+
+<script src="http://brooshost:8081/bot/frame/themes/default/assets/js/broos-ui-vice.js"></script>
+<script src="http://brooshost:8081/bot/frame/themes/default/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="http://brooshost:8081/bot/frame/themes/default/assets/js/custom-min.js"></script>
+</body>
+</html>
