@@ -1,0 +1,39 @@
+{
+  "name": "broosaction/klowi",
+  "homepage": "https://cloud.broosaction.xyz",
+  "type": "project",
+  "description": "The Aria Framework.",
+  "license": ["MIT", "GPL-2.0", "LTE-1.0"],
+  "keywords": [
+    "framework",
+    "Aria"
+  ],
+
+  "autoload": {
+    "psr-4": {
+      "Core\\": "frame/sys/",
+      "App\\": "frame/app/"
+    }
+  },
+  "require": {
+    "php": ">=7.2",
+    "google/apiclient": "^2.2.2",
+    "rakibtg/sleekdb": "^1.0.3",
+    "nette/php-generator": "^3.2.2",
+    "knplabs/github-api": "^1.7.1",
+    "php-http/guzzle6-adapter": "^1.1.1",
+    "symfony/console": "~3.0|~4.0",
+    "sabre/cache": "^1.0",
+    "amphp/parallel-functions": "v0.1.3",
+    "amphp/amp": "v2.1.1",
+    "league/csv": "^9.2.0",
+    "rubix/ml": "^0.0.12-beta"
+   },
+  "config": {
+    "preferred-install": "dist",
+    "disable-tls": true,
+    "secure-http": false
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
