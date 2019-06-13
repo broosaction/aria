@@ -17,7 +17,6 @@
   },
   "require": {
     "php": ">=7.2",
-    "google/apiclient": "^2.2.2",
     "rakibtg/sleekdb": "^1.0.3",
     "nette/php-generator": "^3.2.2",
     "knplabs/github-api": "^1.7.1",
