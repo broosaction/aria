@@ -8,8 +8,9 @@ PHP mvc web Framework
 <a href="https://packagist.org/packages/broosaction/aria"><img src="https://poser.pugx.org/broosaction/aria/d/total.svg" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/broosaction/aria"><img src="https://poser.pugx.org/broosaction/aria/v/stable.svg" alt="Latest Stable Version"></a>
   <a href="https://packagist.org/packages/broosaction/aria"><img src="https://poser.pugx.org/broosaction/aria/v/unstable.svg" alt="Latest unStable Version"></a>
-  <a href="https://packagist.org/packages/broosaction/aria"><img src="https://poser.pugx.org/broosaction/aria/composerlock.svg" alt=" Composer lock"></a>
+  <a href="https://github.com/broosaction/aria/issues"><img src="https://img.shields.io/github/issues/broosaction/aria.svg" alt=" Composer lock"></a>
 <a href="https://packagist.org/packages/broosaction/aria"><img src="https://img.shields.io/github/license/broosaction/aria.svg" alt="License"></a>
+  <a href="https://litebase.xyz"><img src="https://img.shields.io/badge/LTE-Litebase-blue.svg" alt="Litebase"></a>
  </p>
  
  
@@ -17,14 +18,14 @@ PHP mvc web Framework
 
 ## About Aria
 
-Aria is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Aria is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Aria takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Simple, fast routing engine](https://litebase.xyz).
+- [Powerful dependency injection container](https://litebase.xyz).
+- Multiple back-ends for [session](https://litebase.xyz) and [cache](https://litebase.xyz) storage.
+- Expressive, intuitive [database ORM](https://litebase.xyz).
+- Database agnostic [schema migrations](https://litebase.xyz).
+- [Robust background job processing](https://litebase.xyz).
+- [Real-time event broadcasting](https://litebase.xyz).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Aria is accessible, powerful, and provides tools required for large, robust applications.
