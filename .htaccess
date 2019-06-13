@@ -1,0 +1,12 @@
+<FilesMatch "^\.">
+ Order allow,deny
+ Deny from all
+ </FilesMatch>
+
+
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . cloud.php [L]
+RewriteRule ^$ cloud.php?$1 [L]
