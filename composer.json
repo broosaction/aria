@@ -3,7 +3,7 @@
   "homepage": "https://cloud.broosaction.xyz",
   "type": "project",
   "description": "The Aria Framework.",
-  "license": ["MIT", "GPL-2.0", "LTE-1.0"],
+  "license": "MIT",
   "keywords": [
     "framework",
     "Aria"
