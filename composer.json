@@ -11,8 +11,8 @@
 
   "autoload": {
     "psr-4": {
-      "Core\\": "frame/sys/",
-      "App\\": "frame/app/"
+      "Core\\": "sys/",
+      "App\\": "app/"
     }
   },
   "require": {
