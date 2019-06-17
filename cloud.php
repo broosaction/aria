@@ -6,12 +6,16 @@
  * Time: 04:25
  */
 
-include_once '../vendor/autoload.php';
-
+if (file_exists(__DIR__.'../../vendor/autoload.php')) {
+    require __DIR__.'../../vendor/autoload.php';
+} else {
+    require __DIR__.'/vendor/autoload.php';
+}
+use App\pages\Route;
 
 $server = new Core\joi\Start(__DIR__);
 
-$app = new \App\pages\Route($server);
+$app = new Route($server);
 
 
 //$test = \Core\joi\ConBuilder::readENV(__DIR__ ,'/config/config.io');
