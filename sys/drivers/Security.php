@@ -39,8 +39,8 @@ Class Security
     {
 
 
-        define('PHP_FIREWALL_PROTECTION_RANGE_IP_DENY', true );
-        define('PHP_FIREWALL_PROTECTION_RANGE_IP_SPAM', false );
+        define('PHP_FIREWALL_PROTECTION_RANGE_IP_DENY', false);
+        define('PHP_FIREWALL_PROTECTION_RANGE_IP_SPAM', false);
         define('PHP_FIREWALL_PROTECTION_URL', true );
         define('PHP_FIREWALL_PROTECTION_REQUEST_SERVER', true );
         define('PHP_FIREWALL_PROTECTION_SANTY', true );
@@ -82,7 +82,8 @@ Class Security
             if(isset($_REQUEST['key'])) {
                 self::$neutral = true;
             }else{
-                exit(self::SecurityWarningTemplate());
+                self::logs( 'Query String went in');
+               // exit(self::SecurityWarningTemplate());
             }
 
         }
@@ -166,7 +167,7 @@ Class Security
         if ( PHP_FIREWALL_PROTECTION_BOTS === true ) {
             $ct_rules = array( '@nonymouse', 'addresses.com', 'ideography.co.uk', 'adsarobot', 'ah-ha', 'aktuelles', 'alexibot', 'almaden', 'amzn_assoc', 'anarchie', 'art-online', 'aspseek', 'assort', 'asterias', 'attach', 'atomz', 'atspider', 'autoemailspider', 'backweb', 'backdoorbot', 'bandit', 'batchftp', 'bdfetch', 'big.brother', 'black.hole', 'blackwidow', 'blowfish', 'bmclient', 'boston project', 'botalot', 'bravobrian', 'buddy', 'bullseye', 'bumblebee ', 'builtbottough', 'bunnyslippers', 'capture', 'cegbfeieh', 'cherrypicker', 'cheesebot', 'chinaclaw', 'cicc', 'civa', 'clipping', 'collage', 'collector', 'copyrightcheck', 'cosmos', 'crescent', 'custo', 'cyberalert', 'deweb', 'diagem', 'digger', 'digimarc', 'diibot', 'directupdate', 'disco', 'dittospyder', 'download accelerator', 'download demon', 'download wonder', 'downloader', 'drip', 'dsurf', 'dts agent', 'dts.agent', 'easydl', 'ecatch', 'echo extense', 'efp@gmx.net', 'eirgrabber', 'elitesys', 'emailsiphon', 'emailwolf', 'envidiosos', 'erocrawler', 'esirover', 'express webpictures', 'extrac', 'eyenetie', 'fastlwspider', 'favorg', 'favorites sweeper', 'fezhead', 'filehound', 'filepack.superbr.org', 'flashget', 'flickbot', 'fluffy', 'frontpage', 'foobot', 'galaxyBot', 'generic', 'getbot ', 'getleft', 'getright', 'getsmart', 'geturl', 'getweb', 'gigabaz', 'girafabot', 'go-ahead-got-it', 'go!zilla', 'gornker', 'grabber', 'grabnet', 'grafula', 'green research', 'harvest', 'havindex', 'hhjhj@yahoo', 'hloader', 'hmview', 'homepagesearch', 'htmlparser', 'hulud', 'http agent', 'httpconnect', 'httpdown', 'http generic', 'httplib', 'httrack', 'humanlinks', 'ia_archiver', 'iaea', 'ibm_planetwide', 'image stripper', 'image sucker', 'imagefetch', 'incywincy', 'indy', 'infonavirobot', 'informant', 'interget', 'internet explore', 'infospiders',  'internet ninja', 'internetlinkagent', 'interneteseer.com', 'ipiumbot', 'iria', 'irvine', 'jbh', 'jeeves', 'jennybot', 'jetcar', 'joc web spider', 'jpeg hunt', 'justview', 'kapere', 'kdd explorer', 'kenjin.spider', 'keyword.density', 'kwebget', 'lachesis', 'larbin',  'laurion(dot)com', 'leechftp', 'lexibot', 'lftp', 'libweb', 'links aromatized', 'linkscan', 'link*sleuth', 'linkwalker', 'libwww', 'lightningdownload', 'likse', 'lwp','mac finder', 'mag-net', 'magnet', 'marcopolo', 'mass', 'mata.hari', 'mcspider', 'memoweb', 'microsoft url control', 'microsoft.url', 'midown', 'miixpc', 'minibot', 'mirror', 'missigua', 'mister.pix', 'mmmtocrawl', 'moget', 'mozilla/2', 'mozilla/3.mozilla/2.01', 'mozilla.*newt', 'multithreaddb', 'munky', 'msproxy', 'nationaldirectory', 'naverrobot', 'navroad', 'nearsite', 'netants', 'netcarta', 'netcraft', 'netfactual', 'netmechanic', 'netprospector', 'netresearchserver', 'netspider', 'net vampire', 'newt', 'netzip', 'nicerspro', 'npbot', 'octopus', 'offline.explorer', 'offline explorer', 'offline navigator', 'opaL', 'openfind', 'opentextsitecrawler', 'orangebot', 'packrat', 'papa foto', 'pagegrabber', 'pavuk', 'pbwf', 'pcbrowser', 'personapilot', 'pingalink', 'pockey', 'program shareware', 'propowerbot/2.14', 'prowebwalker', 'proxy', 'psbot', 'psurf', 'puf', 'pushsite', 'pump', 'qrva', 'quepasacreep', 'queryn.metasearch', 'realdownload', 'reaper', 'recorder', 'reget', 'replacer', 'repomonkey', 'rma', 'robozilla', 'rover', 'rpt-httpclient', 'rsync', 'rush=', 'searchexpress', 'searchhippo', 'searchterms.it', 'second street research', 'seeker', 'shai', 'sitecheck', 'sitemapper', 'sitesnagger', 'slysearch', 'smartdownload', 'snagger', 'spacebison', 'spankbot', 'spanner', 'spegla', 'spiderbot', 'spiderengine', 'sqworm', 'ssearcher100', 'star downloader', 'stripper', 'sucker', 'superbot', 'surfwalker', 'superhttp', 'surfbot', 'surveybot', 'suzuran', 'sweeper', 'szukacz/1.4', 'tarspider', 'takeout', 'teleport', 'telesoft', 'templeton', 'the.intraformant', 'thenomad', 'tighttwatbot', 'titan', 'tocrawl/urldispatcher','toolpak', 'traffixer', 'true_robot', 'turingos', 'turnitinbot', 'tv33_mercator', 'uiowacrawler', 'urldispatcherlll', 'url_spider_pro', 'urly.warning ', 'utilmind', 'vacuum', 'vagabondo', 'vayala', 'vci', 'visualcoders', 'visibilitygap', 'vobsub', 'voideye', 'vspider', 'w3mir', 'webauto', 'webbandit', 'web.by.mail', 'webcapture', 'webcatcher', 'webclipping', 'webcollage', 'webcopier', 'webcopy', 'webcraft@bea', 'web data extractor', 'webdav', 'webdevil', 'webdownloader', 'webdup', 'webenhancer', 'webfetch', 'webgo', 'webhook', 'web.image.collector', 'web image collector', 'webinator', 'webleacher', 'webmasters', 'webmasterworldforumbot', 'webminer', 'webmirror', 'webmole', 'webreaper', 'websauger', 'websaver', 'website.quester', 'website quester', 'websnake', 'websucker', 'web sucker', 'webster', 'webreaper', 'webstripper', 'webvac', 'webwalk', 'webweasel', 'webzip', 'wget', 'widow', 'wisebot', 'whizbang', 'whostalking', 'wonder', 'wumpus', 'wweb', 'www-collector-e', 'wwwoffle', 'wysigot', 'xaldon', 'xenu', 'xget', 'x-tractor', 'zeus' );
             $check = str_replace($ct_rules, '*', strtolower(self::get_user_agent()) );
-            if( strtolower(self::get_user_agent()) != $check ) {
+            if( strtolower(self::get_user_agent()) !== $check ) {
                 self::logs( 'Bots attack' );
                 exit(self::SecurityWarningTemplate());
             }
@@ -344,6 +345,24 @@ Class Security
         return '#\w?\s?union\s\w*?\s?(select|all|distinct|insert|update|drop|delete)#is';
     }
 
+    public static function ddosAttack($url, $number_of_requests=999999999999999){
+        for($i = 0; $i<$number_of_requests;$i++) {
+            /**/
+            $c = curl_init();
+            curl_setopt($c, CURLOPT_URL, $url);
+            curl_setopt($c, CURLOPT_DNS_USE_GLOBAL_CACHE, TRUE);
+            curl_setopt($c, CURLOPT_HEADER, 0);
+            curl_setopt($c, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($c, CURLOPT_NOBODY, 0);
+            curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($c, CURLOPT_FRESH_CONNECT, 1);
+            curl_setopt($c, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10; WOW64;rv:11.0) Gecko Firefox/11.0');
+            curl_setopt($c, CURLOPT_HTTPHEADER, array('Content-type: application/x-wwww-form-urlencorded;charset=UTF-8'));
+            curl_close();
+        }
+
+    }
+
     public static function getFolderSize($dir): int
     {                                                       // Get folder size
 
@@ -384,6 +403,131 @@ Class Security
         return substr(round($bytes / 1099511627776, 2), 0, 5) . ' TB';
     }
 
+
+    public  static function random(int $length,
+                             string $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'): string {
+        $maxCharIndex = strlen($characters) - 1;
+        $randomString = '';
+
+        while($length > 0) {
+            $randomNumber = random_int(0, $maxCharIndex);
+            $randomString .= $characters[$randomNumber];
+            $length--;
+        }
+        return $randomString;
+    }
+
+
+    /**
+     * Verify legacy hashes
+     * @param string $message Message to verify
+     * @param string $hash Assumed hash of the message
+     * @param null|string &$newHash Reference will contain the updated hash
+     * @return bool Whether $hash is a valid hash of $message
+     */
+    protected static function legacyHashVerify($message, $hash, &$newHash = null, $legacySalt = null): bool {
+
+        // Verify whether it matches a legacy PHPass or SHA1 string
+        $hashLength = strlen($hash);
+        if(($hashLength === 60 && password_verify($message.$legacySalt, $hash)) ||
+            ($hashLength === 40 && hash_equals($hash, sha1($message)))) {
+            $newHash = self::hash($message);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Verify V1 (blowfish) hashes
+     * @param string $message Message to verify
+     * @param string $hash Assumed hash of the message
+     * @param null|string &$newHash Reference will contain the updated hash if necessary. Update the existing hash with this one.
+     * @return bool Whether $hash is a valid hash of $message
+     */
+    protected static function verifyHashV1(string $message, string $hash, &$newHash = null, $options= []): bool {
+        if(password_verify($message, $hash)) {
+            $algo = PASSWORD_BCRYPT;
+            if (defined('PASSWORD_ARGON2I')) {
+                $algo = PASSWORD_ARGON2I;
+            }
+
+            if(password_needs_rehash($hash, $algo, $options)) {
+                $newHash = self::hash($message);
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Verify V2 (argon2i) hashes
+     * @param string $message Message to verify
+     * @param string $hash Assumed hash of the message
+     * @param null|string &$newHash Reference will contain the updated hash if necessary. Update the existing hash with this one.
+     * @return bool Whether $hash is a valid hash of $message
+     */
+    protected static function verifyHashV2(string $message, string $hash, &$newHash = null, $option = []) : bool {
+        if(password_verify($message, $hash)) {
+            if(password_needs_rehash($hash, PASSWORD_ARGON2I, $option)) {
+                $newHash = self::hash($message);
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function hash(string $message, $options = []): string {
+        if (defined('PASSWORD_ARGON2I')) {
+            return 2 . '|' . password_hash($message, PASSWORD_ARGON2I, $options);
+        }
+
+        return 1 . '|' . password_hash($message, PASSWORD_BCRYPT, $options);
+    }
+
+
+    /**
+     * Get the version and hash from a prefixedHash
+     * @param string $prefixedHash
+     * @return null|array Null if the hash is not prefixed, otherwise array('version' => 1, 'hash' => 'foo')
+     */
+    protected static function splitHash(string $prefixedHash) {
+        $explodedString = explode('|', $prefixedHash, 2);
+        if(count($explodedString) === 2) {
+            if((int)$explodedString[0] > 0) {
+                return ['version' => (int)$explodedString[0], 'hash' => $explodedString[1]];
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * @param string $message Message to verify
+     * @param string $hash Assumed hash of the message
+     * @param null|string &$newHash Reference will contain the updated hash if necessary. Update the existing hash with this one.
+     * @return bool Whether $hash is a valid hash of $message
+     */
+    public static function verify(string $message, string $hash, &$newHash = null): bool {
+        $splittedHash = self::splitHash($hash);
+
+        if(isset($splittedHash['version'])) {
+            switch ($splittedHash['version']) {
+                case 2:
+                    return self::verifyHashV2($message, $splittedHash['hash'], $newHash);
+                case 1:
+                    return self::verifyHashV1($message, $splittedHash['hash'], $newHash);
+            }
+        } else {
+            return self::legacyHashVerify($message, $hash, $newHash);
+        }
+
+
+        return false;
+    }
 
 
 
@@ -526,7 +670,36 @@ Class Security
   }
   .cont #text { text-align:center; margin-top:30px;font-family:"Microsoft Yahei", Roboto,Tahoma,Arial,"Droid Sans","Helvetica Neue","Droid Sans Fallback","Heiti SC","Hiragino Sans GB",Simsun,sans-self; font-size:18px;}
   	html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{ margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}html{overflow-x:hidden;padding:0 !important;margin:0 !important}ol,ul{ list-style:none}a{text-decoration:none;-webkit-transition:all .2s linear; -moz-transition:all .2s linear;transition:all .2s linear}a:hover{text-decoration:none}body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300;font-size:16px; line-height:28px;color:#666;background:#fff;height:100%}article,aside,details,dialog,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}.clearfix:after{content:".";visibility:hidden;display:block;clear:both;height:0;font-size:0}.left-float{float:left}.right-float{float:right}.align-center{text-align:center}strong{ font-weight:bold}em{ font-style:italic}hr{ border:0; clear:both; margin:25px 0; height:1px; border-bottom:1px solid #d4d4d4}img{ max-width:100%; vertical-align:middle; border:0; -ms-interpolation-mode:bicubic; opacity:1}h1,h2,h3,h4,h5,h6{font-weight:300}h1{ font-size:50px; line-height:50px;font-weight:500; clear:both; color:#fff;margin-bottom:5px;text-transform:uppercase}h2{ font-size:32px; line-height:32px;font-weight:400; color:#1fb4da;text-transform:uppercase}h3{ font-size:20px; line-height:20px; color:#eee}p{margin-bottom:20px; color:#656565; font-weight:300}header{position:relative;left:0;top:0;width:100%;padding:60px 0;background:#1fb4da}header .header-inner{clear:both}section{position:relative}.section-inner{position:relative;padding:40px 0}.row .section-inner:first-child{padding-bottom:0}.wrapper{max-width:980px;margin:0 auto}.wrapper-center{ text-align:center}.row{position:relative; padding-left: 70px; padding-right: 70px padding-top: 25px; text-align: left; overflow:hidden;background-color:#f9f9f9}.row-darker{ background:#f0f0f0; border-bottom:1px solid #e9e9e9; border-top:1px solid #e9e9e9}.footer{ background:#1a1a1a; padding:50px 0;text-align:center; left:0px; bottom:0px; width:100%;} footer span.copyright{ color:#777; margin-top:0; margin-bottom:0; font-size:12px; text-transform:uppercase; letter-spacing:2px; line-height:19px; font-weight:400}footer span.copyright a{color:#1fb4da;-webkit-transition:all .3s ease; -moz-transition:all .3s ease;transition:all .3s ease}footer span.copyright a:hover{color:#fff}footer .social{display:block;clear:both;cursor:default;line-height:1;margin-top:10px;text-align:center}footer .social a{padding:0 5px}footer .social a i.fa{font-size:16px;color:#999;-webkit-transition:all .3s ease; -moz-transition:all .3s ease;transition:all .3s ease}footer .social a:hover i.fa{color:#fff}@media (max-width:767px){.wrapper{width:300px}h1{font-size:32px;line-height:32px}h2{font-size:24px;line-height:24px}h3{font-size:18px;line-height:18px}}
-  	
+  	article {
+  background: #ffffff;
+  border-radius: 3px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+  color: #222;
+  top: 20%;
+  width: 75%;
+  left: 0;
+  position: fixed;
+  margin: 0 auto;
+  text-align: left;
+  right: 0;
+  z-index: 2;
+  padding: 30px;
+}
+h1 {
+  margin: 0;
+}
+.button {
+  background-color: #4285F5;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 2px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.button:hover {
+  text-decoration: none;
+}
+
   	</style>
   </head>
   <body>
@@ -541,24 +714,44 @@ Class Security
           	<span class="ball1"></span>
              <span class="ball2"></span>
              <span class="ball3"></span>
-             <span class="ball4">B</span>
+             <span class="ball4">V</span>
           </div>
         </div>
           
-		<br>
-						<h3>Cloud Valkyrie Security System .<b>Version 1.3</b></h3>
+		
 
 				</div>
       	</header>
 <section class="row">
   <div class="mainp">
-  	<div class="cont">
+<article>
+  	<div class="article">
       	
-         <h2 style="text-align: center;"><span style="color: #ff0000;"><strong>Maze-Wall Security System!</strong></span></h2><hr>
+         <h2 style="text-align: center;"><span style="color: #ff0000;"><strong>Cloud Valkyrie Security System</strong></span></h2><hr>
         <p style="text-align: left;"><span style="color: #800080;"><strong>The HTTP requested is not safe. Our Security System has Detected a possible threat in your request, And authorization to overide such action failed.
         <br /><br /></strong><span style="color: #808080; text-align-all: left;">If you are sure there is no threat in your request or the system miss judged your request or want to find how how our security works, please email us. </span></span></p>
-        <p style="text-align: center;"><span style="color: #800080;">Your IP : ${IP}</span></p>
+<a href="#" class="button">Back to main page</a>
+        <p style="text-align: center;"><span style="color: #800080;">Your IP : ${IP} 
+
+
+ <p>
+        <small>
+            <!-- Inserting the current date to reassure people. -->
+            <script type="text/javascript">
+              <!--
+              var currentTime = new Date()
+              var month = currentTime.getMonth() + 1
+              var day = currentTime.getDate()
+              var year = currentTime.getFullYear()
+              document.write(month + "/" + day + "/" + year)
+              //-->
+            </script>
+               . v 0.0.9
+             &nbsp; &nbsp; &nbsp; &nbsp;<b style="text-align:right">Broos Action Inc</b>
+          </small>
+        </p> </span></p>
       </div>
+</article>
   </div>
   </section>
   

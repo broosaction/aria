@@ -47,6 +47,7 @@ class ExtMath
         
         $this->calculator = $calculator;
 
+        $this->exFunctions();
         $this->tonic::extendModifier('add', static function($input, $val) {
             if(!is_numeric($input) || !is_numeric($val)){
                 throw new \Exception('input and value must be numeric');
@@ -61,6 +62,27 @@ class ExtMath
             }
 
             return $calculator->calculate($val);
+        });
+
+        $this->tonic::extendModifier('percent', static function ($input, $a, $b, $c=false) use($calculator){
+
+            if(!isset($a,$b) ){
+                throw new \Exception('input value must be set');
+            }
+
+            $normal = (float)$a;
+            $current = (float)$b;
+
+            if (!$normal || $normal === $current) {
+                return '100';
+            }
+
+            $normal = abs($normal);
+            $percent = round($current / $normal * 100);
+            if(isset($c) && $c){
+                return 100 - number_format($percent, 0, '.', ' ');
+            }
+            return number_format($percent, 0, '.', ' ');
         });
 
 
@@ -108,9 +130,7 @@ class ExtMath
             $this->calculator = new Calculator(new Tokenizer()); // dev level view leveler. shooul not run
         }
 
-        $this->calculator->addFunction('m', function(){
 
-        });
     }
 
 }

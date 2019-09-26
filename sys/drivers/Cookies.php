@@ -51,7 +51,7 @@ class Cookies
      * @param $expiry
      * @return bool
      */
-    public static function put($name, $value, $expiry)
+    public static function set($name, $value, $expiry)
     {
 
         if(setcookie($name , $value, time() + $expiry, '/')){

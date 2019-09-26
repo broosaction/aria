@@ -10,7 +10,9 @@ namespace Core\joi;
 
 
 use Core\config;
+use Core\drivers\Cache;
 use Core\drivers\Cookies;
+use Core\drivers\DB;
 use Core\drivers\Security;
 use Core\drivers\Sessions;
 use Core\tpl\Aria;
@@ -30,6 +32,7 @@ class Start
     private $Database;  // not yet implimented
     private $Config;
     private $Aria;
+    private $cache;
 
     private $server_home;
 
@@ -42,10 +45,9 @@ class Start
     public function __construct($server_dir='')
     {
           $this->server_home = $server_dir;
+        $this->cache = (new Cache($this->server_home))->getCacheEngine();
 
-
-
-
+        $this->cache->save("test","here");
 
             if ($this::isConfigClass()) {
                 $this->Config = new config\Config();
@@ -66,16 +68,14 @@ class Start
         }
 
         $this->Sessions = new Sessions();
-            $this->Cookies = new Cookies();
-
-
-
-
+        $this->Cookies = new Cookies();
 
         $this->Security = new Security();
         $this->Security::setServerHome($this->server_home);
         $this->Security::secure();
-        $this->Aria = new Aria();
+        $this->Aria = new Aria($this);
+
+        $this->Database = new DB($this->server_home, $this);
 
     }
 
@@ -203,6 +203,38 @@ class Start
     public function setAria(Aria $Aria)
     {
         $this->Aria = $Aria;
+    }
+
+    /**
+     * @return \Core\drivers\Nette\Caching\Cache
+     */
+    public function getCache(): \Nette\Caching\Cache
+    {
+        return $this->cache;
+    }
+
+    /**
+     * @param \Core\drivers\Nette\Caching\Cache $cache
+     */
+    public function setCache(\Nette\Caching\Cache $cache): void
+    {
+        $this->cache = $cache;
+    }
+
+    /**
+     * @return DB
+     */
+    public function getDatabase(): DB
+    {
+        return $this->Database;
+    }
+
+    /**
+     * @param DB $Database
+     */
+    public function setDatabase(DB $Database): void
+    {
+        $this->Database = $Database;
     }
 
 

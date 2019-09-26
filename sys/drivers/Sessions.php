@@ -144,7 +144,12 @@ class Sessions
 
         unset($_SESSION);
         session_unset();
+        $_SESSION = [];
         session_destroy();
+    }
+
+    public static function clear(){
+        self::destroy();
     }
 
     /**
@@ -168,6 +173,67 @@ class Sessions
         }
 
         return $ipAddress;
+    }
+
+    /**
+     * Wrapper around session_regenerate_id
+     *
+     * @param bool $deleteOldSession Whether to delete the old associated session file or not.
+     * @param bool $updateToken Wheater to update the associated auth token
+     * @return void
+     */
+    public static function regenerateId(bool $deleteOldSession = true, bool $updateToken = false) {
+        $oldId = null;
+
+        if ($updateToken) {
+            // Get the old id to update the token
+            try {
+                $oldId = self::getId();
+            } catch (\Exception $e) {
+                // We can't update a token if there is no previous id
+                $updateToken = false;
+            }
+        }
+
+        try {
+            @session_regenerate_id($deleteOldSession);
+        } catch (\Exception $e) {
+
+        }
+    }
+
+    /**
+     * Wrapper around session_id
+     *
+     * @return string
+     * @throws \Exception
+     * @since 9.1.0
+     */
+    public static function getId(): string {
+        $id = self::invoke('session_id', [], true);
+        if ($id === '') {
+            throw new \Exception('Session not avirable');
+        }
+        return $id;
+    }
+
+    /**
+     * @param string $functionName the full session_* function name
+     * @param array $parameters
+     * @param bool $silence whether to suppress warnings
+     * @return mixed
+     */
+    private static function invoke(string $functionName, array $parameters = [], bool $silence = false) {
+        try {
+            if($silence) {
+                return @call_user_func_array($functionName, $parameters);
+            }
+
+            return call_user_func_array($functionName, $parameters);
+        } catch(\Exception $e) {
+            //$this->trapError($e->getCode(), $e->getMessage());
+        }
+        return false;
     }
 
 }

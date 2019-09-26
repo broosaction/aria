@@ -631,7 +631,12 @@ class Tonic{
                 }
                 $rep='<?php try{ echo @'.$var_name.'; } catch(\Exception $e) { echo $e->getMessage(); } ?>';
 
-                if(strpos($real_var, 'theme_url') !== false){
+                if(strpos($real_var, 'app_url') !== false){
+                    $co = new Config();
+                    $this->content=$this->str_replace_first($matches[0][$i],$co->app_url,$this->content);
+                }
+
+               else if(strpos($real_var, 'theme_url') !== false){
                   $co = new Config();
                     $this->content=$this->str_replace_first($matches[0][$i],$co->getThemeUrl(),$this->content);
                 }else{
@@ -1101,6 +1106,13 @@ class Tonic{
             return date_timezone_set($input, timezone_open('GMT'));
         });
         self::extendModifier('date', static function($input, $format) {
+
+            if(empty($format)){
+                throw new \Exception('date format is required');
+            }
+            return date($format);
+        });
+        self::extendModifier('date_format', static function($input, $format) {
             if(!is_object($input)){
                 throw new \Exception('variable is not a valid date');
             }

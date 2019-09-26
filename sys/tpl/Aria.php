@@ -9,6 +9,7 @@
 namespace Core\tpl;
 
 
+use Core\joi\Start;
 use Core\tpl\tonic\Extensions;
 use Core\tpl\tonic\Tonic;
 
@@ -16,15 +17,16 @@ class Aria
 {
 
     private $tonic;
+    private $server;
 
     /**
      * Aria constructor.
-     * @param $tonic
+     * @param Start $server
      */
-    public function __construct()
+    public function __construct(Start $server)
     {
         $this->tonic = new Tonic();
-
+        $this->server = $server;
     }
 
     /**
@@ -32,7 +34,7 @@ class Aria
      */
     public function getTonic(): Tonic
     {
-        new Extensions($this->tonic);
+        new Extensions($this->tonic, $this->server);
         return $this->tonic;
 
 

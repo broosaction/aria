@@ -42,6 +42,7 @@ class Calculator {
                 return $b**2 - (4 * $a * $c);
             });
 
+
             /**
              * Cube root ³√x
              * This function is necessary because pow($x, 1/3) returns NAN for negative values.
