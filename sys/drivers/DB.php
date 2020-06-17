@@ -1,10 +1,16 @@
 <?php
-
+/**
+ * Copyright (c) 2019.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
 
 namespace Core\drivers;
 
 
 use Core\joi\Start;
+use Exception;
+use SleekDB\SleekDB;
 
 class DB
 {
@@ -39,18 +45,17 @@ class DB
         $user = $this->server->getConfig()->db_username;
         $pass = $this->server->getConfig()->db_password;
 
-
-
         self::$self_database_home = $server_home.'/sys/store/database';
           //start the local no sql db
 
 
         try {
-            self::$self_database = \SleekDB\SleekDB::store('site', self::$self_database_home, [
+            self::$self_database = SleekDB::store('site', self::$self_database_home, [
                 'auto_cache' => true,
                 'timeout' => 120
             ]);
-        } catch (\Exception $e) {
+            $this->self_database_status = true;
+        } catch (Exception $e) {
            $this->self_database_status = false;
         }
 
@@ -83,9 +88,9 @@ class DB
 
         $status = true;
         try {
-            self::$self_database = \SleekDB\SleekDB::store($store_name, self::$self_database_home, $opt);
+            self::$self_database = SleekDB::store($store_name, self::$self_database_home, $opt);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $status = false;
           self::$self_database_error_store = 'Aria DB: '.$e->getMessage() . "\n at line " . $e->getLine() . "\n in file".$e->getFile()." \n " . $e->getCode() . "\n".$e->getTraceAsString();
         }
@@ -96,9 +101,9 @@ class DB
     public function select_store($store_name){
         $status = true;
         try {
-            self::$self_database = \SleekDB\SleekDB::store($store_name, self::$self_database_home);
+            self::$self_database = SleekDB::store($store_name, self::$self_database_home);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $status = false;
 
         }
@@ -155,17 +160,17 @@ class DB
     }
 
     /**
-     * @return \SleekDB\SleekDB
+     * @return SleekDB
      */
-    public static function getSelfDatabase(): \SleekDB\SleekDB
+    public static function getSelfDatabase(): SleekDB
     {
-        return self::$self_database;
+        return self::$self_database::store('site',self::$self_database_home);
     }
 
     /**
-     * @param \SleekDB\SleekDB $self_database
+     * @param SleekDB $self_database
      */
-    public static function setSelfDatabase(\SleekDB\SleekDB $self_database): void
+    public static function setSelfDatabase(SleekDB $self_database): void
     {
         self::$self_database = $self_database;
     }

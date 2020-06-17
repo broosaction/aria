@@ -1,5 +1,11 @@
 <?php
 /**
+ * Copyright (c) 2019.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+/**
  * Created by PhpStorm.
  * User: broos
  * Date: 5/16/2019
@@ -9,6 +15,7 @@
 namespace Core\joi\Console;
 
 
+use Core\joi\ConBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +26,7 @@ class BuildCommand extends Command
 {
     protected function configure()
     {
-        $this->setName('clear-cache')
+        $this->setName('build-config')
             ->setDescription('Clears the application cache.')
             ->setHelp('Allows you to delete the application cache. Pass the --groups parameter to clear caches of specific groups.')
             ->addOption(
@@ -33,7 +40,7 @@ class BuildCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Cache is about to cleared...');
+        $output->writeln('Config file is being read...');
 
         if ($input->getOption('groups'))
         {
@@ -49,7 +56,9 @@ class BuildCommand extends Command
         }
         else
         {
-            $output->writeln('All caches are cleared.');
+            $dir = str_replace('\sys\joi\Console','',__DIR__);
+            $test = ConBuilder::readENV($dir ,'/config/config.io');
+            $output->writeln($test);
         }
 
         $output->writeln('Complete.');
