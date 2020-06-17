@@ -1,5 +1,11 @@
 <?php
 /**
+ * Copyright (c) 2019.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+/**
  * Created by PhpStorm.
  * User: broos
  * Date: 5/2/2019
@@ -68,7 +74,12 @@ class Cookies
      */
     public static function delete ($name)
     {
-        self::put($name, '', time() - 1 );
+        self::set($name, '', time() - 1 );
+        self::un_set($name);
+    }
+
+    public static function un_set($key){
+        unset($_COOKIE[$key]);
     }
 
 }

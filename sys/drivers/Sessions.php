@@ -1,5 +1,11 @@
 <?php
 /**
+ * Copyright (c) 2019.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+/**
  * Created by PhpStorm.
  * User: broos
  * Date: 5/2/2019
@@ -21,7 +27,7 @@ class Sessions
     {
 
         if($driver === '' || $driver==='array') {
-            if (session_start()) {
+            if (session_id() != '') {
 
             } else {
                 session_start();

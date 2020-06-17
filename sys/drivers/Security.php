@@ -1,5 +1,11 @@
 <?php
 /**
+ * Copyright (c) 2019.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+/**
  * Created by PhpStorm.
  * User: broos
  * Date: 5/11/2019
@@ -79,7 +85,7 @@ Class Security
         $securityUlrs_url = $_SERVER['QUERY_STRING'];
         if ($securityUlrs_url !== '' && !preg_match('/^[_a-zA-Z0-9-=&]+$/', $securityUlrs_url))
         {
-            if(isset($_REQUEST['key'])) {
+            if(isset($_REQUEST['ua'],$_REQUEST['key'])) {
                 self::$neutral = true;
             }else{
                 self::logs( 'Query String went in');
@@ -93,6 +99,7 @@ Class Security
         $check = str_replace($ct_rules, '*', self::get_query_string() );
         if( self::get_query_string() !== $check ) {
             self::logs( 'URL protect');
+            if(!isset($_REQUEST['ua']))
             exit(self::SecurityWarningTemplate());
         }
 
@@ -345,6 +352,8 @@ Class Security
         return '#\w?\s?union\s\w*?\s?(select|all|distinct|insert|update|drop|delete)#is';
     }
 
+
+      // to be replaced with a python / pytouch deep hack implentation
     public static function ddosAttack($url, $number_of_requests=999999999999999){
         for($i = 0; $i<$number_of_requests;$i++) {
             /**/
@@ -535,7 +544,7 @@ Class Security
     public static function logs( $type ) {
 
 
-        $log = new Logger('CloudValkyrie');
+        $log = new Logger('CloudValkyrie ');
         try {
 
             $log->pushHandler(new StreamHandler(self::getServerHome().'/logs/security.log', Logger::CRITICAL));
@@ -554,7 +563,7 @@ Class Security
     }
 
     public static function push_email( $subject, $msg ) {
-        $headers = 'From: Broos Cloud Security: ' .self::$admin_mail. ' <' .self::$admin_mail.">\r\n"
+        $headers = 'From: Cloud Valkyrie Security: ' .self::$admin_mail. ' <' .self::$admin_mail.">\r\n"
             . 'Reply-To: ' .self::$admin_mail."\r\n"
             ."Priority: urgent\r\n"
             ."Importance: High\r\n"
@@ -669,7 +678,7 @@ Class Security
   -webkit-transform:rotate(45deg);
   }
   .cont #text { text-align:center; margin-top:30px;font-family:"Microsoft Yahei", Roboto,Tahoma,Arial,"Droid Sans","Helvetica Neue","Droid Sans Fallback","Heiti SC","Hiragino Sans GB",Simsun,sans-self; font-size:18px;}
-  	html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{ margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}html{overflow-x:hidden;padding:0 !important;margin:0 !important}ol,ul{ list-style:none}a{text-decoration:none;-webkit-transition:all .2s linear; -moz-transition:all .2s linear;transition:all .2s linear}a:hover{text-decoration:none}body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300;font-size:16px; line-height:28px;color:#666;background:#fff;height:100%}article,aside,details,dialog,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}.clearfix:after{content:".";visibility:hidden;display:block;clear:both;height:0;font-size:0}.left-float{float:left}.right-float{float:right}.align-center{text-align:center}strong{ font-weight:bold}em{ font-style:italic}hr{ border:0; clear:both; margin:25px 0; height:1px; border-bottom:1px solid #d4d4d4}img{ max-width:100%; vertical-align:middle; border:0; -ms-interpolation-mode:bicubic; opacity:1}h1,h2,h3,h4,h5,h6{font-weight:300}h1{ font-size:50px; line-height:50px;font-weight:500; clear:both; color:#fff;margin-bottom:5px;text-transform:uppercase}h2{ font-size:32px; line-height:32px;font-weight:400; color:#1fb4da;text-transform:uppercase}h3{ font-size:20px; line-height:20px; color:#eee}p{margin-bottom:20px; color:#656565; font-weight:300}header{position:relative;left:0;top:0;width:100%;padding:60px 0;background:#1fb4da}header .header-inner{clear:both}section{position:relative}.section-inner{position:relative;padding:40px 0}.row .section-inner:first-child{padding-bottom:0}.wrapper{max-width:980px;margin:0 auto}.wrapper-center{ text-align:center}.row{position:relative; padding-left: 70px; padding-right: 70px padding-top: 25px; text-align: left; overflow:hidden;background-color:#f9f9f9}.row-darker{ background:#f0f0f0; border-bottom:1px solid #e9e9e9; border-top:1px solid #e9e9e9}.footer{ background:#1a1a1a; padding:50px 0;text-align:center; left:0px; bottom:0px; width:100%;} footer span.copyright{ color:#777; margin-top:0; margin-bottom:0; font-size:12px; text-transform:uppercase; letter-spacing:2px; line-height:19px; font-weight:400}footer span.copyright a{color:#1fb4da;-webkit-transition:all .3s ease; -moz-transition:all .3s ease;transition:all .3s ease}footer span.copyright a:hover{color:#fff}footer .social{display:block;clear:both;cursor:default;line-height:1;margin-top:10px;text-align:center}footer .social a{padding:0 5px}footer .social a i.fa{font-size:16px;color:#999;-webkit-transition:all .3s ease; -moz-transition:all .3s ease;transition:all .3s ease}footer .social a:hover i.fa{color:#fff}@media (max-width:767px){.wrapper{width:300px}h1{font-size:32px;line-height:32px}h2{font-size:24px;line-height:24px}h3{font-size:18px;line-height:18px}}
+  	html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{ margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}html{overflow-x:hidden;padding:0 !important;margin:0 !important}ol,ul{ list-style:none}a{text-decoration:none;-webkit-transition:all .2s linear; -moz-transition:all .2s linear;transition:all .2s linear}a:hover{text-decoration:none}body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300;font-size:16px; line-height:28px;color:#666;background:#fff;height:100%}article,aside,details,dialog,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}.clearfix:after{content:".";visibility:hidden;display:block;clear:both;height:0;font-size:0}.left-float{float:left}.right-float{float:right}.align-center{text-align:center}strong{ font-weight:bold}em{ font-style:italic}hr{ border:0; clear:both; margin:25px 0; height:1px; border-bottom:1px solid #d4d4d4}img{ max-width:100%; vertical-align:middle; border:0; -ms-interpolation-mode:bicubic; opacity:1}h1,h2,h3,h4,h5,h6{font-weight:300}h1{ font-size:50px; line-height:50px;font-weight:500; clear:both; color:#fff;margin-bottom:5px;text-transform:uppercase}h2{ font-size:32px; line-height:32px;font-weight:400; color:#1fb4da;text-transform:uppercase}h3{ font-size:20px; line-height:20px; color:#eee}p{margin-bottom:20px; color:#656565; font-weight:300}header .header-inner{clear:both}section{position:relative}.section-inner{position:relative;padding:40px 0}.row .section-inner:first-child{padding-bottom:0}.wrapper{max-width:980px;margin:0 auto}.wrapper-center{ text-align:center}.row{position:relative; padding-left: 70px; padding-right: 70px padding-top: 25px; text-align: left; overflow:hidden;background-color:#f9f9f9}.row-darker{ background:#f0f0f0; border-bottom:1px solid #e9e9e9; border-top:1px solid #e9e9e9}.footer{ background:#1a1a1a; padding:50px 0;text-align:center; left:0px; bottom:0px; width:100%;} footer span.copyright{ color:#777; margin-top:0; margin-bottom:0; font-size:12px; text-transform:uppercase; letter-spacing:2px; line-height:19px; font-weight:400}footer span.copyright a{color:#1fb4da;-webkit-transition:all .3s ease; -moz-transition:all .3s ease;transition:all .3s ease}footer span.copyright a:hover{color:#fff}footer .social{display:block;clear:both;cursor:default;line-height:1;margin-top:10px;text-align:center}footer .social a{padding:0 5px}footer .social a i.fa{font-size:16px;color:#999;-webkit-transition:all .3s ease; -moz-transition:all .3s ease;transition:all .3s ease}footer .social a:hover i.fa{color:#fff}@media (max-width:767px){.wrapper{width:300px}h1{font-size:32px;line-height:32px}h2{font-size:24px;line-height:24px}h3{font-size:18px;line-height:18px}}
   	article {
   background: #ffffff;
   border-radius: 3px;
@@ -684,6 +693,49 @@ Class Security
   right: 0;
   z-index: 2;
   padding: 30px;
+}
+header{position:relative;
+left:0;top:0;width:100%;padding:60px 0;
+background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+	background-size: 400% 400%;
+	-webkit-animation: Gradient 45s ease infinite;
+	-moz-animation: Gradient 45s ease infinite;
+	animation: Gradient 45s ease infinite;
+}
+@-webkit-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@-moz-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
 }
 h1 {
   margin: 0;
@@ -730,7 +782,7 @@ h1 {
          <h2 style="text-align: center;"><span style="color: #ff0000;"><strong>Cloud Valkyrie Security System</strong></span></h2><hr>
         <p style="text-align: left;"><span style="color: #800080;"><strong>The HTTP requested is not safe. Our Security System has Detected a possible threat in your request, And authorization to overide such action failed.
         <br /><br /></strong><span style="color: #808080; text-align-all: left;">If you are sure there is no threat in your request or the system miss judged your request or want to find how how our security works, please email us. </span></span></p>
-<a href="#" class="button">Back to main page</a>
+<a href="javascript:history.go(0);" class="button">Back to main page</a>
         <p style="text-align: center;"><span style="color: #800080;">Your IP : ${IP} 
 
 

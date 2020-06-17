@@ -1,5 +1,11 @@
 <?php
 /**
+ * Copyright (c) 2019.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+/**
  * Created by PhpStorm.
  * User: broos
  * Date: 5/11/2019
@@ -63,7 +69,7 @@ class Device
 
      private static $companyType;
 
-
+    private static $ipUrl;
 
     public static function systemInfo()
     {
@@ -87,14 +93,14 @@ class Device
             '/win95/i'              =>  'Windows 95',
             '/win16/i'              =>  'Windows 3.11',
             '/macintosh|mac os x/i' =>  'Mac OS X',
-            '/mac_powerpc/i'        =>  'Mac OS 9',
+            '/mac_powerpc/i'        =>  'Mac OS',
             '/linux/i'              =>  'Linux',
             '/Unix/i'              =>  'Unix',
             '/ubuntu/i'             =>  'Ubuntu',
             '/iPhone/i'   =>  'iPhone',
             '/ipod/i'               =>  'iPod',
             '/ipad/i'               =>  'iPad',
-            '/Android/i'            =>  'Android 6',
+            '/Android/i'            =>  'Android',
             '/blackberry/i'         =>  'BlackBerry',
             '/webos/i'              =>  'Mobile');
 
@@ -119,16 +125,16 @@ class Device
     {
      $access_token = 'a5107b6fbebe9e';
         if(isset($ip)){
-            $ipUrl = $ip;
+            self::$ipUrl = $ip;
         }else{
-            $ips = new Security();
-            $ipUrl = $ips::get_ip();
+
+            self::$ipUrl = Security::get_ip();
         }
         try {
             $client = new IPinfo($access_token);
 
             $ip_address = '216.239.36.21';
-            self::$ipInfo = $client->getDetails($ip_address);
+            self::$ipInfo = $client->getDetails(self::$ipUrl);
 
             self::$ipAddress = self::$ipInfo->ip;
             self::$hostname = self::$ipInfo->hostname;
@@ -153,7 +159,7 @@ class Device
             self::$providerType = $asn->type;
             self::$providerRouter = $asn->route;
 
-            $company = self::$ipInfo->company;
+             $company = self::$ipInfo->company;
             self::$companyDomain = $company->domain;
             self::$companyName = $company->name;
             self::$companyType = $company->type;
@@ -173,22 +179,22 @@ class Device
             try {
                 self::$ipInfo = json_decode(file_get_contents('http://freegeoip.net/json' . self::$ipUrl));
                 self::$ipAddress = self::$ipInfo->ip;
-                self::$ipInfoCountry = self::$ipInfo->country_code;
-                self::$ipInfoLatitude = self::$ipInfo->latitude;
-                self::$ipInfoLongitude = self::$ipInfo->longitude;
+                self::$country_code = self::$ipInfo->country_code;
+                self::$latitude = self::$ipInfo->latitude;
+                self::$longitude = self::$ipInfo->longitude;
                 try {
-                  $googleLocation = json_decode(file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?latlng=' . self::$ipInfoLatitude . ',' . self::$ipInfoLongitude . '&sensor=false'));
-                  self::$ipInfoAddress = $googleLocation->results[2]->formatted_address;
+                  $googleLocation = json_decode(file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?latlng=' . self::$latitude . ',' . self::$longitude . '&sensor=false'));
+                  self::$postal = $googleLocation->results[2]->formatted_address;
                 } catch (Exception  $e) {
                   $googleLocation = null;
                 }
-                self::$ipInfoSource = 'freegeoip.net';
-                self::$ipInfoError = false;
+                self::$source = 'freegeoip.net';
+                self::$error = false;
                 return true;
             } catch (Exception  $e) {
                 self::$ipInfo = null;
-                self::$ipInfoSource = null;
-                self::$ipInfoError = true;
+                self::$source = null;
+                self::$error = true;
                 return false;
             }
         }

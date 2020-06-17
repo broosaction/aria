@@ -1,5 +1,11 @@
 <?php
 /**
+ * Copyright (c) 2019.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+/**
  * Created by PhpStorm.
  * User: broos
  * Date: 5/12/2019
@@ -15,10 +21,10 @@ use Core\drivers\Cookies;
 use Core\drivers\DB;
 use Core\drivers\Security;
 use Core\drivers\Sessions;
+use Core\Tools\CloudValkyrie\CloudValkyrie;
 use Core\tpl\Aria;
 use Exception;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
+use Tracy\Logger;
 
 
 class Start
@@ -47,7 +53,10 @@ class Start
           $this->server_home = $server_dir;
         $this->cache = (new Cache($this->server_home))->getCacheEngine();
 
-        $this->cache->save("test","here");
+        $options = array('headers' => getallheaders());
+
+
+        $this->cache->save('test', 'System Up-Time');
 
             if ($this::isConfigClass()) {
                 $this->Config = new config\Config();
@@ -58,21 +67,21 @@ class Start
                 $this->Config = new config\Config();
             }
 
-        $this->log = new Logger($this->Config->app_name);
-        try {
+        $host = $options['headers']['Host'];
+            if($host !== $this->Config->app_url){
+                $this->Config->app_url = $host.'/cloud';
+            }
 
-            $this->log->pushHandler(new StreamHandler($this->server_home.'/logs/server.log', Logger::WARNING));
+        $this->log = new Logger($this->server_home.'/logs',$this->getConfig()->mail_username);
 
-        } catch (Exception $e) {
-
-        }
-
+        $this->Security = new CloudValkyrie(); // security is set first.
+        \Core\Tools\CloudValkyrie\Config::setServerHome($this->server_home);
+        $this->Security::secure();
         $this->Sessions = new Sessions();
         $this->Cookies = new Cookies();
 
-        $this->Security = new Security();
-        $this->Security::setServerHome($this->server_home);
-        $this->Security::secure();
+       // $this->Security::setServerHome($this->server_home);
+
         $this->Aria = new Aria($this);
 
         $this->Database = new DB($this->server_home, $this);
@@ -157,9 +166,9 @@ class Start
     }
 
     /**
-     * @return Security
+     * @return CloudValkyrie
      */
-    public function getSecurity(): Security
+    public function getSecurity(): CloudValkyrie
     {
         return $this->Security;
     }
