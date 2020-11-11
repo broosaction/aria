@@ -31,15 +31,34 @@ public function __construct()
    // ini_set('session.cookie_lifetime', '0');
    // ini_set('session.cookie_httponly', 'On');
    // ini_set('session.cookie_secure', 'On');
+    @ini_set('default_charset', 'UTF-8');
+    @ini_set('gd.jpeg_ignore_warning', '1');
     ini_set('expose_php','off');
-    ini_set('display_errors','off');
-    ini_set('log_errors', 'on');
+    // Don't display errors and log them
+    @ini_set('display_errors', '0');
+    @ini_set('log_errors', '1');
     ini_set('error_log',Config::getServerHome() . '/logs/security.log');
+    //try to configure php to enable big file uploads.
+    //this doesn´t work always depending on the webserver and php configuration.
+    //Let´s try to overwrite some defaults anyway
 
+    //try to set the maximum execution time to 60min
+    if (strpos(@ini_get('disable_functions'), 'set_time_limit') === false) {
+        @set_time_limit(3600);
+    }
+    @ini_set('max_execution_time', '3600');
+    @ini_set('max_input_time', '3600');
+
+    //try to set the maximum filesize to 10G
+    @ini_set('upload_max_filesize', '10G');
+    @ini_set('post_max_size', '10G');
+    @ini_set('file_uploads', '50');
+
+    header_remove('Server');
     header('Server: Aria Framework Enterprise v0.2.1');
     header('X-Powered-By: Aria Framework');
     header('X-XSS-Protection: 1');
-    header_remove('Server');
+
 }
 
 public static function secure()
@@ -60,7 +79,7 @@ public static function secure()
 
         self::logs('Query String went in');
         if (Config::$ATTACK_BLOCK_SCREEN) {
-            if(isset($_REQUEST['ua'],$_REQUEST['w'])){
+            if(isset($_REQUEST['ua']) || isset($_REQUEST['w']) || isset($_REQUEST['_tracy_bar'])){
 
             }else{
                 exit(self::SecurityWarningTemplate());
@@ -334,6 +353,10 @@ public static function logs($type)
     }
 }
 
+
+public static function getCurrentURL(){
+    return self::$current_url;
+}
 
 private static function SecurityWarningTemplate()
 {

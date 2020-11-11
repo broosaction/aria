@@ -1,0 +1,6 @@
+IndexIgnore *.php *.html *.aria *.htm *.py *.lua *.phtml *.php7 *log
+
+<FilesMatch "\.(ini|php|html|aria|htm|py|lua|phtml|php7|log|json|txt|conf)$" >
+Order allow,deney
+Deny from all
+</FilesMatch>

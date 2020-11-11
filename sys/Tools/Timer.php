@@ -23,7 +23,7 @@ class Timer
     }
 
     function runtime() {
-        return ($this->finish-$this->start)*10;
+        return ($this->finish - $this->start)*10;
     }
 
     function timescole($time){

@@ -164,7 +164,7 @@ class DB
      */
     public static function getSelfDatabase(): SleekDB
     {
-        return self::$self_database::store('site',self::$self_database_home);
+        return self::$self_database;
     }
 
     /**

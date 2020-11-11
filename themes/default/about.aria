@@ -1,0 +1,12 @@
+{include inc/header.html}
+<div class="container" style="padding-top: 110px">
+    <div class="jumbotron" >
+        <h1 class="center" style="font-size: 68px">PHP {$config->app_name.firstupper()} ... ,</h1>
+        <p class="lead">The Fastest, Secure, Smart and Friendly php Web framework
+        </p>
+        ok {var v = 66}
+        {$v.add(1)}
+    </div>
+</div>
+
+{include inc/footer.html}

@@ -2,7 +2,7 @@
 namespace Core\config;
 
 /**
- * This is a Joi system auto generated class, Built on : 2019-05-13 19:31:07
+ * This is a Joi system auto generated class, Built on : 2020-11-11 14:10:38
  */
 class Config
 {
@@ -10,7 +10,7 @@ class Config
 	public static $version = '1.1.0';
 
 	/** config.io last modified date and time */
-	public $last_modified = 'May 12 2019 12:46:19.';
+	public $last_modified = 'November 10 2020 18:02:11.';
 
 	/** app_name */
 	public $app_name = 'aria';
@@ -25,7 +25,7 @@ class Config
 	public $app_debug = 'true';
 
 	/** app_url */
-	public $app_url = 'http://brooshost:8081/bot/frame';
+	public $app_url = 'http://brooshost:8081/frame';
 
 	/** app_theme */
 	public $app_theme = 'default';
@@ -46,13 +46,13 @@ class Config
 	public $db_port = '3306';
 
 	/** db_database */
-	public $db_database = 'homestead';
+	public $db_database = '';
 
 	/** db_username */
-	public $db_username = 'homestead';
+	public $db_username = 'root';
 
 	/** db_password */
-	public $db_password = 'secret';
+	public $db_password = '';
 
 	/** mail_driver */
 	public $mail_driver = 'smtp';

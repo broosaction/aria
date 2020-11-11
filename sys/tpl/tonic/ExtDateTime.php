@@ -1,8 +1,14 @@
 <?php
-
+/*
+ * Copyright (c) 2020.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
 
 namespace Core\tpl\tonic;
 
+
+use Core\joi\System\Time;
 
 use Github\Client;
 
@@ -29,6 +35,13 @@ class ExtDateTime
     {
 
         $client = new Client();
+        $time = new Time();
+
+
+
+        $this->tonic::extendModifier('isday', static function () use ($time){
+            return $time->isDay();
+        });
 
         $this->tonic::extendModifier('stamp2period', static function ($input, $val) use($client){
 

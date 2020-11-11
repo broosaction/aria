@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>{$config->app_name.firstupper()} - PHP Web framework</title>
+  <link rel="stylesheet" href="{$.theme_url}/assets/css/style.css">
+
+</head>
+<body>
+
+<body>
+    <div class="web-content-container--limiter">
+        <!--HEADER HEADER HEADER HEADER HEADER -->
+        <header class="header-container" id="header">
+            <div class="header-container__image-container">
+                <!- Aria -->
+            </div>    
+            <nav class="header-container__navbar" id="nav-bar">
+                <div class="navbar-burger-container">
+                    <input type="checkbox" class="checkbox">
+                    <div class="span-container">
+                        <span></span>
+                        <span></span>
+                        <span></span>    
+                    </div>
+                    <div class="navbar-burger-container__ul-container">
+                        <a href="#aria" class="navbar-link nav-link"><span class="--turq">3.</span>Aria</a>
+                        <a href="#features" class="navbar-link nav-link"><span class="--turq">2.</span>Features</a>
+                        <a href="https://github.con/broosaction/aria" class="navbar-link nav-link"><span class="--turq">1.</span>Docs</a>
+                    </div>
+                </div>
+            </nav>
+        </header>

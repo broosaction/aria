@@ -156,4 +156,28 @@ class Statistics
         return $version;
     }
 
+
+    public Static function getResourceUsage($timedif){
+        $cpuUsage = [];
+        foreach (getrusage() as $key => $val) {
+            $cpuUsage[$key] = $val;
+
+        }
+        //todo
+        $time = ((time()/$timedif)*10);
+
+        $userUsage = -round(($cpuUsage['ru_utime.tv_sec'] * 1e6 + $cpuUsage['ru_utime.tv_usec']) / $time / 10000);
+        $systemUsage = -round(($cpuUsage['ru_stime.tv_sec'] * 1e6 + $cpuUsage['ru_stime.tv_usec']) / ($timedif/time()) / 10000);
+
+        return array(
+            'user' => $userUsage,
+            'system' => $systemUsage,
+        );
+    }
+
+    public static function memoryPick(){
+        return number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ');
+    }
+
+
 }

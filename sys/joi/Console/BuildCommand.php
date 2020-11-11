@@ -27,8 +27,8 @@ class BuildCommand extends Command
     protected function configure()
     {
         $this->setName('build-config')
-            ->setDescription('Clears the application cache.')
-            ->setHelp('Allows you to delete the application cache. Pass the --groups parameter to clear caches of specific groups.')
+            ->setDescription('Builds the application Configuration files.')
+            ->setHelp('This command compiles the config/config.io file.')
             ->addOption(
                 'groups',
                 'g',

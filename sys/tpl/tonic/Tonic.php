@@ -1,5 +1,11 @@
 <?php
 /**
+ * Copyright (c) 2019.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+/**
  * Created by PhpStorm.
  * User: broos
  * Date: 4/20/2019
@@ -49,6 +55,11 @@ class Tonic{
     /**
      * Default extension for includes
      */
+    /** @var bool */
+    private $autoRefresh = true;
+    /** @var bool */
+    private $sandboxed = false;
+
     public $default_extension='.html';
     private $file;
     private $assigned=array();
@@ -546,6 +557,8 @@ class Tonic{
                 $escaped = false;
             }
         }
+
+        $context['offset'] = $context['offset'] ?? '';
         return array(
             "tag" => $prev_tag,
             "in_tag" => $in_tag,
@@ -690,6 +703,8 @@ class Tonic{
         }
         return $var_match;
     }
+
+    /** @noinspection NotOptimalRegularExpressionsInspection */
     private function handleIfMacros(){
         $match = $this->matchTags('/<([a-xA-Z_\-0-9]+).+?tn-if\s*=\s*"(.+?)".*?>/','{endif}');
         if (empty($match)) {
@@ -697,6 +712,8 @@ class Tonic{
         }
         $this->content = preg_replace('/<([a-xA-Z_\-0-9]+)(.+?)tn-if\s*=\s*"(.+?)"(.*?)>/','{if $3}<$1$2$4>',$this->content);
     }
+
+    /** @noinspection NotOptimalRegularExpressionsInspection */
     private function handleLoopMacros(){
         $match = $this->matchTags('/<([a-xA-Z_\-0-9]+).+?tn-loop\s*=\s*"(.+?)".*?>/','{endloop}');
         if (empty($match)) {
@@ -704,6 +721,8 @@ class Tonic{
         }
         $this->content = preg_replace('/<([a-xA-Z_\-0-9]+)(.+?)tn-loop\s*=\s*"(.+?)"(.*?)>/','{loop $3}<$1$2$4>',$this->content);
     }
+
+    /** @noinspection NotOptimalRegularExpressionsInspection */
     private function handleBlockMacros(){
         $match = $this->matchTags('/<([a-xA-Z_\-0-9]+).+?tn-block\s*=\s*"(.+?)".*?>/','{endblock}');
         if (empty($match)) {
@@ -970,8 +989,9 @@ class Tonic{
                 if(count($loop_name)>1){
                     $ln=$loop_name[0];
                     unset($loop_name[0]);
-                    foreach($loop_name as $j => $suffix)
-                        $ln.="['$suffix']";
+                    foreach($loop_name as $j => $suffix) {
+                        $ln .= "['$suffix']";
+                    }
                     $loop_name=$ln;
                 }else{
                     $loop_name=$loop_name[0];

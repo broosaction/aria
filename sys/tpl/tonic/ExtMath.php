@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright (c) 2020.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 /**
  * Created by PhpStorm.
  * User: broos
@@ -15,6 +21,7 @@ namespace Core\tpl\tonic;
 
 use Core\Tools\Calculator\Calculator;
 use Core\Tools\Calculator\Tokenizer;
+
 use Exception;
 
 class ExtMath
@@ -79,10 +86,10 @@ class ExtMath
 
             $normal = abs($normal);
             $percent = round($current / $normal * 100);
-            if(isset($c) && $c){
-                return 100 - number_format($percent, 0, '.', ' ');
+            if(isset($c) && $c==='true'){
+                return 100 - number_format($percent, 0, '.', '');
             }
-            return number_format($percent, 0, '.', ' ');
+            return number_format($percent, 0, '.', '');
         });
 
 

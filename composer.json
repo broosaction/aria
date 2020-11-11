@@ -1,12 +1,13 @@
 {
   "name": "broosaction/aria",
-  "homepage": "https://cloud.broosaction.xyz",
+  "homepage": "https://cloud.litebase.xyz",
   "type": "project",
   "description": "The Aria Framework.",
   "license": "MIT",
   "keywords": [
     "framework",
-    "Aria"
+    "Aria",
+    "php"
   ],
 
   "autoload": {
@@ -23,13 +24,12 @@
     "php-http/guzzle6-adapter": "^1.1.1",
     "symfony/console": "~3.0|~4.0",
     "sabre/cache": "^1.0",
-    "amphp/parallel-functions": "v0.1.3",
-    "amphp/amp": "v2.1.1",
-    "league/csv": "^9.2.0",
-    "rubix/ml": "^0.0.12-beta"
+    "nette/database": "v3.0.1",
+    "php-ai/php-ml": "0.8.0",
+    "nette/http": "^3.0",
+    "tracy/tracy": "^2.7"
    },
   "config": {
-    "preferred-install": "dist",
     "disable-tls": true,
     "secure-http": false
   },

@@ -1,10 +1,15 @@
 <?php
-
+/*
+ * Copyright (c) 2020.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
 
 namespace Core\tpl\tonic;
 
 
 use Core\joi\Start;
+
 
 class ExtCache
 {
@@ -15,7 +20,8 @@ class ExtCache
 
     /**
      * Extensions constructor.
-     * @param $tonic
+     * @param Tonic $tonic
+     * @param Start $server
      */
     public function __construct(Tonic $tonic, Start $server)
     {

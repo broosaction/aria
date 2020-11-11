@@ -24,6 +24,9 @@ use Core\drivers\Sessions;
 use Core\Tools\CloudValkyrie\CloudValkyrie;
 use Core\tpl\Aria;
 use Exception;
+use Nette\Http\Request;
+use Nette\Http\Response;
+use Nette\Http\UrlScript;
 use Tracy\Logger;
 
 
@@ -31,18 +34,72 @@ class Start
 {
 
 
+    /**
+     * @var Cookies
+     */
+    private Cookies $Cookies;
 
-    private $Cookies;
-    private $Security;
-    private $Sessions;
-    private $Database;  // not yet implimented
-    private $Config;
-    private $Aria;
-    private $cache;
+    /**
+     * @var CloudValkyrie
+     */
+    private CloudValkyrie $Security;
 
-    private $server_home;
+    /**
+     * @var Sessions
+     */
+    private Sessions $Sessions;
 
-    private $log;
+    /**
+     * @var DB
+     */
+    private DB $Database;  // not yet implemented
+
+    /**
+     * @var config\Config
+     */
+    private config\Config $Config;
+
+    private Aria $Aria;
+    /**
+     * @var \Nette\Caching\Cache
+     */
+    private \Nette\Caching\Cache $cache;
+
+    /**
+     * @var string
+     */
+    protected string $server_home;
+
+    /**
+     * @var Logger
+     */
+    private Logger $log;
+
+    /**
+     * check if Aria runs in cli mode
+     */
+    public static $CLI = false;
+
+
+    /**
+     * @var boolean
+     */
+    public static $isAJAX = false;
+
+
+    /**
+     * @var boolean
+     */
+    public static $isHTTPS = false;
+    /**
+     * @var Request
+     */
+    private Request $httpRequest;
+    /**
+     * @var Response
+     */
+    private Response $httpResponse;
+
 
     /**
      * Start constructor.
@@ -50,34 +107,59 @@ class Start
      */
     public function __construct($server_dir='')
     {
-          $this->server_home = $server_dir;
+        $this->server_home = $server_dir;
         $this->cache = (new Cache($this->server_home))->getCacheEngine();
 
         $options = array('headers' => getallheaders());
 
-
         $this->cache->save('test', 'System Up-Time');
 
+             // Check if config is accessible
             if ($this::isConfigClass()) {
                 $this->Config = new config\Config();
             } else {
-                //$this->log->addNotice('ReBuilding the Config Class');
+                // Create config if it does not already exist
                 $this->buildConfig();
 
                 $this->Config = new config\Config();
             }
 
+        // Override php.ini and log everything if we're troubleshooting
+        if ($this->Config->app_env === 'local') {
+            error_reporting(E_ALL);
+        }
+
+
+        if (!date_default_timezone_set('UTC')) {
+            throw new \RuntimeException('Could not set timezone to UTC');
+        }
+
+        $this->httpRequest = new Request(new UrlScript($this->Config->app_url));
+            self::$isAJAX = $this->httpRequest->isAjax();
+            self::$isHTTPS = $this->httpRequest->isSecured();
+
+            $this->httpResponse = new Response();
+
+            /*
+             * this was needed to fix some bug
+             */
         $host = $options['headers']['Host'];
             if($host !== $this->Config->app_url){
-                $this->Config->app_url = $host.'/cloud';
+                if($this->httpRequest->getUrl()->getRelativeUrl() !== null){
+                    $this->Config->app_url = $host.'/'.$this->httpRequest->getUrl()->getRelativeUrl();
+                }else{
+                    $this->Config->app_url = $host;
+                }
             }
+            //@todo
+        // Resolve /login to /login/ to ensure to always have a trailing
+        // slash which is required by URL generation.
 
         $this->log = new Logger($this->server_home.'/logs',$this->getConfig()->mail_username);
-
-        $this->Security = new CloudValkyrie(); // security is set first.
+        $this->setSessions();
         \Core\Tools\CloudValkyrie\Config::setServerHome($this->server_home);
+        $this->Security = new CloudValkyrie(); // security is set first.
         $this->Security::secure();
-        $this->Sessions = new Sessions();
         $this->Cookies = new Cookies();
 
        // $this->Security::setServerHome($this->server_home);
@@ -160,9 +242,25 @@ class Start
     /**
      * @param Sessions $Sessions
      */
-    public function setSessions(Sessions $Sessions)
+    public function setSessions(Sessions $Sessions = null)
     {
-        $this->Sessions = $Sessions;
+        try {
+            if (self::$isHTTPS) {
+                ini_set('session.cookie_secure', true);
+            }
+
+            // prevents javascript from accessing php session cookies
+            ini_set('session.cookie_httponly', 'true');
+
+
+            $this->Sessions = $Sessions ?? new Sessions();
+        } catch (Exception $e) {
+
+            $this->getLog()->log('SESSION start error: '.$e,$this->getLog()::ERROR);
+            //show the user a detailed error page
+            //OC_Template::printExceptionErrorPage($e, 500);
+            die();
+        }
     }
 
     /**
@@ -244,6 +342,22 @@ class Start
     public function setDatabase(DB $Database): void
     {
         $this->Database = $Database;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getHttpRequest(): Request
+    {
+        return $this->httpRequest;
+    }
+
+    /**
+     * @return Response
+     */
+    public function getHttpResponse(): Response
+    {
+        return $this->httpResponse;
     }
 
 

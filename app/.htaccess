@@ -1,0 +1,9 @@
+<FilesMatch "^\.">
+ Order allow,deny
+ Deny from all
+ </FilesMatch>
+
+<FilesMatch ".html|.php|.aria|.htm|.py|.lua|.phtml|.php7|.log">
+ Order allow,deny
+ Deny from all
+ </FilesMatch>
