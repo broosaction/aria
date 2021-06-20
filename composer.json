@@ -6,32 +6,43 @@
   "license": "MIT",
   "keywords": [
     "framework",
-    "Aria",
-    "php"
+    "Aria"
   ],
 
   "autoload": {
     "psr-4": {
-      "Core\\": "sys/",
+      "Core\\": "core/",
       "App\\": "app/"
     }
   },
   "require": {
-    "php": ">=7.2",
-    "rakibtg/sleekdb": "^1.0.3",
-    "nette/php-generator": "^3.2.2",
+    "php": ">=7.4",
+    "nette/php-generator": "^3.5.3",
     "knplabs/github-api": "^1.7.1",
     "php-http/guzzle6-adapter": "^1.1.1",
-    "symfony/console": "~3.0|~4.0",
-    "sabre/cache": "^1.0",
+    "symfony/console": "^4.4.24",
     "nette/database": "v3.0.1",
-    "php-ai/php-ml": "0.8.0",
-    "nette/http": "^3.0",
-    "tracy/tracy": "^2.7"
-   },
+    "phpseclib/phpseclib": "^2.0.23",
+    "ext-dom": "*",
+    "nette/utils": "^3.2.2",
+    "tracy/tracy": "^2.8.4",
+    "nette/http": "^3.1.1",
+    "nette/caching": "^3.1.1",
+    "webmozart/assert": "^1.10.0",
+    "ext-gd": "*",
+    "jasny/phpdoc-parser": "dev-master",
+    "ext-json": "*",
+    "ext-openssl": "*",
+    "symfony/process": "^5.3"
+  }
+  ,
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
+  },
   "config": {
-    "disable-tls": true,
-    "secure-http": false
+    "preferred-install": "dist",
+    "disable-tls": false,
+    "secure-http": true
   },
   "minimum-stability": "dev",
   "prefer-stable": true
