@@ -1,0 +1,46 @@
+<?php
+/**
+ * Copyright (c) 2021.  Bruce Mubangwa
+ *
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+/**
+ * Created by Bruce Mubangwa on 05 /Jun, 2021 @ 11:44
+ */
+
+namespace Core\Security\CloudValkyrie\Defaults;
+
+
+abstract class DefaultEvents
+{
+    public const PROTECTION_ALL = 'ALL';
+    public const PROTECTION_QUERY_STRING = 'QUERY_STRING';
+    public const PROTECTION_SQL = 'PROTECTION_SQL';
+    public const PROTECTION_RANGE_IP_DENY = 'PROTECTION_RANGE_IP_DENY';
+    public const PROTECTION_RANGE_IP_SPAM = 'PROTECTION_RANGE_IP_SPAM';
+    public const PROTECTION_URL = 'PROTECTION_URL';
+    public const PROTECTION_REQUEST_SERVER = 'PROTECTION_REQUEST_SERVER';
+    public const PROTECTION_SANTY = 'PROTECTION_SANTY';
+    public const PROTECTION_BOTS = 'PROTECTION_BOTS';
+    public const PROTECTION_REQUEST_METHOD = 'PROTECTION_REQUEST_METHOD';
+    public const PROTECTION_DOS = 'PROTECTION_DOS';
+    public const PROTECTION_UNION_SQL = 'PROTECTION_UNION_SQL';
+    public const PROTECTION_CLICK_ATTACK = 'PROTECTION_CLICK_ATTACK';
+    public const PROTECTION_XSS_ATTACK = 'PROTECTION_XSS_ATTACK';
+    public const PROTECTION_COOKIES = 'PROTECTION_COOKIES';
+    public const PROTECTION_IDENTITY_THEFT = 'PROTECTION_IDENTITY_THEFT';
+    public const PROTECTION_POST = 'PROTECTION_POST';
+    public const PROTECTION_GET = 'PROTECTION_GET';
+    public const PROTECTION_SERVER_OVH = 'PROTECTION_SERVER_OVH';
+    public const PROTECTION_SERVER_KIMSUFI = 'PROTECTION_SERVER_KIMSUFI';
+    public const PROTECTION_SERVER_DEDIBOX = 'PROTECTION_SERVER_DEDIBOX';
+    public const PROTECTION_SERVER_DIGICUBE = 'PROTECTION_SERVER_DIGICUBE';
+    public const PROTECTION_SERVER_OVH_BY_IP = 'PROTECTION_SERVER_OVH_BY_IP';
+    public const PROTECTION_SERVER_KIMSUFI_BY_IP = 'PROTECTION_SERVER_KIMSUFI_BY_IP';
+    public const PROTECTION_SERVER_DEDIBOX_BY_IP = 'PROTECTION_SERVER_DEDIBOX_BY_IP';
+    public const PROTECTION_SERVER_DIGICUBE_BY_IP = 'PROTECTION_SERVER_DIGICUBE_BY_IP';
+    public const PROTECTION_ANTI_MALWARE = 'PROTECTION_ANTI_MALWARE';
+    public const PROTECTION_ANTI_SPAM = 'PROTECTION_ANTI_SPAM';
+
+}
