@@ -19,7 +19,7 @@ class ValkyrieConfig
 
     public static string $charset = 'UTF-8';
 
-    protected static bool $PROTECTION = true;
+    protected static bool $PROTECTION = false;
 
     public static bool $PROTECTION_RANGE_IP_DENY = false;
 

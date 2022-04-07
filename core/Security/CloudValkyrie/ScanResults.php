@@ -146,10 +146,8 @@ class ScanResults
         return $this->runTime;
     }
 
-    /**
-     * @param int $runTime
-     */
-    public function setRunTime(int $runTime): void
+
+    public function setRunTime($runTime): void
     {
         $this->runTime = $runTime;
     }
