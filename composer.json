@@ -16,7 +16,7 @@
     }
   },
   "require": {
-    "php": ">=7.4",
+    "php": ">=8",
     "nette/php-generator": "^3.5.3",
     "knplabs/github-api": "^1.7.1",
     "php-http/guzzle6-adapter": "^1.1.1",
@@ -33,7 +33,7 @@
     "jasny/phpdoc-parser": "dev-master",
     "ext-json": "*",
     "ext-openssl": "*",
-    "symfony/process": "^5.3"
+    "symfony/process": "^5.4.2"
   }
   ,
   "require-dev": {

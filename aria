@@ -17,5 +17,5 @@ use Symfony\Component\Console\Output\OutputInterface;
 $app = new Symfony\Component\Console\Application('Aria', '1.1.0');
 $app->add(new Core\joi\Console\BuildCommand());
 $app->add(new Core\joi\Console\BuildControllers());
-
+$app->add(new Core\joi\Console\BuildCloudValkyrieModel());
 $app->run();

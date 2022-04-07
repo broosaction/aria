@@ -12,33 +12,20 @@
  * Time: 04:25
  */
 
-//include_once '../vendor/autoload.php';
-use App\Controllers\Route;
-
 
 include_once 'vendor/autoload.php';
+include_once 'libs/Libraries.php';
 
 
+use App\Bootstrap\Router;
 use Tracy\Debugger;
 
-//we start our Framework core functions
+
 $server = new Core\joi\Start(__DIR__);
 
-//Debugger::enable(Debugger::DEVELOPMENT, __DIR__ . '/logs');
-
-/* call \Tracy\OutputDebugger::enable();
- *  if there is any error or out put before the main app
- */
-
+//start our debuggers
 Debugger::$showBar = true;
 Debugger::$strictMode = true;
-Debugger::enable(Debugger::DETECT);
+Debugger::enable(Debugger::DETECT, __DIR__ . '/logs');
 
-
-/*
- * we load our app logic,
- * Boot is automatically creates and can be updated by running
- *        php aria build-controllers
- * in future versions is will be automatically detected if changes occur in the App\Controllers package
- */
-$app = new \App\Bootstrap\Boot($server);
+Router::start($server);
