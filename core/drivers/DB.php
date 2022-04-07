@@ -51,7 +51,7 @@ class DB
         try {
             self::$self_database = new Store('site', self::$self_database_home, [
                 'auto_cache' => true,
-                'timeout' => 120
+                'timeout' => false,
             ]);
             $this->self_database_status = true;
         } catch (Exception $e) {
@@ -60,7 +60,10 @@ class DB
 
         //  try {
 
-        $this->database_engine = new \Nette\Database\Connection($dns, $user, $pass);
+        $this->database_engine = new \Nette\Database\Connection($dns, $user, $pass,[
+            'debugger' => true,
+            'lazy' => true
+        ]);
 
         //   }catch (\Exception $e){
         //     $this->self_database_status = false;
@@ -161,7 +164,11 @@ class DB
      */
     public static function getSelfDatabase($store_name = 'site'): Store
     {
-        return new Store($store_name, self::$self_database_home);
+        return new Store($store_name, self::$self_database_home, [
+  "auto_cache" => true,
+  "cache_lifetime" => null,
+  "timeout" => false,
+  ]);
     }
 
     /**
