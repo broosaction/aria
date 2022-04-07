@@ -322,7 +322,7 @@ class Utils
      * @param $num
      * @return string
      */
-    public static function thousandsCurrencyFormat($num) {
+    public static function numMassFormat($num) {
 
         if($num>1000) {
 
