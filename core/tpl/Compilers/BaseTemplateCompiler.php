@@ -93,18 +93,22 @@ abstract class BaseTemplateCompiler
     public function buildPathName($name)
     {
 
+        $extension = 'aria';
         if($name === ''){
             return false;
-        }
-        if(str_contains($name, '.aria') || str_contains($name, '.php') || str_contains($name, '.html')){
-            return $name;
         }
 
         if(!str_contains($name, '.')){
             return $name.'.aria';
         }
 
-        return str_replace('.','/',$name).'.aria';
+        if(str_contains($name, '.aria') || str_contains($name, '.php') || str_contains($name, '.html') || str_contains($name, '.latte')){
+            $ext = explode('.', $name);
+            $extension = $ext[count($ext) - 1];
+            $name = str_replace('.'.$extension,'',$name);
+        }
+
+        return str_replace('.','/',$name).'.'.$extension;
 
     }
 

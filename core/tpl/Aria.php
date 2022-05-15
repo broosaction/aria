@@ -20,6 +20,7 @@ use Core\joi\Start;
 use Core\tpl\Compilers\AriaCompiler;
 use Core\tpl\Compilers\BaseTemplateCompiler;
 use Core\tpl\Contracts\TemplateEngine;
+use Latte\Engine;
 
 
 class Aria extends BaseTemplate implements TemplateEngine
@@ -82,7 +83,6 @@ class Aria extends BaseTemplate implements TemplateEngine
         }
         $this->AriaCompiler->loadView($view);
         $content = $this->AriaCompiler->render($replaceCache);
-        echo $content;
         $this->AriaCompiler->runCallback($callback);
         return $content;
     }
@@ -94,6 +94,10 @@ class Aria extends BaseTemplate implements TemplateEngine
     public function getCompiler(): AriaCompiler
     {
         return $this->AriaCompiler;
+    }
+
+    public function getLatteEngine() : Engine{
+        return $this->getCompiler()->getLatte();
     }
 
     /**
@@ -130,4 +134,5 @@ class Aria extends BaseTemplate implements TemplateEngine
         }
         return empty($this->AriaCompiler->properties['blocksOverride'][$n[1]]) ? $args[0] : $this->AriaCompiler->properties['blocksOverride'][$n[1]];
     }
+
 }

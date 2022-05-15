@@ -12,6 +12,7 @@
 namespace Core\tpl\Compilers;
 
 
+use Core\Config\Config;
 use Core\joi\Start;
 use Core\tpl\Contracts\TemplateCompiler;
 
@@ -24,6 +25,8 @@ use Core\tpl\Handlers\Aria\IncludeHandler;
 use Core\tpl\Handlers\Aria\InitExtentions;
 use Core\tpl\Handlers\Aria\VarHandler;
 use Core\tpl\Support\Utils;
+use Exception;
+use Latte\Engine;
 use Nette\Caching\Cache;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Utils\FileSystem;
@@ -33,6 +36,10 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
 {
 
     private FileStorage $cacheStorage;
+    private Engine $latte;
+
+
+
 
     /**
      * Load the desired template
@@ -49,9 +56,13 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
         }
         $ext = explode('.', $file);
         $ext = $ext[count($ext) - 1];
-        if ($ext === "php") {
+        if ($ext === 'php') {
             $this->properties['isPhp'] = true;
+
+        }elseif ($ext === 'latte'){
+            $this->properties['isLatte'] = true;
         } else {
+            $this->properties['isLatte'] = false;
             if (!file_exists($this->properties[self::THEMES_DIR] . '/' . $this->properties[self::FILE])) {
                 echo "<span style=\"display: inline-block; background: red; color: white; padding: 2px 8px; border-radius: 10px; font-family: 'Lucida Console', Monaco, monospace, sans-serif; font-size: 80%\"><b>Aria</b>: unable to load file '" . $this->properties[self::THEMES_DIR] . '/' . $this->properties[self::FILE] . "'</span>";
                 return false;
@@ -67,6 +78,24 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
 
     public function render($replaceCache = false)
     {
+        if(isset($this->properties['isLatte']) && $this->properties['isLatte'] === true){
+            $latte = $this->getLatte();
+
+            $latte->setTempDirectory($this->properties[self::THEMES_DIR].'/');
+            $co = new Config();
+            $latte->addFunction('theme_url', function () use($co) : string {
+                return $co->getThemeUrl();
+            });
+            $latte->addFunction('app_url', function () use($co) : string {
+                return $co->app_url;
+            });
+              // render to output
+            $latte->render($this->properties[self::THEMES_DIR].'/'.$this->properties[self::FILE], $this->properties[BaseTemplateCompiler::ASSIGNED]);
+             // or render to string
+            return $latte->renderToString($this->properties[self::THEMES_DIR].'/'.$this->properties[self::FILE], $this->properties[BaseTemplateCompiler::ASSIGNED]);
+        }
+
+
         $content = $this->getProperty(self::CONTENT);
         if ($replaceCache) {
             $hash = sha1($this->properties['orContent']);
@@ -100,6 +129,7 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
             $parent->overrideBlocks($this->getProperty(self::BLOCKS));
             return $this->render();
         }
+        echo $this->getProperty(self::OUTPUT);
         return $this->getProperty(self::OUTPUT);
     }
 
@@ -188,12 +218,24 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
         }
         try {
             $ret = call_user_func_array($this->properties[self::EXTENSIONS][$args[0]], array_slice($args, 1));
-        } catch (\Exception $e) {
-            throw new \Exception("<span style=\"display: inline-block; background: red; color: white; padding: 2px 8px; border-radius: 10px; font-family: 'Lucida Console', Monaco, monospace, sans-serif; font-size: 80%\"><b>$args[0]</b>: " . $e->getMessage() . "</span>");
+        } catch (Exception $e) {
+            throw new Exception("<span style=\"display: inline-block; background: red; color: white; padding: 2px 8px; border-radius: 10px; font-family: 'Lucida Console', Monaco, monospace, sans-serif; font-size: 80%\"><b>$args[0]</b>: " . $e->getMessage() . "</span>");
         }
         return $ret;
 
     }
+
+    /**
+     * @return Engine
+     */
+    public function getLatte(): Engine
+    {
+        if(!isset($this->latte)){
+            $this->latte = new Engine;
+        }
+        return $this->latte;
+    }
+
 
 
     public function runCallback($callback)
@@ -209,7 +251,7 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
     /**
      * @param $key
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function __get($key)
     {
