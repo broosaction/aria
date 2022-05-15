@@ -33,7 +33,8 @@
     "jasny/phpdoc-parser": "dev-master",
     "ext-json": "*",
     "ext-openssl": "*",
-    "symfony/process": "^5.4.2"
+    "symfony/process": "^5.4.2",
+    "latte/latte": "^2.11"
   }
   ,
   "require-dev": {
