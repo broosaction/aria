@@ -34,7 +34,8 @@
     "ext-json": "*",
     "ext-openssl": "*",
     "symfony/process": "^5.4.2",
-    "latte/latte": "^2.11"
+    "latte/latte": "^2.11",
+    "rakibtg/sleekdb": ">=2.13"
   }
   ,
   "require-dev": {
