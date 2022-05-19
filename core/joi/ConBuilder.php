@@ -16,6 +16,7 @@ namespace Core\joi;
 
 
 use Nette\PhpGenerator\PhpNamespace;
+use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,7 +29,7 @@ class ConBuilder
     {
 
 
-        $namespace = new PhpNamespace('Core\\config');
+        $namespace = new PhpNamespace('Core\\Config');
 
         $class = $namespace->addClass('Config');
 
@@ -87,120 +88,25 @@ class ConBuilder
             ->setBody('return $this->app_url."/themes/".$this->app_theme;')
              ->addComment('local and current  theme url. called in themes as {$.theme_url}');
 
+        $class->addMethod('getSessionLifeTime')
+            ->setVisibility('public')
+            ->setStatic()
+            ->setBody('return 60 * 60 * 24;')
+            ->addComment('');
 
 
 
-        $config = fopen($dir.'/sys/config/Config.php', 'w');
+
+
 
         $configdata = "<?php \n" . $namespace ."\n ?>";
-        fwrite($config, $configdata);
-        fclose($config);
+
+        FileSystem::write($dir.'/core/Config/Config.php',  $configdata);
+
 
         return $namespace;
 
     }
 
-
-    /** @noinspection BacktickOperatorUsageInspection */
-    public static function buildControllers(OutputInterface $output, $dir, $folder = '/Controllers'){
-
-        $namespace = new PhpNamespace('App\\Bootstrap');
-        $namespace->addUse('Core\joi\Start');
-        $namespace->addUse('Core\router\Web');
-
-        $class = $namespace->addClass('Boot');
-        $class->addComment('This is a Joi System auto generated class, Built on : '.date('Y-m-d H:i:s'));
-
-        $class->addProperty('theme_dir','')
-            ->setVisibility('public')->setPrivate()
-            ->addComment('Themes directory.');
-
-        $class->addProperty('theme_home','')
-            ->setVisibility('public')->setPrivate()
-            ->addComment('Themes directory home.');
-
-        $class->addProperty('sys')->setType('Core\joi\Start')
-            ->setVisibility('public')->setPrivate()
-            ->addComment('System server');
-
-        $output->writeln('Created class Boot');
-
-        $method = $class->addMethod('__construct');
-        $method->addComment('@return null'); // in comments resolve manually
-        $method->addParameter('server')
-            ->setType('Core\joi\Start'); // it will resolve to \Bar\OtherClass
-
-
-         $code = '
-          if(isset([d]server)){
-            [d]this->sys =  [d]server;
-        }else{
-            [d]this->sys = new Start(__DIR__);
-        }
-        if(isset([d]this->sys->getConfig()->app_theme)) {
-            [d]this->theme_dir = [d]this->sys->getServerHome() . \'/themes/\' . [d]this->sys->getConfig()->app_theme;
-
-            [d]this->theme_home = [d]this->sys->getConfig()->app_url . \'/themes/\' . [d]this->sys->getConfig()->app_theme;
-        }else{
-
-            [d]this->theme_dir = [d]this->sys->getServerHome() . \'/themes/default\';
-
-            [d]this->theme_home = [d]this->sys->getConfig()->app_url . \'/themes/default\';
-        }
-
-
-        [d]router = new Web();
-
-        [d]tpl = [d]this->sys->getAria()->getTonic();
-
-        [d]tpl->set_themes_dir([d]this->theme_dir);
-
-        [d]cache = (new  \Core\drivers\Cache([d]server->getServerHome()))->getCacheEngine();
-
-        [d]tpl::setGlobals();
-
-        if(![d]this->sys->getConfig()->app_cache) {
-
-            [d]tpl::[d]cache_dir = [d]this->theme_dir . \'/cache/\';
-
-            [d]tpl::[d]enable_content_cache = true;
-        }
-
-         '.PHP_EOL;
-
-        $code = str_replace('[d]','$',$code);
-
-        $output->writeln('Starting to read the Controllers directory: '.$folder);
-        foreach (Finder::findFiles('*.php')->from($dir.'/App'.$folder) as $file) {
-            $output->writeln('Processing controller file @ '.$file);
-
-
-            $inc = str_replace(array('.php',$dir),'',$file);
-
-            $inc = str_replace('/',"\\",$inc);
-            $inc .= '($router,$server,$tpl);';
-            $code .= 'new '.$inc.PHP_EOL;
-        }
-
-
-        $code .= PHP_EOL.'$router->run();'.PHP_EOL;
-
-       $method->addBody($code);
-
-       $filen = $dir.'/app/Bootstrap/Boot.php';
-       $dirn = dirname($filen);
-       if(!is_dir($dirn)){
-           if (!mkdir($dirn, 0755, true) && !is_dir($dirn)) {
-               throw new \RuntimeException(sprintf('Directory "%s" was not created', $dirn));
-           }
-       }
-        $config = fopen($dir.'/app/Bootstrap/Boot.php', 'w');
-
-        $configdata = "<?php \n" . $namespace ."\n ";
-        fwrite($config, $configdata);
-        fclose($config);
-        $output->writeln('Done, now recreating the Boot file.');
-       return $code;
-    }
 
 }

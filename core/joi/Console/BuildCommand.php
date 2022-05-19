@@ -56,7 +56,7 @@ class BuildCommand extends Command
         }
         else
         {
-            $dir = str_replace('\sys\joi\Console','',__DIR__);
+            $dir = str_replace('\core\joi\Console','',__DIR__);
             $test = ConBuilder::readENV($dir ,'/config/config.io');
             $output->writeln($test);
         }
