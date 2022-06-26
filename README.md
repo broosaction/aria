@@ -20,12 +20,10 @@ PHP mvc web Framework
 
 Aria is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Aria takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://litebase.xyz).
-- [Powerful dependency injection container](https://litebase.xyz).
-- Multiple back-ends for [session](https://litebase.xyz) and [cache](https://litebase.xyz) storage.
-- Expressive, intuitive [database ORM](https://litebase.xyz).
-- Database agnostic [schema migrations](https://litebase.xyz).
-- [Robust background job processing](https://litebase.xyz).
-- [Real-time event broadcasting](https://litebase.xyz).
+- [Simple, fast routing engine](https://aria.broos.app).
+- Multiple back-ends for [session](https:/aria.broos.app) and [cache](https://aria.broos.app) storage.
+- Expressive, intuitive [database ORM](https://aria.broos.app).
+- [Robust background job processing](https://aria.broos.app).
+- [Real-time event broadcasting](https://aria.broos.app).
 
 Aria is accessible, powerful, and provides tools required for large, robust applications.
