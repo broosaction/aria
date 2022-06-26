@@ -9,7 +9,7 @@
  * Created by Bruce Mubangwa on 31 /May, 2021 @ 14:29
  */
 
-namespace Core\joi\System\Exceptions;
+namespace Core\Joi\System\Exceptions;
 
 
 class InvalidArgumentException extends \InvalidArgumentException implements AriaException

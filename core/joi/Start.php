@@ -12,14 +12,14 @@
  * Time: 11:09
  */
 
-namespace Core\joi;
+namespace Core\Joi;
 
 
 use Core\Config;
-use Core\drivers\Cache;
-use Core\drivers\Cookies;
-use Core\drivers\DB;
-use Core\drivers\Sessions;
+use Core\Drivers\Cache;
+use Core\Drivers\Cookies;
+use Core\Drivers\DB;
+use Core\Drivers\Sessions;
 use Core\Security\Valkyrie;
 use Core\tpl\Aria;
 use Exception;
@@ -295,7 +295,7 @@ class Start
 
 
     /**
-     * @return \Core\drivers\Nette\Caching\Cache
+     * @return \Core\Drivers\Nette\Caching\Cache
      */
     public function getCache(): \Nette\Caching\Cache
     {
@@ -303,7 +303,7 @@ class Start
     }
 
     /**
-     * @param \Core\drivers\Nette\Caching\Cache $cache
+     * @param \Core\Drivers\Nette\Caching\Cache $cache
      */
     public function setCache(\Nette\Caching\Cache $cache): void
     {

@@ -9,7 +9,7 @@
  * Created by Bruce Mubangwa on 31 /May, 2021 @ 20:42
  */
 
-namespace Core\joi\System\Exceptions;
+namespace Core\Joi\System\Exceptions;
 
 
 class NotFoundHttpException extends HttpException

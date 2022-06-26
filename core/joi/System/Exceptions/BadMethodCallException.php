@@ -9,7 +9,7 @@
  * Created by Bruce Mubangwa on 02 /Jun, 2021 @ 22:30
  */
 
-namespace Core\joi\System\Exceptions;
+namespace Core\Joi\System\Exceptions;
 
 
 use Exception;
