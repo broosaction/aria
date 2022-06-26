@@ -18,8 +18,6 @@
   "require": {
     "php": ">=8",
     "nette/php-generator": "^3.5.3",
-    "knplabs/github-api": "^1.7.1",
-    "php-http/guzzle6-adapter": "^1.1.1",
     "symfony/console": "^4.4.24",
     "nette/database": "v3.0.1",
     "phpseclib/phpseclib": "^2.0.23",
@@ -34,8 +32,9 @@
     "ext-json": "*",
     "ext-openssl": "*",
     "symfony/process": "^5.4.2",
-    "latte/latte": "^2.11",
-    "rakibtg/sleekdb": ">=2.13"
+    "rakibtg/sleekdb": ">=2.13",
+    "doctrine/inflector": "^2.0",
+    "ext-pdo": "*"
   }
   ,
   "require-dev": {
