@@ -9,11 +9,11 @@
  * Created by Bruce Mubangwa on 04 /May, 2020 @ 20:28
  */
 
-namespace Core\joi\Console;
+namespace Core\Joi\Console;
 
 
-use Core\joi\Build\BuildRoutes;
-use Core\joi\ConBuilder;
+use Core\Joi\Build\RoutesBuilder;
+use Core\Joi\Start;
 use Phpml\Classification\Linear\LogisticRegression;
 use Phpml\Classification\NaiveBayes;
 use Phpml\FeatureExtraction\TfIdfTransformer;
@@ -27,6 +27,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class BuildCloudValkyrieModel extends Command
 {
+
+
     protected function configure()
     {
         $this->setName('build-routes')
@@ -58,7 +60,7 @@ class BuildCloudValkyrieModel extends Command
         }
         else
         {
-            (new BuildRoutes($output))->build();
+            (new RoutesBuilder($output))->build();
 
         }
 

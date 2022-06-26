@@ -12,11 +12,11 @@
  * Time: 12:36
  */
 
-namespace Core\drivers;
+namespace Core\Drivers;
 
 
 
-use Core\joi\System\Utils;
+use Core\Joi\System\Utils;
 use Core\Security\CloudValkyrie\AnalyzeResults;
 use Core\Security\CloudValkyrie\Defaults\DefaultActions;
 use Core\Security\CloudValkyrie\ScanResults;

@@ -12,7 +12,7 @@
  * Time: 23:10
  */
 
-namespace Core\joi;
+namespace Core\Joi;
 
 
 use Nette\PhpGenerator\PhpNamespace;

@@ -9,7 +9,7 @@
  * Created by Bruce Mubangwa on 31 /May, 2021 @ 23:13
  */
 
-namespace Core\joi\Build\Contracts;
+namespace Core\Joi\Build\Contracts;
 
 
 use Symfony\Component\Console\Output\OutputInterface;

@@ -9,7 +9,7 @@
  * Created by Bruce Mubangwa on 01 /Jun, 2021 @ 3:25
  */
 
-namespace Core\joi\Build\Helpers;
+namespace Core\Joi\Build\Helpers;
 
 
 use Core\Config\Config;

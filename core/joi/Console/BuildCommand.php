@@ -12,10 +12,11 @@
  * Time: 00:51
  */
 
-namespace Core\joi\Console;
+namespace Core\Joi\Console;
 
 
-use Core\joi\ConBuilder;
+use Core\Joi\ConBuilder;
+use Core\Joi\Start;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,6 +25,19 @@ use Symfony\Component\Console\Input\InputOption;
 
 class BuildCommand extends Command
 {
+
+    protected Start $server;
+
+    /**
+     * @param $server
+     */
+    public function __construct(Start $server)
+    {
+        parent::__construct();
+
+        $this->server = $server;
+    }
+
     protected function configure()
     {
         $this->setName('build-config')

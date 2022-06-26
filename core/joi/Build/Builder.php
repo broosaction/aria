@@ -9,11 +9,11 @@
  * Created by Bruce Mubangwa on 31 /May, 2021 @ 23:30
  */
 
-namespace Core\joi\Build;
+namespace Core\Joi\Build;
 
 
 
-use Core\joi\Build\Contracts\IBuild;
+use Core\Joi\Build\Contracts\IBuild;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Builder implements IBuild
@@ -26,7 +26,7 @@ class Builder implements IBuild
     {
         $this->output = $output;
 
-        $this->dir = str_replace('\core\joi\Build','',__DIR__);
+        $this->dir = str_replace('\core\Joi\Build','',__DIR__);
     }
 
     public function build()

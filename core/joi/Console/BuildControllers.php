@@ -9,10 +9,11 @@
  * Created by Bruce Mubangwa on 28 /Oct, 2020 @ 18:45
  */
 
-namespace Core\joi\Console;
+namespace Core\Joi\Console;
 
 
-use Core\joi\ConBuilder;
+use Core\Joi\ConBuilder;
+use Core\Joi\Start;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,6 +21,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class BuildControllers extends Command
 {
+
+    protected Start $server;
+
+    /**
+     * @param $server
+     */
+    public function __construct(Start $server)
+    {
+        parent::__construct();
+
+        $this->server = $server;
+    }
 
     protected function configure()
     {
