@@ -14,8 +14,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+$server = new Core\Joi\Start(__DIR__);
+
 $app = new Symfony\Component\Console\Application('Aria', '1.1.0');
-$app->add(new Core\joi\Console\BuildCommand());
-$app->add(new Core\joi\Console\BuildControllers());
-$app->add(new Core\joi\Console\BuildCloudValkyrieModel());
+$app->add(new Core\Joi\Console\BuildCommand($server));
+$app->add(new Core\Joi\Console\BuildControllers($server));
+$app->add(new Core\Joi\Console\BuildRoutes($server));
+$app->add(new Core\Joi\Console\BuildModels($server));
+
 $app->run();
