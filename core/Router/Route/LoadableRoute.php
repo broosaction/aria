@@ -9,7 +9,7 @@ namespace  Core\Router\Route;
 
 
 
-use Core\joi\System\Exceptions\HttpException;
+use Core\Joi\System\Exceptions\HttpException;
 use Core\Router\Http\Middleware\IMiddleware;
 use Core\Router\Http\Request;
 use Core\Router\Router;

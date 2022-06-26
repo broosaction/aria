@@ -9,7 +9,7 @@
  * Created by Bruce Mubangwa on 09 /Nov, 2020 @ 7:11
  */
 
-namespace Core\joi\System;
+namespace Core\Joi\System;
 
 
 use Nette\Utils\Strings;
@@ -414,6 +414,23 @@ class Utils
             return 1;
         }
         return 0;
+    }
+
+    public static function dbTypeToLocal($type)
+    {
+        if (str_contains($type,'int')) {
+            return 'int';
+        }
+
+        if(str_contains($type,'text')) {
+            return 'string';
+        }
+
+        if(str_contains($type,'var')) {
+            return 'string';
+        }
+
+        return 'string';
     }
 
 

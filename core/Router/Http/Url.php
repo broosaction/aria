@@ -2,7 +2,7 @@
 
 namespace Core\Router\Http;
 
-use Core\joi\System\Exceptions\MalformedUrlException;
+use Core\Joi\System\Exceptions\MalformedUrlException;
 use JsonSerializable;
 
 

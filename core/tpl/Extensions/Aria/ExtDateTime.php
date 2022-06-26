@@ -8,7 +8,7 @@
 namespace Core\tpl\Extensions\Aria;
 
 
-use Core\joi\System\Time;
+use Core\Joi\System\Time;
 use Core\tpl\Compilers\AriaCompiler;
 use Github\Client;
 

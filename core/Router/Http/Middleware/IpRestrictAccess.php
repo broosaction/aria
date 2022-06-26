@@ -2,7 +2,7 @@
 
 namespace Core\Router\Http\Middleware;
 
-use Core\joi\System\Exceptions\HttpException;
+use Core\Joi\System\Exceptions\HttpException;
 use Core\Router\Http\Request;
 
 

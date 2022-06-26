@@ -2,7 +2,7 @@
 
 namespace Core\Router\Http\Middleware;
 
-use Core\joi\Start;
+use Core\Joi\Start;
 use Core\Router\Http\Request;
 
 interface IMiddleware

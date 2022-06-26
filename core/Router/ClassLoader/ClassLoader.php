@@ -3,8 +3,8 @@
 namespace Core\Router\ClassLoader;
 
 
-use Core\joi\Start;
-use Core\joi\System\Exceptions\ClassNotFoundHttpException;
+use Core\Joi\Start;
+use Core\Joi\System\Exceptions\ClassNotFoundHttpException;
 
 class ClassLoader implements IClassLoader
 {

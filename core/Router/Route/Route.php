@@ -2,8 +2,8 @@
 
 namespace  Core\Router\Route;
 
-use Core\joi\System\Exceptions\ClassNotFoundHttpException;
-use Core\joi\System\Exceptions\NotFoundHttpException;
+use Core\Joi\System\Exceptions\ClassNotFoundHttpException;
+use Core\Joi\System\Exceptions\NotFoundHttpException;
 use Core\Router\Http\Request;
 use Core\Router\Router;
 

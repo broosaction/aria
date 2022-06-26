@@ -9,7 +9,7 @@
  * Created by Bruce Mubangwa on 08 /Aug, 2020 @ 9:08
  */
 
-namespace Core\joi\System;
+namespace Core\Joi\System;
 
 
 class Time

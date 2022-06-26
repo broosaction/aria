@@ -12,8 +12,8 @@
 namespace Core\Router\Controllers;
 
 
-use Core\joi\Start;
-use Core\joi\System\Exceptions\BadMethodCallException;
+use Core\Joi\Start;
+use Core\Joi\System\Exceptions\BadMethodCallException;
 
 class BaseController implements IAriaController
 {

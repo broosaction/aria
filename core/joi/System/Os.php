@@ -9,7 +9,7 @@
  * Created by Bruce Mubangwa on 14 /Apr, 2020 @ 4:57
  */
 
-namespace Core\joi\System;
+namespace Core\Joi\System;
 
 
 use function gethostname;

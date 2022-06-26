@@ -9,7 +9,7 @@
  * Created by Bruce Mubangwa on 15 /Apr, 2020 @ 13:04
  */
 
-namespace Core\joi\System;
+namespace Core\Joi\System;
 
 
 class Run

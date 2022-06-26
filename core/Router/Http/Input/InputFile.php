@@ -4,7 +4,7 @@ namespace Core\Router\Http\Input;
 
 
 
-use Core\joi\System\Exceptions\InvalidArgumentException;
+use Core\Joi\System\Exceptions\InvalidArgumentException;
 
 class InputFile implements IInputItem
 {

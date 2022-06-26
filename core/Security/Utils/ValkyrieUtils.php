@@ -12,7 +12,7 @@
 namespace Core\Security\Utils;
 
 
-use Core\joi\System\Utils;
+use Core\Joi\System\Utils;
 
 class ValkyrieUtils
 {

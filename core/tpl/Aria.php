@@ -16,7 +16,7 @@ namespace Core\tpl;
 
 
 use Core\Config\Config;
-use Core\joi\Start;
+use Core\Joi\Start;
 use Core\tpl\Compilers\AriaCompiler;
 use Core\tpl\Compilers\BaseTemplateCompiler;
 use Core\tpl\Contracts\TemplateEngine;

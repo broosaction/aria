@@ -12,7 +12,7 @@
 namespace Core\Router\Controllers;
 
 
-use Core\joi\Start;
+use Core\Joi\Start;
 use Core\tpl\tonic\Tonic;
 
 interface IAriaController

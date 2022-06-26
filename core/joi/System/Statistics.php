@@ -9,12 +9,12 @@
  * Created by Bruce Mubangwa on 14 /Apr, 2020 @ 5:24
  */
 
-namespace Core\joi\System;
+namespace Core\Joi\System;
 
 
 
 
-use Core\joi\Start;
+use Core\Joi\Start;
 
 class Statistics
 {

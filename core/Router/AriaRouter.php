@@ -11,11 +11,11 @@
 namespace Core\Router;
 
 use Closure;
-use Core\joi\Start;
-use Core\joi\System\Exceptions\HttpException;
-use Core\joi\System\Exceptions\InvalidArgumentException;
-use Core\joi\System\Exceptions\NotFoundHttpException;
-use Core\joi\System\Exceptions\TokenMismatchException;
+use Core\Joi\Start;
+use Core\Joi\System\Exceptions\HttpException;
+use Core\Joi\System\Exceptions\InvalidArgumentException;
+use Core\Joi\System\Exceptions\NotFoundHttpException;
+use Core\Joi\System\Exceptions\TokenMismatchException;
 use Core\Router\ClassLoader\IClassLoader;
 use Core\Router\Handlers\CallbackExceptionHandler;
 use Core\Router\Handlers\IEventHandler;
@@ -33,6 +33,7 @@ use Core\Router\Route\RoutePartialGroup;
 use Core\Router\Route\RouteResource;
 use Core\Router\Route\RouteUrl;
 use Core\tpl\Aria;
+
 use Exception;
 
 
@@ -59,6 +60,9 @@ class AriaRouter
     protected static Aria $aria;
 
     protected static Start $server;
+
+
+
     /**
      * Start routing
      *
@@ -77,6 +81,8 @@ class AriaRouter
             static::$server = $server;
            //set the static default template engine
             static::$aria = $server->getAria();
+
+
 
         echo static::router()->start($server);
     }
@@ -562,6 +568,7 @@ class AriaRouter
     {
         return static::$aria;
     }
+
 
     /**
      * Returns the template instance

@@ -13,7 +13,7 @@ namespace Core\Security\CloudValkyrie\Defaults\RequestScanners;
 
 
 
-use Core\joi\System\Utils;
+use Core\Joi\System\Utils;
 use Core\Security\CloudValkyrie\Contracts\EventScan;
 use Core\Security\CloudValkyrie\Defaults\DefaultActions;
 use Core\Security\CloudValkyrie\ScanResults;

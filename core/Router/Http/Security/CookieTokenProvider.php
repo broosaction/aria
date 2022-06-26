@@ -2,7 +2,7 @@
 
 namespace Core\Router\Http\Security;
 
-use Core\joi\System\Exceptions\SecurityException;
+use Core\Joi\System\Exceptions\SecurityException;
 use Exception;
 
 class CookieTokenProvider implements ITokenProvider

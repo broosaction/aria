@@ -2,7 +2,7 @@
 
 namespace Core\Router\ClassLoader;
 
-use Core\joi\Start;
+use Core\Joi\Start;
 
 interface IClassLoader
 {

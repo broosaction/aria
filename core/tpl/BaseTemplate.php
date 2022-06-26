@@ -12,7 +12,7 @@
 namespace Core\tpl;
 
 
-use Core\joi\Start;
+use Core\Joi\Start;
 
 abstract class BaseTemplate
 {

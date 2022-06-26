@@ -12,7 +12,7 @@
 namespace Core\Security\CloudValkyrie\Scanners;
 
 
-use Core\joi\System\Exceptions\ClassNotFoundHttpException;
+use Core\Joi\System\Exceptions\ClassNotFoundHttpException;
 use Core\Security\CloudValkyrie\Contracts\EventScan;
 use Core\Security\CloudValkyrie\Contracts\SecurityEventHandler;
 use Core\Security\CloudValkyrie\Defaults\DefaultEvents;

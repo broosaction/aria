@@ -15,8 +15,8 @@
 namespace Core\tpl\Extensions\Aria;
 
 
-use Core\joi\System\Exceptions\InvalidArgumentException;
-use Core\joi\System\Utils;
+use Core\Joi\System\Exceptions\InvalidArgumentException;
+use Core\Joi\System\Utils;
 use Core\Tools\Calculator\Calculator;
 use Core\Tools\Calculator\Tokenizer;
 use Core\tpl\Compilers\AriaCompiler;

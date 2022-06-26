@@ -12,8 +12,8 @@
 namespace Core\Security\CloudValkyrie\Defaults;
 
 
-use Core\joi\Start;
-use Core\joi\System\Utils;
+use Core\Joi\Start;
+use Core\Joi\System\Utils;
 use Core\Security\CloudValkyrie\Contracts\SecurityEventHandler;
 use Core\Security\CloudValkyrie\ScanResults;
 use Core\Security\Utils\ValkyrieUtils;

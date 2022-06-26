@@ -9,7 +9,7 @@
  * Created by Bruce Mubangwa on 04 /Jun, 2021 @ 20:29
  */
 
-namespace Core\joi\System\Utils;
+namespace Core\Joi\System\Utils;
 
 
 class ArrUtils

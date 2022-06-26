@@ -2,7 +2,7 @@
 
 namespace Core\Router\Http;
 
-use Core\joi\System\Exceptions\InvalidArgumentException;
+use Core\Joi\System\Exceptions\InvalidArgumentException;
 use JsonSerializable;
 
 
