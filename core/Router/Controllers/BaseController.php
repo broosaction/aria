@@ -14,10 +14,12 @@ namespace Core\Router\Controllers;
 
 use Core\Joi\Start;
 use Core\Joi\System\Exceptions\BadMethodCallException;
+use Nette\SmartObject;
 
 class BaseController implements IAriaController
 {
 
+    use SmartObject;
     /**
      * @var Start
      */

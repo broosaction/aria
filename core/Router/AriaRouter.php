@@ -61,7 +61,7 @@ class AriaRouter
 
     protected static Start $server;
 
-
+    protected static $urls = [];
 
     /**
      * Start routing
@@ -375,6 +375,8 @@ class AriaRouter
             $route->setSettings($settings);
         }
 
+        self::$urls[] = $url;
+
         return static::router()->addRoute($route);
     }
 
@@ -394,6 +396,8 @@ class AriaRouter
             $route->setSettings($settings);
         }
 
+        self::$urls[] = $url;
+
         return static::router()->addRoute($route);
     }
 
@@ -412,6 +416,7 @@ class AriaRouter
         if ($settings !== null) {
             $route->setSettings($settings);
         }
+        self::$urls[] = $url;
 
         return static::router()->addRoute($route);
     }
@@ -431,6 +436,8 @@ class AriaRouter
         if ($settings !== null) {
             $route->setSettings($settings);
         }
+
+        self::$urls[] = $url;
 
         return static::router()->addRoute($route);
     }
@@ -527,6 +534,11 @@ class AriaRouter
         }
 
         return $route;
+    }
+
+    public static function hasUrl($url): bool
+    {
+        return in_array($url, self::$urls, true);
     }
 
     /**

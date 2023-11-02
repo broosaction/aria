@@ -296,7 +296,7 @@ class Url implements JsonSerializable
      */
     public function getOriginalUrl(): string
     {
-        return $this->originalUrl;
+        return $this->originalUrl ?? '';
     }
 
     /**

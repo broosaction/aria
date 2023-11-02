@@ -361,7 +361,8 @@ class Request
      */
     public function isAjax(): bool
     {
-        return (strtolower($this->getHeader('http-x-requested-with')) === 'xmlhttprequest');
+        return !(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+
     }
 
     /**
