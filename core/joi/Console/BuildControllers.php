@@ -12,7 +12,7 @@
 namespace Core\Joi\Console;
 
 
-use Core\Joi\ConBuilder;
+use Core\Joi\Build\ConBuilder;
 use Core\Joi\Start;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,13 +56,12 @@ class BuildControllers extends Command
 
 
             $output->writeln(sprintf('%s is marked as the target controller directory', $input->getOption('groups')));
-            $dir = str_replace('\core\joi\Console','',__DIR__);
-            $test = ConBuilder::buildControllers($output,$dir,'/'.$input->getOption('groups'));
+            $dir = str_replace('\core\joi\Console', '', __DIR__);
+            $test = ConBuilder::buildControllers($output, $dir, '/' . $input->getOption('groups'));
             $output->writeln($test);
-        }else
-        {
-            $dir = str_replace('\core\joi\Console','',__DIR__);
-            $test = ConBuilder::buildControllers($output,$dir);
+        } else {
+            $dir = str_replace('\core\joi\Console', '', __DIR__);
+            $test = ConBuilder::buildControllers($output, $dir);
             $output->writeln($test);
         }
 

@@ -37,24 +37,20 @@ class BuildModels extends Command
                 ''
             );
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Config file is being read...');
 
-        if ($input->getOption('groups'))
-        {
+        if ($input->getOption('groups')) {
             $groups = explode(",", $input->getOption('groups'));
 
-            if (is_array($groups) && count($groups))
-            {
-                foreach ($groups as $group)
-                {
+            if (is_array($groups) && count($groups)) {
+                foreach ($groups as $group) {
                     $output->writeln(sprintf('%s cache is cleared', $group));
                 }
             }
-        }
-        else
-        {
+        } else {
             $routesBuilder = new ModelsBuilder($output);
             $routesBuilder->setServer($this->server);
             $routesBuilder->build();

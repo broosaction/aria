@@ -15,13 +15,12 @@
 namespace Core\Joi\Console;
 
 
-use Core\Joi\ConBuilder;
+use Core\Joi\Build\ConBuilder;
 use Core\Joi\Start;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class BuildCommand extends Command
 {
@@ -56,22 +55,17 @@ class BuildCommand extends Command
     {
         $output->writeln('Config file is being read...');
 
-        if ($input->getOption('groups'))
-        {
+        if ($input->getOption('groups')) {
             $groups = explode(",", $input->getOption('groups'));
 
-            if (is_array($groups) && count($groups))
-            {
-                foreach ($groups as $group)
-                {
+            if (is_array($groups) && count($groups)) {
+                foreach ($groups as $group) {
                     $output->writeln(sprintf('%s cache is cleared', $group));
                 }
             }
-        }
-        else
-        {
-            $dir = str_replace('\core\joi\Console','',__DIR__);
-            $test = ConBuilder::readENV($dir ,'/config/config.io');
+        } else {
+            $dir = str_replace('\core\joi\Console', '', __DIR__);
+            $test = ConBuilder::readENV($dir, '/config/config.io');
             $output->writeln($test);
         }
 
