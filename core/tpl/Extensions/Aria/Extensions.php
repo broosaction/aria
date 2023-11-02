@@ -34,7 +34,6 @@ class Extensions
 
         $this->ariaCompiler = $ariaCompiler;
         (new ExtMath($ariaCompiler));
-        (new ExtGithub($ariaCompiler));
         (new ExtDateTime($ariaCompiler));
 
 

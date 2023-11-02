@@ -20,7 +20,6 @@ use Core\Joi\Start;
 use Core\tpl\Compilers\AriaCompiler;
 use Core\tpl\Compilers\BaseTemplateCompiler;
 use Core\tpl\Contracts\TemplateEngine;
-use Latte\Engine;
 
 
 class Aria extends BaseTemplate implements TemplateEngine
@@ -78,11 +77,47 @@ class Aria extends BaseTemplate implements TemplateEngine
     {
 
         //disables cache, some pages dont need it, default is cache
-        if(!$cache){
+        if (!$cache) {
+            $this->AriaCompiler->properties[BaseTemplateCompiler::ENABLE_CONTENT_CACHE] = false;
+        }
+        $this->AriaCompiler->loadView($view);
+        echo $content = $this->AriaCompiler->render($replaceCache);
+        $this->AriaCompiler->runCallback($callback);
+        return $content;
+    }
+
+    public function renderVal($view, $cache = true, $replaceCache = false, $callback = null)
+    {
+
+        //disables cache, some pages dont need it, default is cache
+        if (!$cache) {
             $this->AriaCompiler->properties[BaseTemplateCompiler::ENABLE_CONTENT_CACHE] = false;
         }
         $this->AriaCompiler->loadView($view);
         $content = $this->AriaCompiler->render($replaceCache);
+        $this->AriaCompiler->runCallback($callback);
+        return $content;
+    }
+
+    public function renderSource($source, $cache = true, $replaceCache = false, $callback = null)
+    {
+
+        //disables cache, some pages dont need it, default is cache
+        if (!$cache) {
+            $this->AriaCompiler->properties[BaseTemplateCompiler::ENABLE_CONTENT_CACHE] = false;
+        }
+        $this->AriaCompiler->prepareSource($source);
+        $content = $this->AriaCompiler->renderSource($replaceCache);
+        $this->AriaCompiler->runCallback($callback);
+        return $content;
+    }
+
+    public function serve($view, $cache = true, $replaceCache = false, $callback = null)
+    {
+
+        //disables cache, some pages dont need it, default is cache
+        $this->AriaCompiler->loadView($view);
+        echo $content = $this->AriaCompiler->properties[BaseTemplateCompiler::CONTENT];
         $this->AriaCompiler->runCallback($callback);
         return $content;
     }
@@ -96,12 +131,10 @@ class Aria extends BaseTemplate implements TemplateEngine
         return $this->AriaCompiler;
     }
 
-    public function getLatteEngine() : Engine{
-        return $this->getCompiler()->getLatte();
-    }
 
     /**
      * Magic method alias for self::assign
+     *
      * @param <type> $k
      * @param <type> $v
      */
@@ -114,7 +147,7 @@ class Aria extends BaseTemplate implements TemplateEngine
 
     public function __get($key)
     {
-       // return $this->AriaCompiler->properties[BaseTemplateCompiler::ASSIGNED][$key];
+        // return $this->AriaCompiler->properties[BaseTemplateCompiler::ASSIGNED][$key];
     }
 
     public function __isset($key)

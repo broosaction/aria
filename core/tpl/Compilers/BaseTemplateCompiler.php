@@ -12,7 +12,6 @@
 namespace Core\tpl\Compilers;
 
 
-
 use Nette\Utils\FileSystem;
 
 abstract class BaseTemplateCompiler
@@ -35,8 +34,6 @@ abstract class BaseTemplateCompiler
     public const BLOCKS = 'blocks';
     public const BASE = 'base';
     public const SOURCE = 'source';
-
-
 
 
     public $properties = [];
@@ -74,7 +71,8 @@ abstract class BaseTemplateCompiler
     }
 
 
-    public function assignGlobals(){
+    public function assignGlobals()
+    {
         $this->properties[self::GLOBALS]['__func'] = null;
         $this->setContext($this->properties[self::GLOBALS]);
     }
@@ -94,21 +92,21 @@ abstract class BaseTemplateCompiler
     {
 
         $extension = 'aria';
-        if($name === ''){
+        if ($name === '') {
             return false;
         }
 
-        if(!str_contains($name, '.')){
-            return $name.'.aria';
+        if (!str_contains($name, '.')) {
+            return $name . '.aria';
         }
 
-        if(str_contains($name, '.aria') || str_contains($name, '.php') || str_contains($name, '.html') || str_contains($name, '.latte')){
+        if (str_contains($name, '.aria') || str_contains($name, '.php') || str_contains($name, '.html') || str_contains($name, '.latte')) {
             $ext = explode('.', $name);
             $extension = $ext[count($ext) - 1];
-            $name = str_replace('.'.$extension,'',$name);
+            $name = str_replace('.' . $extension, '', $name);
         }
 
-        return str_replace('.','/',$name).'.'.$extension;
+        return str_replace('.', '/', $name) . '.' . $extension;
 
     }
 
@@ -119,7 +117,7 @@ abstract class BaseTemplateCompiler
 
     public function exists($view): bool
     {
-        if(FileSystem::isAbsolute(self::THEMES_DIR.'/'.$this->buildPathName($view))){
+        if (FileSystem::isAbsolute(self::THEMES_DIR . '/' . $this->buildPathName($view))) {
             return true;
         }
         return false;
@@ -133,7 +131,7 @@ abstract class BaseTemplateCompiler
 
     public function setProperty($name, $value)
     {
-        $this->properties[$name]=$value;
+        $this->properties[$name] = $value;
 
     }
 
@@ -142,8 +140,9 @@ abstract class BaseTemplateCompiler
      * @param array $g
      * @return bool
      */
-    public function setGlobals( $g = array()){
-        if(!is_array($g)) {
+    public function setGlobals($g = array())
+    {
+        if (!is_array($g)) {
             return false;
         }
         $this->properties[self::GLOBALS] = $g;
@@ -161,18 +160,20 @@ abstract class BaseTemplateCompiler
      * as the first argument
      * @param $vars
      */
-    public function setContext($vars){
-        if(!is_array($vars)) {
+    public function setContext($vars)
+    {
+        if (!is_array($vars)) {
             return false;
         }
-        foreach($vars as $k => $v){
-            $this->assign($k,$v);
+        foreach ($vars as $k => $v) {
+            $this->assign($k, $v);
         }
         return true;
     }
 
 
-    public function getContext(){
+    public function getContext()
+    {
         return $this->properties[self::ASSIGNED];
     }
 
@@ -180,14 +181,15 @@ abstract class BaseTemplateCompiler
      * For internal use only for template inheritance.
      * @param $blocks
      */
-    public function overrideBlocks($blocks) {
+    public function overrideBlocks($blocks)
+    {
         $this->properties['blocksOverride'] = $blocks;
     }
 
 
     public function getProperty($name)
     {
-        if(array_key_exists($name, $this->properties)){
+        if (array_key_exists($name, $this->properties)) {
             return $this->properties[$name];
         }
 

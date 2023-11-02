@@ -37,22 +37,23 @@ class ApplyModifiersHandler implements TemplateHandler
      */
     public function handle(&$content, AriaCompiler $compiler, $lang = '')
     {
-       $this->content = $content;
-       $this->compiler = $compiler;
-       return $this;
+        $this->content = $content;
+        $this->compiler = $compiler;
+        return $this;
     }
 
-    public function applyModifiers(&$var,$mod,$match = ""){
+    public function applyModifiers(&$var, $mod, $match = "")
+    {
         $context = null;
         $mods = $mod;
-        if($this->compiler->getProperty(BaseTemplateCompiler::CONTEXT_AWARE) === true) {
-            if(!empty($match) && !in_array("ignoreContext()", $mod, true)) {
+        if ($this->compiler->getProperty(BaseTemplateCompiler::CONTEXT_AWARE) === true) {
+            if (!empty($match) && !in_array("ignoreContext()", $mod, true)) {
                 $vars = new GetVarContextHandler();
                 $vars->handle($match, $this->compiler);
                 $context = $vars->getContext();
-                switch($context["tag"]){
+                switch ($context["tag"]) {
                     default:
-                        if($context['in_tag']){
+                        if ($context['in_tag']) {
                             $mod[] = 'contextTag(' . $context['in_str'] . ')';
                         } else {
                             $mod[] = 'contextOutTag()';
@@ -65,26 +66,26 @@ class ApplyModifiersHandler implements TemplateHandler
             }
         }
         $this->compiler->setProperty(BaseTemplateCompiler::CUR_CONTEXT, $context);
-        if(count($mod) <= 0){
+        if (count($mod) <= 0) {
             return;
         }
-        $ov=$var;
-        foreach($mod as $name){
-            $modifier=explode('(',$name,2);
-            $name=$modifier[0];
-            $params=substr($modifier[1],0,-1);
+        $ov = $var;
+        foreach ($mod as $name) {
+            $modifier = explode('(', $name, 2);
+            $name = $modifier[0];
+            $params = substr($modifier[1], 0, -1);
 
-            (new RetriveParamsHandler())->handle($params,$this->compiler);
+            (new RetriveParamsHandler())->handle($params, $this->compiler);
 
-            foreach($this->compiler->getExtensions() as $_name => $mods) {
-                if($_name !== $name) {
+            foreach ($this->compiler->getExtensions() as $_name => $mods) {
+                if ($_name !== $name) {
                     continue;
                 }
 
-                $ov = '$this->compose("'.$_name.'",'.$ov.(!empty($params) ? ',"'.implode('","',$params).'"' : "").')';
+                $ov = '$this->compose("' . $_name . '",' . $ov . (!empty($params) ? ',"' . implode('","', $params) . '"' : "") . ')';
             }
 
         }
-        $var=$ov;
+        $var = $ov;
     }
 }

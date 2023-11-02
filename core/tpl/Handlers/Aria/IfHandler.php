@@ -21,17 +21,15 @@ class IfHandler implements TemplateHandler
 {
 
 
-
-
     public function handle(&$content, AriaCompiler $compiler, $lang = 'PHP')
     {
 
-        $matches=array();
-        preg_match_all('/\{\s*(if|elseif)\s*(.+?)\s*\}/',$content,$matches);
-        if(!empty($matches)){
-            foreach($matches[2] as $i => $condition){
-                $condition=trim($condition);
-                $condition=str_replace(array(
+        $matches = array();
+        preg_match_all('/\{\s*(if|elseif)\s*(.+?)\s*\}/', $content, $matches);
+        if (!empty($matches)) {
+            foreach ($matches[2] as $i => $condition) {
+                $condition = trim($condition);
+                $condition = str_replace(array(
                     'eq',
                     'gt',
                     'lt',
@@ -39,7 +37,7 @@ class IfHandler implements TemplateHandler
                     'or',
                     'gte',
                     'lte'
-                ),array(
+                ), array(
                     '==',
                     '>',
                     '<',
@@ -47,58 +45,58 @@ class IfHandler implements TemplateHandler
                     '||',
                     '>=',
                     '<='
-                ),$condition);
-                $var_match=array();
-                preg_match_all('/\$([a-zA-Z0-9_\-\(\)\.]+)/',$condition,$var_match);
-                if(!empty($var_match)){
-                    foreach($var_match[1] as $j => $var){
-                        $var_name=explode('.',$var);
-                        if(count($var_name)>1){
-                            $vn=$var_name[0];
+                ), $condition);
+                $var_match = array();
+                preg_match_all('/\$([a-zA-Z0-9_\-\(\)\.]+)/', $condition, $var_match);
+                if (!empty($var_match)) {
+                    foreach ($var_match[1] as $j => $var) {
+                        $var_name = explode('.', $var);
+                        if (count($var_name) > 1) {
+                            $vn = $var_name[0];
                             unset($var_name[0]);
-                            $mod=array();
-                            foreach($var_name as $k => $index){
-                                $index=explode('->',$index,2);
-                                $obj='';
-                                if(count($index)>1){
-                                    $obj='->'.$index[1];
-                                    $index=$index[0];
-                                }else {
+                            $mod = array();
+                            foreach ($var_name as $k => $index) {
+                                $index = explode('->', $index, 2);
+                                $obj = '';
+                                if (count($index) > 1) {
+                                    $obj = '->' . $index[1];
+                                    $index = $index[0];
+                                } else {
                                     $index = $index[0];
                                 }
-                                if($index[strlen($index) - 1] === ')'){
-                                    $mod[]=$index.$obj;
-                                }else{
-                                    $vn.="['$index']$obj";
+                                if ($index[strlen($index) - 1] === ')') {
+                                    $mod[] = $index . $obj;
+                                } else {
+                                    $vn .= "['$index']$obj";
                                 }
                             }
-                            $var_name='$'.$vn;
-                            (new ApplyModifiersHandler($compiler))->applyModifiers($var_name,$mod);
-                           
-                        }else{
-                            $var_name='$'.$var_name[0];
+                            $var_name = '$' . $vn;
+                            (new ApplyModifiersHandler($compiler))->applyModifiers($var_name, $mod);
+
+                        } else {
+                            $var_name = '$' . $var_name[0];
                         }
-                        $condition=str_replace(@$var_match[0][$j],$var_name,$condition);
+                        $condition = str_replace(@$var_match[0][$j], $var_name, $condition);
                     }
                 }
-                $rep='<?php '.$matches[1][$i].'(@'.$condition.'): ?>';
-                $content=str_replace($matches[0][$i],$rep,$content);
+                $rep = '<?php ' . $matches[1][$i] . '(@' . $condition . '): ?>';
+                $content = str_replace($matches[0][$i], $rep, $content);
             }
         }
-        $content=preg_replace('/\{\s*(\/if|endif)\s*\}/','<?php endif; ?>',$content);
-        $content=preg_replace('/\{\s*else\s*\}/','<?php else: ?>',$content);
-        
+        $content = preg_replace('/\{\s*(\/if|endif)\s*\}/', '<?php endif; ?>', $content);
+        $content = preg_replace('/\{\s*else\s*\}/', '<?php else: ?>', $content);
+
     }
 
-    public function handleIfMacros(&$content){
-        $match =Utils::matchTags('/<([a-xA-Z_\-0-9]+).+?a:if\s*=\s*"(.+?)".*?>/','{endif}');
+    public function handleIfMacros(&$content)
+    {
+        $match = Utils::matchTags('/<([a-xA-Z_\-0-9]+).+?a:if\s*=\s*"(.+?)".*?>/', '{endif}');
         if (empty($match)) {
             return false;
         }
-        $content = preg_replace('/<([a-xA-Z_\-0-9]+)(.+?)a:if\s*=\s*"(.+?)"(.*?)>/','{if $3}<$1$2$4>',$content);
+        $content = preg_replace('/<([a-xA-Z_\-0-9]+)(.+?)a:if\s*=\s*"(.+?)"(.*?)>/', '{if $3}<$1$2$4>', $content);
         return true;
     }
 
-    
-    
+
 }

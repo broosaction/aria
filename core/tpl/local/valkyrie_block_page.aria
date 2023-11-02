@@ -15,7 +15,7 @@
     <meta content="white" name="apple-mobile-web-app-status-bar-style">
     <meta content="bruce@Broos action BA" name="author"/>
     <title>Cloud Valkyrie</title>
-    <style type="text/css">
+    <style>
         body, p, div, img {
             margin: 0;
             padding: 0;
@@ -33,7 +33,7 @@
 
         .
         main {
-            color: #A9A9A9;
+            color: #656565;
             width: 100%;
             height: 100%;
         }
@@ -51,8 +51,8 @@
             font-size: 32px;
             height: 1.5em;
             width: 1.5em;
-            border-left: 0.16em solid #A9A9A9;
-            border-right: 0.16em solid #A9A9A9;
+            border-left: 0.16em solid #656565;
+            border-right: 0.16em solid #656565;
             position: relative;
             margin: 0 auto;
         }
@@ -68,21 +68,24 @@
             left: -0.48em;
             top: -0.48em;
             border-radius: 0.65em;
-            background-color: gold;
+            border: 1px solid #EBEBEB;
+            background-color: #F4B400;
         }
 
         .cont .as-pic .ball2 {
             right: -0.48em;
             top: -0.48em;
             border-radius: 0.65em;
-            background-color: green;
+            border: 1px solid #EBEBEB;
+            background-color: #0F9D58;
         }
 
         .cont .as-pic .ball3 {
             left: -0.48em;
             bottom: -0.48em;
             border-radius: 0.65em;
-            background-color: blue;
+            border: 1px solid #EBEBEB;
+            background-color: #4285F4;
         }
 
         .cont .as-pic .ball4 {
@@ -91,8 +94,8 @@
             right: -0.63em;
             bottom: -0.63em;
             border-radius: 0.7em;
-            background-color: red;
-            border: 0.16em solid orange;
+            background-color: #DB4437;
+            border: 0.16em solid #F4B400;
             text-align: center;
             line-height: 1.1em;
             font-weight: bold;
@@ -107,7 +110,7 @@
             height: 0.16em;
             left: 0px;
             top: 0px;
-            background-color: #A9A9A9;
+            background-color: #656565;
             transform-origin: left center;
             transform: rotate(45deg);
             -webkit-transform-origin: left center;
@@ -133,6 +136,10 @@
             font-size: 100%;
             vertical-align: baseline;
             background: transparent
+        }
+
+        p {
+            color: #0a0a0a;
         }
 
         html {
@@ -292,16 +299,8 @@
             border-top: 1px solid #e9e9e9
         }
 
-        .footer {
-            background: #1a1a1a;
-            padding: 50px 0;
-            text-align: center;
-            left: 0px;
-            bottom: 0px;
-            width: 100%;
-        }
 
-        footer span.copyright {
+        footer span {
             color: #777;
             margin-top: 0;
             margin-bottom: 0;
@@ -391,12 +390,16 @@
             left: 0;
             top: 0;
             width: 100%;
-            padding: 60px 0;
+            height: 100%;
             background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
             background-size: 400% 400%;
             -webkit-animation: Gradient 45s ease infinite;
             -moz-animation: Gradient 45s ease infinite;
             animation: Gradient 45s ease infinite;
+        }
+
+        header {
+            padding: 85px 0;
         }
 
         @-webkit-keyframes Gradient {
@@ -451,44 +454,62 @@
         .button:hover {
             text-decoration: none;
         }
+
+        .acrylic {
+            /* Parent background + Gaussian blur */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px); /* Safari */
+
+            /* Exclusion blend */
+            background-blend-mode: exclusion;
+
+            /* Color/tint overlay + Opacity */
+            background: rgba(255, 255, 255, .5);
+
+            /* Tiled noise texture */
+            background-image: url(data:image/png;base64,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);
+        }
+
+        .is-blur {
+
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+        }
     </style>
 </head>
 <body {if $time->isDay() eq false}
-style="background-color: #131313; color: white"
-{endif}>
+        style="background-color: #131313; color: white"
+        {endif}>
 <header>
-
     <div class="header-inner wrapper wrapper-center clearfix">
-
         <div class="cont">
             <div class="as-pic">
                 <span class="ball1"></span>
                 <span class="ball2"></span>
                 <span class="ball3"></span>
-                <span class="ball4">V</span>
+                <span class="ball4"></span>
             </div>
         </div>
-
     </div>
 </header>
 <section class="row">
-    <div class="mainp"  >
+    <div class="mainp">
         <article {if $time->isDay() eq false}
-            style="background-color: #353535; color: white"
-            {endif}>
+                style=" color: white"
+                {endif} class="acrylic">
             <div class="article">
-
-                <h2 style="text-align: center;"><span
-                        style="color: #ff0000;"><strong>Cloud Valkyrie Security System</strong></span></h2>
+                <h2 style="text-align: center; padding-bottom: 4px"><span
+                            style="color: #737373;"><strong>Cloud Valkyrie Security System</strong></span></h2>
                 <hr>
-                <p style="text-align: left;">
+                <p style="text-align: left; ">
                     <span {if $time->isDay() eq false}
                          style="color: white"
                         {else}
-                        style="color: #800080;"
+                        style="color: #353535;"
                             {endif}> {if $message}
-                            {$message.echo()}
+                        {$message.echo()}
                          <br/><br/>
+                        {else}
                         <span style="color: #808080; text-align-all: left;">
                             The system detected an anomaly in your request. sometimes its because the address you are
                             requesting for changed, or some unique reasons. A very detailed report about this request
@@ -496,7 +517,6 @@ style="background-color: #131313; color: white"
                             <br>
                             for now we advise you head back to the previous page.
                         </span>
-                            {else}
                         <strong>
 
                             {$threatcount}
@@ -506,49 +526,42 @@ style="background-color: #131313; color: white"
 
                             {else}
 
-                              threats are
+                            {if $threatcount eq 1}
+                              threat
+                            {else}
+                            threats
                             {endif}
-                              found in your request, your access to the requested content is blocked.
+                             found in your request and your access to the requested content is blocked.
+                            {endif}
 
                          <br/><br/>
                         </strong>
                         <span style="color: #808080; text-align-all: left;">
                             If you are sure there is no threat in your request or the system miss judged your
-                            request or want to find how how our security works, please email us.
+                            request or want to find how our security works, please email us.
                             <br>
                             for now we advise you head back to the previous page.
                         </span>
                         {endif}
                     </span>
                 </p>
-                <a class="button" href="javascript:history.go(0);">previous page</a>
-                <p style="text-align: center;"><span {if $time->isDay() eq false}
+                {if $message}
+                {else}
+                <a class="button" style="padding: 4px;" href="javascript:history.go(0);">previous page</a>
+                {endif}
+                <p style="text-align: left; padding-bottom: 5px; padding-top: 4px;"><span {if $time->isDay() eq false}
                          style="color: white"
                         {else}
-                        style="color: #800080;"
+                        style="color: #353535;"
                           {endif}>Your IP : {$ip}
-
-
-                <p>
-                    <small>
-                        <!-- Inserting the current date to reassure people. -->
-                        <script type="text/javascript">
-                            <!--
-                            var currentTime = new Date()
-                            var month = currentTime.getMonth() + 1
-                            var day = currentTime.getDate()
-                            var year = currentTime.getFullYear()
-                            document.write(month + "/" + day + "/" + year)
-                            //-->
-                        </script>
-                        V. {$version}
-                        &nbsp; &nbsp; &nbsp; &nbsp;<a href="https://broos.link" target="_blank">
-                        <b style="text-align:right">Broos Action Inc</b>
-                    </a>
-                    </small>
-                </p>
                 </span></p>
             </div>
+            <footer>
+                <span cass="copyright">
+                     <p style="text-align:right"> protected by <a href="https://broosaction.com" target="_blank">
+                Broos Action Inc </a></p>
+                </span>
+            </footer>
         </article>
     </div>
 </section>

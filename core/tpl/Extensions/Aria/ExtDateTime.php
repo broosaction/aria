@@ -10,7 +10,6 @@ namespace Core\tpl\Extensions\Aria;
 
 use Core\Joi\System\Time;
 use Core\tpl\Compilers\AriaCompiler;
-use Github\Client;
 
 class ExtDateTime
 {
@@ -30,7 +29,6 @@ class ExtDateTime
     private function extend()
     {
 
-        $client = new Client();
         $time = new Time();
 
 
@@ -38,7 +36,7 @@ class ExtDateTime
             return $time->isDay();
         });
 
-        $this->ariaCompiler->composer('stamp2period', static function ($input, $val) use ($client) {
+        $this->ariaCompiler->composer('stamp2period', static function ($input, $val)  {
 
             if (!isset($val) || !isset($input)) {
                 throw new \Exception('value must not be empty');

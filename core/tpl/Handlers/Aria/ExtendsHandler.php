@@ -21,25 +21,25 @@ class ExtendsHandler implements TemplateHandler
 
     public function handle(&$content, AriaCompiler $compiler, $lang = 'PHP')
     {
-        $matches=array();
-        preg_match_all('/\{\s*(extends )\s*(.+?)\s*\}/',$content,$matches);
+        $matches = array();
+        preg_match_all('/\{\s*(extends )\s*(.+?)\s*\}/', $content, $matches);
         $base = $matches[2];
-        if(count($base) <= 0) {
+        if (count($base) <= 0) {
             return;
         }
-        if(count($base)>1) {
+        if (count($base) > 1) {
             throw new \Exception("Each template can extend 1 parent at the most");
         }
         $base = $base[0];
-        if(strpos($base, '"') === 0) {
+        if (strpos($base, '"') === 0) {
             $base = substr($base, 1);
         }
-        if(substr($base, -1) === '"') {
+        if (substr($base, -1) === '"') {
             $base = substr($base, 0, -1);
         }
         $base = $compiler->getDir() . $base;
-        if(!file_exists($base)) {
-            throw new \Exception("Unable to extend base template ". $base);
+        if (!file_exists($base)) {
+            throw new \Exception("Unable to extend base template " . $base);
         }
         //todo Add the extended content
         $content = str_replace($matches[0][0], "", $content);

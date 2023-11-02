@@ -15,26 +15,27 @@ namespace Core\tpl\Support;
 class Utils
 {
 
-    public static function minifyHTML($input){
-        if(trim($input) === "") return $input;
+    public static function minifyHTML($input)
+    {
+        if (trim($input) === "") return $input;
         // Remove extra white-space(s) between HTML attribute(s)
-        $input = preg_replace_callback('#<([^\/\s<>!]+)(?:\s+([^<>]*?)\s*|\s*)(\/?)>#s', function($matches) {
+        $input = preg_replace_callback('#<([^\/\s<>!]+)(?:\s+([^<>]*?)\s*|\s*)(\/?)>#s', function ($matches) {
             return '<' . $matches[1] . preg_replace('#([^\s=]+)(\=([\'"]?)(.*?)\3)?(\s+|$)#s', ' $1$2', $matches[2]) . $matches[3] . '>';
         }, str_replace("\r", "", $input));
         // Minify inline CSS declaration(s)
-        if(strpos($input, ' style=') !== false) {
-            $input = preg_replace_callback('#<([^<]+?)\s+style=([\'"])(.*?)\2(?=[\/\s>])#s', function($matches) {
+        if (strpos($input, ' style=') !== false) {
+            $input = preg_replace_callback('#<([^<]+?)\s+style=([\'"])(.*?)\2(?=[\/\s>])#s', function ($matches) {
                 return '<' . $matches[1] . ' style=' . $matches[2] . self::minify_css($matches[3]) . $matches[2];
             }, $input);
         }
-        if(strpos($input, '</style>') !== false) {
-            $input = preg_replace_callback('#<style(.*?)>(.*?)</style>#is', function($matches) {
-                return '<style' . $matches[1] .'>'. self::minify_css($matches[2]) . '</style>';
+        if (strpos($input, '</style>') !== false) {
+            $input = preg_replace_callback('#<style(.*?)>(.*?)</style>#is', function ($matches) {
+                return '<style' . $matches[1] . '>' . self::minify_css($matches[2]) . '</style>';
             }, $input);
         }
-        if(strpos($input, '</script>') !== false) {
-            $input = preg_replace_callback('#<script(.*?)>(.*?)</script>#is', function($matches) {
-                return '<script' . $matches[1] .'>'. self::minify_js($matches[2]) . '</script>';
+        if (strpos($input, '</script>') !== false) {
+            $input = preg_replace_callback('#<script(.*?)>(.*?)</script>#is', function ($matches) {
+                return '<script' . $matches[1] . '>' . self::minify_js($matches[2]) . '</script>';
             }, $input);
         }
 
@@ -73,8 +74,9 @@ class Utils
     }
 
     // CSS Minifier => http://ideone.com/Q5USEF + improvement(s)
-   public static function minify_css($input) {
-        if(trim($input) === "") return $input;
+    public static function minify_css($input)
+    {
+        if (trim($input) === "") return $input;
         return preg_replace(
             array(
                 // Remove comment(s)
@@ -116,8 +118,9 @@ class Utils
     }
 
 // JavaScript Minifier
-    public static function minify_js($input) {
-        if(trim($input) === "") return $input;
+    public static function minify_js($input)
+    {
+        if (trim($input) === "") return $input;
         return preg_replace(
             array(
                 // Remove comment(s)
@@ -141,72 +144,76 @@ class Utils
             $input);
     }
 
-    public static function escapeCharsInString($str, $escapeChar, $repChar, $strDelimiter='"') {
+    public static function escapeCharsInString($str, $escapeChar, $repChar, $strDelimiter = '"')
+    {
 
         $ret = "";
         $inQuote = false;
         $escaped = false;
-        for($i = 0, $iMax = strlen($str); $i <= $iMax; $i++) {
+        for ($i = 0, $iMax = strlen($str); $i <= $iMax; $i++) {
             $char = substr($str, $i, 1);
-            switch($char) {
+            switch ($char) {
                 case '\\':
                     $escaped = true;
                     $ret .= $char;
                     break;
                 case $strDelimiter:
-                    if(!$escaped) {
+                    if (!$escaped) {
                         $inQuote = !$inQuote;
                     }
                     $ret .= $char;
                     break;
                 default:
-                    if($inQuote && $char === $escapeChar) {
+                    if ($inQuote && $char === $escapeChar) {
                         $ret .= $repChar;
                     } else {
                         $ret .= $char;
                     }
             }
-            if($escaped) {
+            if ($escaped) {
                 $escaped = false;
             }
         }
         return $ret;
     }
 
-    public static function str_replace_first($find, $replace, $string) {
-        $pos = strpos($string,$find);
+    public static function str_replace_first($find, $replace, $string)
+    {
+        $pos = strpos($string, $find);
         if ($pos !== false) {
-            return substr_replace($string,$replace,$pos,strlen($find));
+            return substr_replace($string, $replace, $pos, strlen($find));
         }
         return "";
     }
 
-    public static function removeSpecialChars($text){
-        $find = ['á','é','í','ó','ú','Á','É','Í','Ó','Ú','ñ','Ñ',' ','"',"'"];
-        $rep  = ['a','e','i','o','u','A','E','I','O','U','n','N','-',"",""];
-        return str_replace($find,$rep,$text);
+    public static function removeSpecialChars($text)
+    {
+        $find = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', ' ', '"', "'"];
+        $rep = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N', '-', "", ""];
+        return str_replace($find, $rep, $text);
     }
 
-    public static function removeWhiteSpaces($str) {
+    public static function removeWhiteSpaces($str)
+    {
         $in = false;
         $escaped = false;
         $ws_string = "";
-        for($i = 0; $i <= strlen($str)-1; $i++) {
-            $char = substr($str,$i,1);
+        for ($i = 0; $i <= strlen($str) - 1; $i++) {
+            $char = substr($str, $i, 1);
             $je = false;
             $continue = false;
-            switch($char) {
+            switch ($char) {
                 case '\\':
                     $je = true;
                     $escaped = true;
                     break;
                 case '"':
-                    if(!$escaped) {
+                    if (!$escaped) {
                         $in = !$in;
                     }
                     break;
                 case " ":
-                    if(!$in) {
+                    if (!$in) {
                         $continue = true;
                     }
                     break;
@@ -214,19 +221,20 @@ class Utils
             if (!$je) {
                 $escaped = false;
             }
-            if(!$continue) {
+            if (!$continue) {
                 $ws_string .= $char;
             }
         }
         return $ws_string;
     }
 
-    public static function zeroFill($text,$digits){
+    public static function zeroFill($text, $digits)
+    {
         $ret = '';
-        if(strlen($text)<$digits){
-            $ceros=$digits-strlen($text);
-            for($i=0;$i<=$ceros-1;$i++){
-                $ret.="0";
+        if (strlen($text) < $digits) {
+            $ceros = $digits - strlen($text);
+            for ($i = 0; $i <= $ceros - 1; $i++) {
+                $ret .= "0";
             }
             $ret .= $text;
             return $ret;
@@ -235,16 +243,17 @@ class Utils
         return $text;
     }
 
-    public static function matchTags($regex, $append="", $content = ''){
+    public static function matchTags($regex, $append = "", $content = '')
+    {
         $matches = array();
-        if (!preg_match_all($regex,$content,$matches)) {
+        if (!preg_match_all($regex, $content, $matches)) {
             return false;
         }
         $offset = 0;
         $_offset = 0;
         $ret = array();
-        foreach($matches[0] as $k => $match){
-            $_cont = substr($content,$offset);
+        foreach ($matches[0] as $k => $match) {
+            $_cont = substr($content, $offset);
             $in_str = false;
             $escaped = false;
             $i = strpos($_cont, $match);
@@ -259,7 +268,7 @@ class Utils
             $in_tag = false;
             $capturing_tag_name = false;
             $_m = array();
-            foreach($matches as $z => $v){
+            foreach ($matches as $z => $v) {
                 $_m[$z] = $matches[$z][$k];
             }
             $ret[$k] = array(
@@ -270,7 +279,7 @@ class Utils
                 'starts_at' => $offset - $len_match,
                 'ends_at' => 0,
             );
-            for($j = $i + strlen($match), $jMax = strlen($_cont); $j <= $jMax; $j++) {
+            for ($j = $i + strlen($match), $jMax = strlen($_cont); $j <= $jMax; $j++) {
                 $char = $_cont[$j];
                 $prev_char = $char;
                 $struct .= $char;
@@ -282,40 +291,40 @@ class Utils
                         break;
                     case "'":
                     case '"':
-                        if(!$escaped){
-                            if($in_str && $char === $str_char) {
+                        if (!$escaped) {
+                            if ($in_str && $char === $str_char) {
                                 $str_char = $char;
                             }
                             $in_str = !$in_str;
                         }
                         break;
                     case '>':
-                        if(!$in_str){
-                            if($in_tag) {
+                        if (!$in_str) {
+                            if ($in_tag) {
                                 $in_tag = false;
-                                if( $prev_tag === '/' .$tag){
+                                if ($prev_tag === '/' . $tag) {
                                     $lvl--;
-                                    if($lvl <= 0) {
-                                        $break=true;
+                                    if ($lvl <= 0) {
+                                        $break = true;
                                     }
-                                } else if(strpos($prev_tag, '/') === 0){
+                                } else if (strpos($prev_tag, '/') === 0) {
                                     $lvl--;
                                 } else {
-                                    if($prev_char !== '/' && !in_array(str_replace('/',"",$prev_tag), array('area','base','br','col','command','embed','hr','img','input','keygen','link','meta','param','source','track','wbr'))){
+                                    if ($prev_char !== '/' && !in_array(str_replace('/', "", $prev_tag), array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'))) {
                                         $lvl++;
                                     }
                                 }
-                                if($capturing_tag_name) {
+                                if ($capturing_tag_name) {
                                     $capturing_tag_name = false;
                                 }
                             }
                         }
                         break;
                     case '<':
-                        if($in_tag){
+                        if ($in_tag) {
                             continue 2;
                         }
-                        if(!$in_str){
+                        if (!$in_str) {
                             $prev_tag = "";
                             $in_tag = true;
                             $capturing_tag_name = true;
@@ -323,28 +332,28 @@ class Utils
                         }
                         break;
                     case ' ':
-                        if($capturing_tag_name){
+                        if ($capturing_tag_name) {
                             $capturing_tag_name = false;
                         }
                         break;
                     default:
-                        if($capturing_tag_name){
+                        if ($capturing_tag_name) {
                             $prev_tag .= $char;
                         }
                 }
-                if($escaped) {
+                if ($escaped) {
                     $escaped = false;
                 }
-                if($break){
+                if ($break) {
                     break;
                 }
             }
             $ret[$k]['all'] .= $struct;
             $struct_len = strlen($struct);
-            $ret[$k]['inner'] = substr($struct,0,$struct_len - strlen($tag)-3);
+            $ret[$k]['inner'] = substr($struct, 0, $struct_len - strlen($tag) - 3);
             $ret[$k]['ends_at'] = $ret[$k]['starts_at'] + $struct_len + $len_match;
-            if($break && !empty($append)){
-                $content = substr_replace($content,$append,$ret[$k]['ends_at'],0);
+            if ($break && !empty($append)) {
+                $content = substr_replace($content, $append, $ret[$k]['ends_at'], 0);
             }
         }
         return $ret;

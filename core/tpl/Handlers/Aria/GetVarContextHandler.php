@@ -23,7 +23,7 @@ class GetVarContextHandler implements \Core\tpl\Contracts\TemplateHandler
     public function handle(&$content, AriaCompiler $compiler, $lang = 'PHP')
     {
         $context = $compiler->getProperty(BaseTemplateCompiler::CUR_CONTEXT);
-        if($context === null) {
+        if ($context === null) {
             $cont = $content;
             $in_str = false;
             $str_char = '';
@@ -31,7 +31,7 @@ class GetVarContextHandler implements \Core\tpl\Contracts\TemplateHandler
             $prev_tag = '';
             $prev_char = '';
         } else {
-            $cont = substr($content,$context['offset']);
+            $cont = substr($content, $context['offset']);
             $in_str = $context['in_str'];
             $str_char = $context['str_char'];
             $in_tag = $context['in_tag'];
@@ -39,43 +39,43 @@ class GetVarContextHandler implements \Core\tpl\Contracts\TemplateHandler
             $prev_char = $context['prev_char'];
         }
         $i = strpos($cont, $content);
-        if($i === false){
+        if ($i === false) {
             return false;
         }
         $escaped = false;
         $capturing_tag_name = false;
         $char = '';
-        for($j = 0; $j <= $i; $j++){
+        for ($j = 0; $j <= $i; $j++) {
             $prev_char = $char;
             $char = $cont[$j];
-            switch($char){
+            switch ($char) {
                 case "\\":
                     $escaped = true;
                     continue 2;
                     break;
                 case "'":
                 case '"':
-                    if(!$escaped){
-                        if($in_str && $char === $str_char) {
+                    if (!$escaped) {
+                        if ($in_str && $char === $str_char) {
                             $str_char = $char;
                         }
                         $in_str = !$in_str;
                     }
                     break;
                 case '>':
-                    if(!$in_str){
-                        if($prev_char === '?'){
+                    if (!$in_str) {
+                        if ($prev_char === '?') {
                             continue 2;
                         }
                         $in_tag = false;
-                        if($capturing_tag_name) {
+                        if ($capturing_tag_name) {
                             $capturing_tag_name = false;
                         }
                     }
                     break;
                 case '<':
-                    if(!$in_str){
-                        if($cont[$j + 1] === '?'){
+                    if (!$in_str) {
+                        if ($cont[$j + 1] === '?') {
                             continue 2;
                         }
                         $prev_tag = "";
@@ -85,16 +85,16 @@ class GetVarContextHandler implements \Core\tpl\Contracts\TemplateHandler
                     }
                     break;
                 case ' ':
-                    if($capturing_tag_name){
+                    if ($capturing_tag_name) {
                         $capturing_tag_name = false;
                     }
                     break;
                 default:
-                    if($capturing_tag_name){
+                    if ($capturing_tag_name) {
                         $prev_tag .= $char;
                     }
             }
-            if($escaped) {
+            if ($escaped) {
                 $escaped = false;
             }
         }
@@ -118,7 +118,6 @@ class GetVarContextHandler implements \Core\tpl\Contracts\TemplateHandler
     {
         return $this->_context;
     }
-
 
 
 }

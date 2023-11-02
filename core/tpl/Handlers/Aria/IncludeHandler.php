@@ -42,7 +42,7 @@ class IncludeHandler implements TemplateHandler
 
                 } else if ($compiler->getDir() === null) {
 
-                  $this->handleObjectReCall($compiler->buildPathName($include));
+                    $this->handleObjectReCall($compiler->buildPathName($include));
 
                 }
 
@@ -51,7 +51,8 @@ class IncludeHandler implements TemplateHandler
         }
     }
 
-    private function handleInclude($include, &$params){
+    private function handleInclude($include, &$params)
+    {
         $include = trim($include);
         $include = explode(',', $include);
 

@@ -26,7 +26,6 @@ use Core\tpl\Handlers\Aria\InitExtentions;
 use Core\tpl\Handlers\Aria\VarHandler;
 use Core\tpl\Support\Utils;
 use Exception;
-use Latte\Engine;
 use Nette\Caching\Cache;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Utils\FileSystem;
@@ -36,9 +35,6 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
 {
 
     private FileStorage $cacheStorage;
-    private Engine $latte;
-
-
 
 
     /**
@@ -59,7 +55,7 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
         if ($ext === 'php') {
             $this->properties['isPhp'] = true;
 
-        }elseif ($ext === 'latte'){
+        } elseif ($ext === 'latte') {
             $this->properties['isLatte'] = true;
         } else {
             $this->properties['isLatte'] = false;
@@ -68,7 +64,7 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
                 return false;
             }
 
-            $this->properties[self::SOURCE] =  FileSystem::read($this->properties[self::THEMES_DIR] . '/' . $this->properties[self::FILE]);
+            $this->properties[self::SOURCE] = FileSystem::read($this->properties[self::THEMES_DIR] . '/' . $this->properties[self::FILE]);
             $this->properties[self::CONTENT] =& $this->properties[self::SOURCE];
 
         }
@@ -76,25 +72,16 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
         return true;
     }
 
-    public function render($replaceCache = false)
+    public function prepareSource($source)
     {
-        if(isset($this->properties['isLatte']) && $this->properties['isLatte'] === true){
-            $latte = $this->getLatte();
+        $this->properties[self::SOURCE] = $source;
+        $this->properties[self::CONTENT] =& $this->properties[self::SOURCE];
+        $this->properties['orContent'] = $this->properties[self::CONTENT];
+        return true;
+    }
 
-            $latte->setTempDirectory($this->properties[self::THEMES_DIR].'/');
-            $co = new Config();
-            $latte->addFunction('theme_url', function () use($co) : string {
-                return $co->getThemeUrl();
-            });
-            $latte->addFunction('app_url', function () use($co) : string {
-                return $co->app_url;
-            });
-              // render to output
-            $latte->render($this->properties[self::THEMES_DIR].'/'.$this->properties[self::FILE], $this->properties[BaseTemplateCompiler::ASSIGNED]);
-             // or render to string
-            return $latte->renderToString($this->properties[self::THEMES_DIR].'/'.$this->properties[self::FILE], $this->properties[BaseTemplateCompiler::ASSIGNED]);
-        }
-
+    public function renderSource($replaceCache = false)
+    {
 
         $content = $this->getProperty(self::CONTENT);
         if ($replaceCache) {
@@ -102,7 +89,48 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
             $this->server->getCache()->remove($hash);
         }
         //set our cache storage
-        $this->cacheStorage = new FileStorage(Start::$SERVERROOT.'/core/store/cache');
+        $this->cacheStorage = new FileStorage(Start::$SERVERROOT . '/core/store/cache');
+        //globals are needed either via cached or live
+        $this->assignGlobals();
+        //extensions are needed too
+        (new InitExtentions())->handle($content, $this);
+        if ($this->getFromCache() === false) {
+            (new ExtendsHandler())->handle($content, $this);
+            (new BlocksHandler())->handleBlockMacros($content);
+            (new BlocksHandler())->handle($content, $this);
+            (new IncludeHandler())->handle($content, $this);
+            (new IfHandler())->handleIfMacros($content);
+            (new HandleLoops())->handleLoopMacros($content);
+            (new HandleLoops())->handle($content, $this);
+            (new IfHandler())->handle($content, $this);
+            (new HandleVar())->handle($content, $this);
+            (new VarHandler())->handle($content, $this);
+            $this->properties[self::CONTENT] = $content;
+            // $this->make();
+        }
+
+        if ($this->getProperty(self::BASE) !== '') {
+            // This template has inheritance
+            $parent = new self($this->server);
+            $parent->setContext($this->getProperty(self::GLOBALS));
+            $parent->overrideBlocks($this->getProperty(self::BLOCKS));
+            return $this->renderSource();
+        }
+
+        return $this->getProperty(self::OUTPUT);
+    }
+
+
+    public function render($replaceCache = false)
+    {
+
+        $content = $this->getProperty(self::CONTENT);
+        if ($replaceCache) {
+            $hash = sha1($this->properties['orContent']);
+            $this->server->getCache()->remove($hash);
+        }
+        //set our cache storage
+        $this->cacheStorage = new FileStorage(Start::$SERVERROOT . '/core/store/cache');
         //globals are needed either via cached or live
         $this->assignGlobals();
         //extensions are needed too
@@ -129,9 +157,10 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
             $parent->overrideBlocks($this->getProperty(self::BLOCKS));
             return $this->render();
         }
-        echo $this->getProperty(self::OUTPUT);
+
         return $this->getProperty(self::OUTPUT);
     }
+
 
     public function getFromCache()
     {
@@ -149,11 +178,11 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
         //we load our sourcecode from cache
         $this->properties[self::SOURCE] = $_cache->load($hash);
 
-        if($this->properties[self::SOURCE] === null){
-           return false;
+        if ($this->properties[self::SOURCE] === null) {
+            return false;
         }
 
-        $this->properties[self::SOURCE] = "<!-- Aria Framework Cached -->\n".$this->properties[self::SOURCE];
+        $this->properties[self::SOURCE] = "<!-- Aria Framework Cached -->\n" . $this->properties[self::SOURCE];
         ob_start();
         $e = eval('?>' . $this->properties[self::SOURCE]);
         $this->properties[self::OUTPUT] = ob_get_clean();
@@ -172,10 +201,11 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
         if ($this->properties[self::ENABLE_CONTENT_CACHE] === true) {
             $this->saveCache();
         }
-
+        $this->properties[self::SOURCE] = "<!-- Aria Framework -->\n" . $this->properties[self::SOURCE];
         ob_start();
         $e = eval('?>' . $this->properties[self::CONTENT]);
-        $this->properties[self::OUTPUT] = ob_get_clean();
+         $ob_output = ob_get_clean();
+        $this->properties[self::OUTPUT] = $ob_output;
         if ($e === false) {
             die("Error: unable to compile template");
         }
@@ -186,10 +216,10 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
         //the cache engine
         $cache = new Cache($this->cacheStorage);
         //our hash
-        $hash =  sha1($this->properties['orContent']);
+        $hash = sha1($this->properties['orContent']);
         //the chaching
         $cache->save($hash, Utils::minifyHTML($this->properties[self::CONTENT]), array(
-            Cache::EXPIRE => '12 hours', // needs a longer time time while in production
+            Cache::EXPIRE => '8 hours', // needs a longer time time while in production
             Cache::SLIDING => false,
             Cache::FILES => $this->properties[self::THEMES_DIR] . '/' . $this->properties[self::FILE],
         ));
@@ -224,18 +254,6 @@ class AriaCompiler extends BaseTemplateCompiler implements TemplateCompiler
         return $ret;
 
     }
-
-    /**
-     * @return Engine
-     */
-    public function getLatte(): Engine
-    {
-        if(!isset($this->latte)){
-            $this->latte = new Engine;
-        }
-        return $this->latte;
-    }
-
 
 
     public function runCallback($callback)

@@ -22,16 +22,16 @@ class HandleVar implements TemplateHandler
 
     public function handle(&$content, AriaCompiler $compiler, $lang = 'PHP')
     {
-        $matches= [];
-        preg_match_all('/\{\s*(var|let|set)\s*(.+?)\s*\}/',$content,$matches);
-        if(!empty($matches)){
-            foreach($matches[2] as $i => $var) {
+        $matches = [];
+        preg_match_all('/\{\s*(var|let|set)\s*(.+?)\s*\}/', $content, $matches);
+        if (!empty($matches)) {
+            foreach ($matches[2] as $i => $var) {
 
                 $var = str_replace(' = ', '**in**', $var);
 
                 $var_det = explode('**in**', $var);
 
-                if(is_array($var_det)) {
+                if (is_array($var_det)) {
                     $key = $var_det[0];
                     $key = Utils::removeWhiteSpaces($key);
                     $key = str_replace('$', '', $key);

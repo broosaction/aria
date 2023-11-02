@@ -21,45 +21,45 @@ class RetriveParamsHandler implements TemplateHandler
 
     public function handle(&$content, AriaCompiler $compiler, $lang = 'PHP'): void
     {
-        $i=0;
-        $p=[];
-        $escaped=false;
-        $in_str=false;
-        $act="";
-        while($i<strlen($content)){
-            $char=substr($content,$i,1);
+        $i = 0;
+        $p = [];
+        $escaped = false;
+        $in_str = false;
+        $act = "";
+        while ($i < strlen($content)) {
+            $char = substr($content, $i, 1);
             $i++;
-            switch($char){
+            switch ($char) {
                 case "\\":
-                    if($escaped === true){
-                        $escaped=false;
-                        $act.=$char;
-                    }else {
+                    if ($escaped === true) {
+                        $escaped = false;
+                        $act .= $char;
+                    } else {
                         $escaped = true;
                     }
                     break;
                 case '"':
-                    if($escaped === true){
-                        $act.=$char;
+                    if ($escaped === true) {
+                        $act .= $char;
                         break;
                     }
-                    $in_str= $in_str===false;
+                    $in_str = $in_str === false;
                     break;
                 case ',':
-                    if($in_str===true){
-                        $act.=$char;
+                    if ($in_str === true) {
+                        $act .= $char;
                         break;
                     }
-                    $p[]=$act;
-                    $act="";
+                    $p[] = $act;
+                    $act = "";
                     break;
                 default:
-                    $escaped=false;
-                    $act.=$char;
+                    $escaped = false;
+                    $act .= $char;
                     break;
             }
         }
-        $p[]=$act;
+        $p[] = $act;
         $content = $p;
     }
 }
