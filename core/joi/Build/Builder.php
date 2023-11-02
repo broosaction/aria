@@ -12,7 +12,6 @@
 namespace Core\Joi\Build;
 
 
-
 use Core\Joi\Build\Contracts\IBuild;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,7 +25,7 @@ class Builder implements IBuild
     {
         $this->output = $output;
 
-        $this->dir = str_replace('\core\Joi\Build','',__DIR__);
+        $this->dir = str_replace('\core\Joi\Build', '', __DIR__);
     }
 
     public function build()

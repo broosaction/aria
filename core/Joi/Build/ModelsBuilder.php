@@ -6,14 +6,10 @@ namespace Core\Joi\Build;
 use Core\Drivers\ORM\Observer\ModelObserver;
 use Core\Joi\Start;
 use Core\Joi\System\Utils;
-use Doctrine\Inflector\CachedWordInflector;
-use Doctrine\Inflector\Inflector;
-use Doctrine\Inflector\Rules\English\Rules;
-use Doctrine\Inflector\RulesetInflector;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\Utils\FileSystem;
-use Nette\Utils\Strings;
 use Core\Drivers\ORM\Database\Model;
+use Symfony\Component\Console\Output\NullOutput;
 
 class ModelsBuilder extends Builder
 {
@@ -58,17 +54,16 @@ class ModelsBuilder extends Builder
                     } else {
                         $props->setValue($column['Default']);
                     }
+                }
 
-                    if ($column['Field'] === 'created_at') {
-                        $has_created_at = true;
-                    }
-                    if ($column['Field'] === 'updated_at') {
-                        $has_updated_at = true;
-                    }
-                    if ($column['Field'] === 'deleted_at') {
-                        $has_deleted_at = true;
-                    }
-
+                if ($column['Field'] === 'created_at') {
+                    $has_created_at = true;
+                }
+                if ($column['Field'] === 'updated_at') {
+                    $has_updated_at = true;
+                }
+                if ($column['Field'] === 'deleted_at') {
+                    $has_deleted_at = true;
                 }
 
                 if ($column['Key'] === 'PRI') {
@@ -81,19 +76,19 @@ class ModelsBuilder extends Builder
                 $props->isPublic();
             }
 
-            if($has_created_at === false){
+            if ($has_created_at === false) {
                 $this->addColumn('created_at', $tableInfo['name']);
                 $class->addProperty('created_at')->isPublic();
             }
 
-            if($has_updated_at === false){
+            if ($has_updated_at === false) {
                 $this->addColumn('updated_at', $tableInfo['name']);
                 $class->addProperty('updated_at')->isPublic();
             }
 
-            if($has_deleted_at === false){
+            if ($has_deleted_at === false) {
                 $this->addColumn('deleted_at', $tableInfo['name']);
-                 $class->addProperty('deleted_at')->isPublic();
+                $class->addProperty('deleted_at')->isPublic();
             }
 
 
@@ -177,8 +172,19 @@ class ModelsBuilder extends Builder
         return $this;
     }
 
-    private function addColumn($name, $table){
-        return $this->server->getDatabase()->getDatabaseEngine()->query('ALTER TABLE '.$table.' ADD COLUMN '.$name.' VARCHAR(100) NULL ' );
+    private function addColumn($name, $table)
+    {
+        return $this->server->getDatabase()->getDatabaseEngine()->query('ALTER TABLE ' . $table . ' ADD COLUMN ' . $name . ' VARCHAR(100) NULL ');
+    }
+
+
+    public static function rebuildModels(Start $server){
+
+        $outputInterface = new NullOutput();
+        $routesBuilder = new self($outputInterface);
+        $routesBuilder->setServer($server);
+        $routesBuilder->build();
+
     }
 
 }

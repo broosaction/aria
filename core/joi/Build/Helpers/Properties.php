@@ -33,6 +33,7 @@ class Properties
      * @var
      */
     private $annotations;
+
     /**
      * Properties constructor.
      * @param $doc
@@ -43,7 +44,8 @@ class Properties
         $this->getProperties();
     }
 
-    private function getProperties(){
+    private function getProperties()
+    {
         $customTags = [
             new FlagTag('important'),
             new DescriptionTag('method'),
@@ -74,58 +76,65 @@ class Properties
      * @param $tag
      * @return |null
      */
-    public function getTag($tag){
+    public function getTag($tag)
+    {
         return $this->annotations[$tag] ?? null;
     }
 
     /**
      * @return |null
      */
-    public function getMethod(){
+    public function getMethod()
+    {
         return $this->annotations['method'] ?? null;
     }
 
     /**
      * @return |null
      */
-    public function getPath(){
+    public function getPath()
+    {
         return $this->annotations['path'] ?? null;
     }
 
     /**
      * @return |null
      */
-    public function getName(){
+    public function getName()
+    {
         return $this->annotations['id'] ?? null;
     }
 
     /**
      * @return |null
      */
-    public function getMiddleWare(){
+    public function getMiddleWare()
+    {
         return $this->annotations['middleware'] ?? null;
     }
 
-    public function getRouteProps(){
+    public function getRouteProps()
+    {
         $prop = '[';
-        if( isset($this->annotations['defaultParameterRegex']) && $this->annotations['defaultParameterRegex'] !== ''){
-            $prop .= "'defaultParameterRegex' => '".$this->annotations['defaultParameterRegex']."',";
+        if (isset($this->annotations['defaultParameterRegex']) && $this->annotations['defaultParameterRegex'] !== '') {
+            $prop .= "'defaultParameterRegex' => '" . $this->annotations['defaultParameterRegex'] . "',";
         }
-        if( isset($this->annotations['where']) && $this->annotations['where'] !== ''){
-            $prop .= "'where' => ".$this->annotations['where'].",";
+        if (isset($this->annotations['where']) && $this->annotations['where'] !== '') {
+            $prop .= "'where' => " . $this->annotations['where'] . ",";
         }
-        if( isset($this->annotations['as']) && $this->annotations['as'] !== ''){
-            $prop .= "'as' => '".$this->annotations['as']."',";
+        if (isset($this->annotations['as']) && $this->annotations['as'] !== '') {
+            $prop .= "'as' => '" . $this->annotations['as'] . "',";
         }
-        if( isset($this->annotations['middleware']) && $this->annotations['middleware'] !== ''){
-            $prop .= "'middleware' => ".$this->annotations['middleware']."::class,";
+        if (isset($this->annotations['middleware']) && $this->annotations['middleware'] !== '') {
+            $prop .= "'middleware' => " . $this->annotations['middleware'] . "::class,";
         }
-        return $prop.'],';
+        return $prop . '],';
     }
 
-    public static function createDomain($domain){
+    public static function createDomain($domain)
+    {
         $domain = Strings::lower($domain);
-        return str_replace('domain',Config::$app_domain,$domain);
+        return str_replace('domain', Config::$app_domain, $domain);
     }
 
 }

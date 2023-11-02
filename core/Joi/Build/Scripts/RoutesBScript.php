@@ -1,30 +1,20 @@
 <?php
-/**
- * Copyright (c) 2021.  Bruce Mubangwa
- *
- * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
- */
 
-/**
- * Created by Bruce Mubangwa on 31 /May, 2021 @ 23:00
- */
+namespace Core\Joi\Build\Scripts;
 
-namespace Core\Joi\Build;
-
-
-use Core\config\Config;
+use App\Bootstrap\Router;
+use Core\Config\Config;
 use Core\Joi\Build\Helpers\Properties;
+use Core\Joi\Build\RoutesBuilder;
 use Core\Joi\Start;
 use Core\Router\Http\Request;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
-use App\Bootstrap\Router;
 use ReflectionClass;
 
-class RoutesBuilder extends Builder
+class RoutesBScript
 {
-
     private $classes = [];
     private $counter = 0;
     private $kownProperties = ['domain', 'subdomain', 'prefix', 'middleware', 'exceptionHandler'];
@@ -42,17 +32,16 @@ class RoutesBuilder extends Builder
 
         }
 
-        $this->output->writeln('found ' . count($this->classes) . ' possible routes groups');
         $code = '';
         $namespace = new PhpNamespace('App\\Bootstrap\\Routes');
         $namespace->addUse(Router::class);
-        $this->output->writeln('Building file');
+
         $code .= "\n Router::group(['namespace' => 'App\Bootstrap\Controllers'], static function () { \n\n";
 
         foreach ($this->classes as $key => $value) {
-
             if (isset($value['classes'])) {
                 $_classes = $value['classes'];
+
                 $code .= " Router::group( " . $this->buildProperties($value) . " static function () {\n";
                 $code .= "//**  " . $key . " route group\n";
                 $this->buildRoutes($_classes, $code);
@@ -64,8 +53,9 @@ class RoutesBuilder extends Builder
         $code .= "\n }); ";
 
         $cnt = "<?php \n" . $namespace . " " . $code;
+        $cnt = str_replace('*', '', $cnt);
+
         FileSystem::write($this->server->server_home . '/App/Bootstrap/Routes/web.php', $cnt);
-        $this->output->writeln('built file with ' . $this->counter . ' routes');
 
         return 1;
     }
@@ -80,7 +70,7 @@ class RoutesBuilder extends Builder
     {
         foreach ($_classes as $k => $v) {
 
-            $cl = new ReflectionClass($v);
+            $cl = new ReflectionClass(str_replace('/','\\', $v));
             foreach ($cl->getMethods() as $method) {
                 $props = new Properties($method->getDocComment());
 
@@ -93,7 +83,7 @@ class RoutesBuilder extends Builder
                     }
                     $v = str_replace('App\Bootstrap\Controllers\\', '', $v);
                     $code .= "\t\t Router::match(" . $props->getMethod() . ", '" . $url . "', '" . $v . "@" . $method->getName() . "', " . $props->getRouteProps() . ")->setName('" . $props->getName() . "'); \n";
-                    $this->output->writeln('Added: ' . $method->getName() . '  listening on: ' . $props->getMethod() . $url);
+
                     $this->counter++;
                 }
 
@@ -216,7 +206,7 @@ class RoutesBuilder extends Builder
     /**
      * @param Start $server
      */
-    public function setServer(Start $server): RoutesBuilder
+    public function setServer(Start $server): RoutesBScript
     {
         $this->server = $server;
 
