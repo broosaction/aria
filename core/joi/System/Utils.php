@@ -25,11 +25,12 @@ class Utils
      * @param $mb
      * @return float|int
      */
-    public static function mb_to_gb($mb){
+    public static function mb_to_gb($mb)
+    {
         $mb = Strings::lower($mb);
-        $mb = str_replace([' ', 'mb', 'mib'],'', $mb);
+        $mb = str_replace([' ', 'mb', 'mib'], '', $mb);
 
-        return (float)$mb * (1/1024);
+        return (float)$mb * (1 / 1024);
     }
 
 
@@ -39,13 +40,20 @@ class Utils
      * @param int $dec
      * @return string
      */
-    public static function pt_size_format($bytes, $dec=2 ): string
-   {
-       if($bytes < 1024){
-           return $bytes . ' B';
-       }
-      $factor = floor(log($bytes, 1024));
-      return sprintf("%.{$dec}f",$bytes / (1024 ** $factor)) .' '. self::$size_unites[$factor];
+    public static function pt_size_format($bytes, $dec = 2): string
+    {
+        if ($bytes < 1024) {
+            return $bytes . ' B';
+        }
+        $factor = floor(log($bytes, 1024));
+        return sprintf("%.{$dec}f", $bytes / (1024 ** $factor)) . ' ' . self::$size_unites[$factor];
+    }
+
+    public static function bytesToGB($bytes) {
+        if ($bytes < 0) {
+            return 0;
+        }
+        return round($bytes / 1073741824, 2);
     }
 
 
@@ -54,24 +62,25 @@ class Utils
      * @param string $from
      * @return bool|float
      */
-    public static function convertToBytes(string $from ){
+    public static function convertToBytes(string $from)
+    {
 
         $from = trim(self::ensureUTF8($from));
         //Get suffix
-        $suffix = Strings::upper(trim(substr($from,-2)));
+        $suffix = Strings::upper(trim(substr($from, -2)));
         //check for one char suffix
-        if((int)$suffix !== 0){
+        if ((int)$suffix !== 0) {
             $suffix = 'B';
         }
-        if(!in_array($suffix, self::$size_unites, true)){
+        if (!in_array($suffix, self::$size_unites, true)) {
             return false;
         }
-        $number = trim(substr($from,0, strlen($from) - strlen($suffix)));
-        if(!is_numeric($number)){
+        $number = trim(substr($from, 0, strlen($from) - strlen($suffix)));
+        if (!is_numeric($number)) {
             //Allow only floats and integers
             return false;
         }
-        return (float) ($number * (1024 ** array_flip(self::$size_unites)[$suffix]));
+        return (float)($number * (1024 ** array_flip(self::$size_unites)[$suffix]));
     }
 
     /**
@@ -151,14 +160,12 @@ class Utils
      * @param $compare
      * @return bool
      */
-    public static function _checkDNSTxtRecord($txt_record , $domain , $compare): bool
+    public static function _checkDNSTxtRecord($txt_record, $domain, $compare): bool
     {
-        if(checkdnsrr("$txt_record.$domain","TXT"))
-        {
-            $result = dns_get_record("$txt_record.$domain",DNS_TXT);
+        if (checkdnsrr("$txt_record.$domain", "TXT")) {
+            $result = dns_get_record("$txt_record.$domain", DNS_TXT);
 
-            if(isset($result[0]["txt"]) && $result[0]["txt"] === $compare)
-            {
+            if (isset($result[0]["txt"]) && $result[0]["txt"] === $compare) {
                 return true;
             }
 
@@ -176,31 +183,32 @@ class Utils
      * @param int $quality
      * @return bool
      */
-    public static function resize_Crop_Image($max_width, $max_height, $source_file, $dst_dir, $quality = 80) {
+    public static function resize_Crop_Image($max_width, $max_height, $source_file, $dst_dir, $quality = 80)
+    {
         $imgsize = @getimagesize($source_file);
-        $width   = $imgsize[0];
-        $height  = $imgsize[1];
-        $mime    = $imgsize['mime'];
+        $width = $imgsize[0];
+        $height = $imgsize[1];
+        $mime = $imgsize['mime'];
         switch ($mime) {
             case 'image/gif':
                 $image_create = "imagecreatefromgif";
-                $image        = "imagegif";
+                $image = "imagegif";
                 break;
             case 'image/png':
                 $image_create = "imagecreatefrompng";
-                $image        = "imagepng";
+                $image = "imagepng";
                 break;
             case 'image/jpeg':
                 $image_create = "imagecreatefromjpeg";
-                $image        = "imagejpeg";
+                $image = "imagejpeg";
                 break;
             default:
                 return false;
                 break;
         }
-        $dst_img    = @imagecreatetruecolor($max_width, $max_height);
-        $src_img    = $image_create($source_file);
-        $width_new  = $height * $max_width / $max_height;
+        $dst_img = @imagecreatetruecolor($max_width, $max_height);
+        $src_img = $image_create($source_file);
+        $width_new = $height * $max_width / $max_height;
         $height_new = $width * $max_height / $max_width;
         if ($width_new > $width) {
             $h_point = (($height - $height_new) / 2);
@@ -246,14 +254,15 @@ class Utils
      * @param bool $link
      * @return string|string[]
      */
-    public static function markUp($text, $link = true) {
+    public static function markUp($text, $link = true)
+    {
         if ($link === true) {
             $link_search = '/\[a\](.*?)\[\/a\]/i';
             if (preg_match_all($link_search, $text, $matches)) {
                 foreach ($matches[1] as $match) {
-                    $match_decode     = urldecode($match);
+                    $match_decode = urldecode($match);
                     $match_decode_url = $match_decode;
-                    $count_url        = mb_strlen($match_decode);
+                    $count_url = mb_strlen($match_decode);
                     if ($count_url > 50) {
                         $match_decode_url = mb_substr($match_decode_url, 0, 30) . '....' . mb_substr($match_decode_url, 30, 20);
                     }
@@ -269,7 +278,7 @@ class Utils
         $link_search = '/\[img\](.*?)\[\/img\]/i';
         if (preg_match_all($link_search, $text, $matches)) {
             foreach ($matches[1] as $match) {
-                $match_decode     = urldecode($match);
+                $match_decode = urldecode($match);
                 $text = str_replace('[img]' . $match . '[/img]', '<a href="' . getMedia(strip_tags($match_decode)) . '" target="_blank"><img style="width:300px;border-radius: 20px;" src="' . getMedia(strip_tags($match_decode)) . '"></a>', $text);
             }
         }
@@ -280,8 +289,9 @@ class Utils
      * used to get the real IP address of the visitor
      * @return mixed|string
      */
-    public static function get_ip_address() {
-        if(!empty($_SERVER['http-cf-connecting-ip'])){
+    public static function get_ip_address()
+    {
+        if (!empty($_SERVER['http-cf-connecting-ip'])) {
             return $_SERVER['http-cf-connecting-ip'];
         }
         if (!empty($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)) {
@@ -322,16 +332,17 @@ class Utils
      * @param $num
      * @return string
      */
-    public static function numMassFormat($num) {
+    public static function numMassFormat($num)
+    {
 
-        if($num>1000) {
+        if ($num > 1000) {
 
             $x = round($num);
             $x_number_format = number_format($x);
             $x_array = explode(',', $x_number_format);
             $x_parts = array('K', 'M', 'B', 'T');
             $x_count_parts = count($x_array) - 1;
-            $x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
+            $x_display = $x_array[0] . ((int)$x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
             $x_display .= $x_parts[$x_count_parts - 1];
 
             return $x_display;
@@ -348,16 +359,17 @@ class Utils
      * @param $range
      * @return bool
      */
-    public static function ip_in_range($ip, $range) {
+    public static function ip_in_range($ip, $range)
+    {
         if (strpos($range, '/') === false) {
             $range .= '/32';
         }
         // $range is in IP/CIDR format eg 127.0.0.1/24
         [$range, $netmask] = explode('/', $range, 2);
-        $range_decimal    = ip2long($range);
-        $ip_decimal       = ip2long($ip);
+        $range_decimal = ip2long($range);
+        $ip_decimal = ip2long($ip);
         $wildcard_decimal = (2 ** (32 - $netmask)) - 1;
-        $netmask_decimal  = ~$wildcard_decimal;
+        $netmask_decimal = ~$wildcard_decimal;
         return (($ip_decimal & $netmask_decimal) === ($range_decimal & $netmask_decimal));
     }
 
@@ -390,6 +402,22 @@ class Utils
         return '';
     }
 
+    public static function normalizeFileNameString($str = '')
+    {
+        //https://stackoverflow.com/a/19018736
+        $str = strip_tags($str);
+        $str = preg_replace('/[\r\n\t ]+/', ' ', $str);
+        $str = preg_replace('/[\"\*\/\:\<\>\?\'\|]+/', ' ', $str);
+        $str = strtolower($str);
+        $str = html_entity_decode($str, ENT_QUOTES, "utf-8");
+        $str = htmlentities($str, ENT_QUOTES, "utf-8");
+        $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str);
+        $str = str_replace(' ', '-', $str);
+        $str = rawurlencode($str);
+        $str = str_replace('%', '-', $str);
+        return $str;
+    }
+
 
     public static function set_env($st_var, $data)
     {
@@ -416,21 +444,82 @@ class Utils
         return 0;
     }
 
+    public static function compress($source, $destination, $quality)
+    {
+
+        $info = getimagesize($source);
+
+        if ($info['mime'] === 'image/jpeg') {
+            $image = imagecreatefromjpeg($source);
+            imagejpeg($image, $destination, $quality);
+        } elseif ($info['mime'] === 'image/gif') {
+            $image = imagecreatefromgif($source);
+            imagegif($image, $destination, $quality);
+        } elseif ($info['mime'] === 'image/png') {
+            $image = imagecreatefrompng($source);
+            imagepng($image, $destination, $quality);
+        }
+
+        return $destination;
+    }
+
+
     public static function dbTypeToLocal($type)
     {
-        if (str_contains($type,'int')) {
+        if (str_contains($type, 'int')) {
             return 'int';
         }
 
-        if(str_contains($type,'text')) {
+        if (str_contains($type, 'text')) {
             return 'string';
         }
 
-        if(str_contains($type,'var')) {
+        if (str_contains($type, 'var')) {
             return 'string';
         }
 
         return 'string';
+    }
+
+    public static function quickGetFileContents($url, $ref=''){
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+            'http'=>array(
+                'method'=>"GET",
+                'header'=>"Accept-language: en\r\n" .
+                   // "Cookie: senturl=".$url."\r\n" .
+                    "referer: ".$ref."\r\n"
+            )
+        );
+
+
+        return file_get_contents($url, false, stream_context_create($arrContextOptions));
+    }
+
+
+    public static function urlMask($url){
+        $_url = parse_url($url);
+        if($_url['scheme'] === 'https'){
+            $url = str_replace('https://','0https0',$url);
+        }else{
+            $url = str_replace('http://','0http0',$url);
+        }
+        return str_replace('.','0-0', $url);
+    }
+
+
+    public static function urlUnMask($url){
+
+        if(str_contains($url, '0https0')){
+            $url = str_replace('0https0','https://',$url);
+        }else{
+            $url = str_replace('0http0','http://',$url);
+        }
+
+        return str_replace('0-0','.', $url);
     }
 
 

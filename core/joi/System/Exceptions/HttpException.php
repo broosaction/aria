@@ -12,7 +12,6 @@
 namespace Core\Joi\System\Exceptions;
 
 
-
 class HttpException extends \Exception
 {
 

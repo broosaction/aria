@@ -12,7 +12,6 @@
 namespace Core\Joi\System\Exceptions;
 
 
-
 use Throwable;
 
 interface AriaException extends Throwable

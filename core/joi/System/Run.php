@@ -31,21 +31,21 @@ class Run
     {
         $this->command = $command;
 
-        if(!isset($descr)){
+        if (!isset($descr)) {
             $this->descr = array(
-              0 => array('pipe','r'),
-              1 => array('pipe', 'w'),
-              2 => array('pipe','w')
+                0 => array('pipe', 'r'),
+                1 => array('pipe', 'w'),
+                2 => array('pipe', 'w')
             );
-        }else{
+        } else {
             $this->descr = $descr;
         }
 
-        if(!isset($pipes)){
+        if (!isset($pipes)) {
             $this->pipes = $pipes;
         }
 
-         $this->now();
+        $this->now();
     }
 
     /**
@@ -54,12 +54,12 @@ class Run
     private function now(): void
     {
         $process = proc_open($this->command, $this->descr, $this->pipes);
-        if(is_resource($process)){
-            while ($f = fgets($this->pipes[1])){
+        if (is_resource($process)) {
+            while ($f = fgets($this->pipes[1])) {
                 $this->output .= $f;
             }
             fclose($this->pipes[1]);
-            while ($f = fgets($this->pipes[2])){
+            while ($f = fgets($this->pipes[2])) {
                 $this->output .= $f;
             }
             fclose($this->pipes[2]);
@@ -74,8 +74,6 @@ class Run
     {
         return $this->output;
     }
-
-
 
 
 }

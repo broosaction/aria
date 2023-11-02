@@ -25,21 +25,24 @@ class Os
     /**
      * @return bool
      */
-    public function supported() {
+    public function supported()
+    {
         return true;
     }
 
     /**
      * @return string
      */
-    public function getHostname() {
+    public function getHostname()
+    {
         return shell_exec('hostname');
     }
 
     /**
      * @return string
      */
-    public function getMemory() {
+    public function getMemory()
+    {
         $memory = shell_exec('cat /proc/meminfo  | grep -i \'MemTotal\' | cut -f 2 -d ":" | awk \'{$1=$1}1\'');
         $memory = explode(' ', $memory);
         $memory = round($memory[0] / 1024);
@@ -54,8 +57,9 @@ class Os
     /**
      * @return string
      */
-    public function getCPUName() {
-        $cpu   = shell_exec('cat /proc/cpuinfo  | grep -i \'Model name\' | cut -f 2 -d ":" | awk \'{$1=$1}1\'');
+    public function getCPUName()
+    {
+        $cpu = shell_exec('cat /proc/cpuinfo  | grep -i \'Model name\' | cut -f 2 -d ":" | awk \'{$1=$1}1\'');
         $cores = shell_exec('cat /proc/cpuinfo  | grep -i \'cpu cores\' | cut -f 2 -d ":" | awk \'{$1=$1}1\'');
         if ($cores === 1) {
             $cores = ' (' . $cores . ' core)';
@@ -68,21 +72,24 @@ class Os
     /**
      * @return string
      */
-    public function getTime() {
+    public function getTime()
+    {
         return shell_exec('date');
     }
 
     /**
      * @return string
      */
-    public function getUptime() {
+    public function getUptime()
+    {
         return shell_exec('uptime -p');
     }
 
     /**
      * @return string
      */
-    public function getTimeServers() {
+    public function getTimeServers()
+    {
         $servers = shell_exec('cat /etc/ntp.conf |grep  \'^pool\' | cut -f 2 -d " "');
         $servers .= ' ' . shell_exec('cat /etc/systemd/timesyncd.conf |grep  \'^NTP=\' | cut -f 2 -d " "');
         return $servers;
@@ -91,7 +98,8 @@ class Os
     /**
      * @return array
      */
-    public function getNetworkInfo() {
+    public function getNetworkInfo()
+    {
         $result = [];
         $result['hostname'] = gethostname();
         $dns = shell_exec('cat /etc/resolv.conf |grep -i \'^nameserver\'|head -n1|cut -d \' \' -f2');
@@ -104,19 +112,20 @@ class Os
     /**
      * @return array
      */
-    public function getNetworkInterfaces() {
+    public function getNetworkInterfaces()
+    {
         $interfaces = glob('/sys/class/net/*');
         $result = [];
 
         foreach ($interfaces as $interface) {
-            $iface              = [];
+            $iface = [];
             $iface['interface'] = basename($interface);
-            $iface['mac']       = shell_exec('ip addr show dev ' . $iface['interface'] . ' | grep "link/ether " | cut -d \' \' -f 6  | cut -f 1 -d \'/\'');
-            $iface['ipv4']      = shell_exec('ip addr show dev ' . $iface['interface'] . ' | grep "inet " | cut -d \' \' -f 6  | cut -f 1 -d \'/\'');
-            $iface['ipv6']      = shell_exec('ip -o -6 addr show ' . $iface['interface'] . ' | sed -e \'s/^.*inet6 \([^ ]\+\).*/\1/\'');
+            $iface['mac'] = shell_exec('ip addr show dev ' . $iface['interface'] . ' | grep "link/ether " | cut -d \' \' -f 6  | cut -f 1 -d \'/\'');
+            $iface['ipv4'] = shell_exec('ip addr show dev ' . $iface['interface'] . ' | grep "inet " | cut -d \' \' -f 6  | cut -f 1 -d \'/\'');
+            $iface['ipv6'] = shell_exec('ip -o -6 addr show ' . $iface['interface'] . ' | sed -e \'s/^.*inet6 \([^ ]\+\).*/\1/\'');
             if ($iface['interface'] !== 'lo') {
                 $iface['status'] = shell_exec('cat /sys/class/net/' . $iface['interface'] . '/operstate');
-                $iface['speed']  = shell_exec('cat /sys/class/net/' . $iface['interface'] . '/speed');
+                $iface['speed'] = shell_exec('cat /sys/class/net/' . $iface['interface'] . '/speed');
                 if ($iface['speed'] !== '') {
                     $iface['speed'] .= 'Mbps';
                 } else {
@@ -131,7 +140,7 @@ class Os
                 }
             } else {
                 $iface['status'] = 'up';
-                $iface['speed']  = 'unknown';
+                $iface['speed'] = 'unknown';
                 $iface['duplex'] = '';
             }
             $result[] = $iface;
@@ -144,28 +153,31 @@ class Os
     /**
      * @return array
      */
-    public function getDiskInfo() {
+    public function getDiskInfo()
+    {
         $blacklist = ['', 'Type', 'tmpfs', 'devtmpfs'];
-        $data  = shell_exec('df -T');
+        $data = shell_exec('df -T');
         $lines = preg_split('/[\r\n]+/', $data);
 
+        $result = [];
         foreach ($lines as $line) {
             $entry = preg_split('/\s+/', trim($line));
             if (isset($entry[1]) && !in_array($entry[1], $blacklist, true)) {
                 $items = [];
-                $items['device']    = $entry[0];
-                $items['fs']        = $entry[1];
-                $items['used']      = $entry[3];
+                $items['device'] = $entry[0];
+                $items['fs'] = $entry[1];
+                $items['used'] = $entry[3];
                 $items['available'] = $entry[4];
-                $items['percent']   = $entry[5];
-                $items['mount']     = $entry[6];
+                $items['percent'] = $entry[5];
+                $items['mount'] = $entry[6];
                 $result[] = $items;
             }
         }
         return $result;
     }
 
-    public function getDiskData() {
+    public function getDiskData()
+    {
         $disks = $this->getDiskInfo();
         $data = array();
         $i = 0;
@@ -187,9 +199,31 @@ class Os
     /**
      * Get current CPU load average
      *
-     * @return array load average with three values, 1/5/15 minutes average.
+     * @return mixed
      */
-    protected function getProcessorUsage() {
+    public function getProcessorUsage()
+    {
+
+        if (stripos(PHP_OS, 'win') !== false) {
+            $wmi = new COM("Winmgmts://");
+            $server = $wmi->execquery("SELECT LoadPercentage FROM Win32_Processor");
+            $cpu_num = 0;
+            $load_total = 0;
+            foreach ($server as $cpu) {
+                $cpu_num++;
+                $load_total += $cpu->loadpercentage;
+            }
+            $loadavg = round($load_total / $cpu_num * 100) / 100;
+        } else {
+            $sys_load = sys_getloadavg();
+            $loadavg = $sys_load[0];
+        }
+
+        return $loadavg;
+    }
+
+    public function getLinuxLoadTime()
+    {
         // get current system load average.
         $loadavg = sys_getloadavg();
 
@@ -210,7 +244,8 @@ class Os
      *
      * @return array with the two values 'mem_free' and 'mem_total'
      */
-    protected function getMemoryUsage() {
+    protected function getMemoryUsage()
+    {
         $memoryUsage = false;
         if (@is_readable('/proc/meminfo')) {
             // read meminfo from OS
@@ -222,7 +257,7 @@ class Os
             exec("/usr/sbin/swapinfo", $return, $status);
             if ($status === 0 && count($return) > 1) {
                 $line = preg_split("/[\s]+/", $return[1]);
-                if(count($line) > 3) {
+                if (count($line) > 3) {
                     $swapTotal = (int)$line[3];
                     $swapFree = $swapTotal - (int)$line[2];
                 }
@@ -234,7 +269,7 @@ class Os
                 $return = array_map('intval', $return);
                 if ($return === array_filter($return, 'is_int')) {
                     return [
-                        'mem_total' => (int)$return[0]/1024,
+                        'mem_total' => (int)$return[0] / 1024,
                         'mem_free' => (int)$return[1] * ($return[2] + $return[3] + $return[4]) / 1024,
                         'swap_free' => (isset($swapFree)) ? $swapFree : 'N/A',
                         'swap_total' => (isset($swapTotal)) ? $swapTotal : 'N/A'
@@ -250,7 +285,7 @@ class Os
         // the last value is a empty string after explode, skip it
         $values = array_slice($array, 0, count($array) - 1);
         $data = [];
-        foreach($values as $value) {
+        foreach ($values as $value) {
             [$k, $v] = preg_split('/[\s:]+/', $value);
             $data[$k] = $v;
         }
@@ -270,6 +305,30 @@ class Os
         ];
     }
 
+    public function getOSInformation()
+    {
+        if (false == function_exists("shell_exec") || false == is_readable("/etc/os-release")) {
+            return null;
+        }
+
+        $os = shell_exec('cat /etc/os-release');
+        preg_match_all('/.*=/', $os, $matchListIds);
+        $listIds = $matchListIds[0];
+
+        preg_match_all('/=.*/', $os, $matchListVal);
+        $listVal = $matchListVal[0];
+
+        array_walk($listIds, function (&$v, $k) {
+            $v = strtolower(str_replace('=', '', $v));
+        });
+
+        array_walk($listVal, function (&$v, $k) {
+            $v = preg_replace('/=|"/', '', $v);
+        });
+
+        return array_combine($listIds, $listVal);
+    }
+
     /**
      * Checks if a function is available. Borrowed from
      * https://github.com/nextcloud/server/blob/2e36069e24406455ad3f3998aa25e2a949d1402a/lib/private/legacy/helper.php#L475
@@ -277,12 +336,13 @@ class Os
      * @param string $function_name
      * @return bool
      */
-    public function is_function_enabled($function_name) {
+    public function is_function_enabled($function_name)
+    {
         if (!function_exists($function_name)) {
             return false;
         }
-       // if ($this->phpIni->listContains('disable_functions', $function_name)) {
-         //   return false;
+        // if ($this->phpIni->listContains('disable_functions', $function_name)) {
+        //   return false;
         //}
         return true;
     }

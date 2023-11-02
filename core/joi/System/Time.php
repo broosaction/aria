@@ -33,68 +33,71 @@ class Time
         return (int)$var_date > 3 && (int)$var_date < 12;
     }
 
-    public function isAfternoon(){
+    public function isAfternoon()
+    {
         $var_date = date('G');
         return (int)$var_date > 11 && (int)$var_date < 17;
     }
 
-    public function isEvening(){
+    public function isEvening()
+    {
         $var_date = date('G');
         return (int)$var_date > 16 && (int)$var_date < 21;
     }
 
-    public function stamp2period($timestamp){
+    public function stamp2period($timestamp)
+    {
         $time = $timestamp;
         //litebase time function by Bruce Mubangwa
-        $cur_time= time();
-        $time_elapsed = $cur_time-$time;
+        $cur_time = time();
+        $time_elapsed = $cur_time - $time;
         //we now get the seconds
         $seconds = $time_elapsed;
-        $minutes = round($time_elapsed/60);
-        $hours = round($time_elapsed/3600);
-        $days = round($time_elapsed/86401);
-        $weeks =round($time_elapsed/604800);
-        $months= round($time_elapsed/2600640);
-        $years= round($time_elapsed/31207680);
+        $minutes = round($time_elapsed / 60);
+        $hours = round($time_elapsed / 3600);
+        $days = round($time_elapsed / 86401);
+        $weeks = round($time_elapsed / 604800);
+        $months = round($time_elapsed / 2600640);
+        $years = round($time_elapsed / 31207680);
 
-        if ($seconds<=60) {
+        if ($seconds <= 60) {
             return "Just Now";
         }
 
-        if ($minutes<=60) {
-            if($minutes ===1){
+        if ($minutes <= 60) {
+            if ($minutes === 1) {
                 return "one minute ago";
             }
-                return "$minutes minutes ago";
+            return "$minutes minutes ago";
 
         }
 
-        if ($hours<=24) {
-            if($hours===1) {
+        if ($hours <= 24) {
+            if ($hours === 1) {
                 return "an hour ago";
             }
-                return "$hours hours ago";
+            return "$hours hours ago";
 
         }
 
-        if ($days<=7) {
-            if($days===1){
+        if ($days <= 7) {
+            if ($days === 1) {
                 return "yesturday";
             }
-                return "$days days ago";
+            return "$days days ago";
 
         }
 
         if ($weeks <= 4.3) {
-            if($weeks === 1){
+            if ($weeks === 1) {
                 return "a week ago";
             }
-                return "$weeks weeks ago";
+            return "$weeks weeks ago";
 
         }
 
-        if($months <= 12) {
-            if($months === 1){
+        if ($months <= 12) {
+            if ($months === 1) {
                 return "a month ago";
             }
 
@@ -106,36 +109,38 @@ class Time
         }
         return "$years years ago";
     }
- 
 
-    public function getGreetings(){
+
+    public function getGreetings()
+    {
         $greeting = (string)$this->isAfternoon();
 
         if ($this->isMorning()) {
-         return 'Good morning';
+            return 'Good morning';
         }
 
-        if($this->isAfternoon()) {
+        if ($this->isAfternoon()) {
             return 'Good Afternoon';
         }
 
-        if($this->isEvening()){
-              return 'Good Evening';
-          }
+        if ($this->isEvening()) {
+            return 'Good Evening';
+        }
 
-        if(!$this->isDay()){
+        if (!$this->isDay()) {
             return 'Sweet Dreams';
         }
 
 
-          if(date('d-m') === '1-1'){
-              $greeting = 'Happy new year';
-          }
+        if (date('d-m') === '1-1') {
+            $greeting = 'Happy new year';
+        }
 
-          return $greeting;
+        return $greeting;
     }
 
-    public static function time_Elapsed_String($ptime) {
+    public static function time_Elapsed_String($ptime)
+    {
 
         $etime = time() - $ptime;
         if ($etime < 45) {
@@ -148,7 +153,7 @@ class Time
         if ($etime > $day * 30 && $etime < $day * 45) {
             return 'about a month ago';
         }
-        $a        = array(
+        $a = array(
             365 * 24 * 60 * 60 => "year",
             30 * 24 * 60 * 60 => "month",
             24 * 60 * 60 => "day",
@@ -167,7 +172,7 @@ class Time
         foreach ($a as $secs => $str) {
             $d = $etime / $secs;
             if ($d >= 1) {
-                $r        = round($d);
+                $r = round($d);
 
                 return $r . ' ' . ($r > 1 ? $a_plural[$str] : $str) . ' ' . "ago";
             }
@@ -177,17 +182,18 @@ class Time
     /**
      * Returns an estimated reading time in a string
      * idea from @link http://briancray.com/posts/estimated-reading-time-web-design/
-     * @param  string $content the content to be read
+     * @param string $content the content to be read
      * @return string          estimated read time eg. 1 minute, 30 seconds
      */
-    public function estimate_reading_time($content) {
+    public function estimate_reading_time($content)
+    {
         $word_count = str_word_count(strip_tags($content));
 
         $minutes = floor($word_count / 200);
         $seconds = floor($word_count % 200 / (200 / 60));
 
-       // $str_minutes = ($minutes === 1) ? "minute" : "minutes";
-       // $str_seconds = ($seconds === 1) ? "second" : "seconds";
+        // $str_minutes = ($minutes === 1) ? "minute" : "minutes";
+        // $str_seconds = ($seconds === 1) ? "second" : "seconds";
         $str_minutes = ($minutes === 1) ? "min" : "min ";
         $str_seconds = ($seconds === 1) ? "sec" : "sec ";
 

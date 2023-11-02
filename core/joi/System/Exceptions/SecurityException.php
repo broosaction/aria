@@ -14,7 +14,7 @@ namespace Core\Joi\System\Exceptions;
 
 use Exception;
 
-class SecurityException  extends Exception
+class SecurityException extends Exception
 {
 
 }

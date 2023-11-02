@@ -12,8 +12,6 @@
 namespace Core\Joi\System;
 
 
-
-
 use Core\Joi\Start;
 
 class Statistics
@@ -41,9 +39,9 @@ class Statistics
     {
         return [
             'version' => $this->cleanVersion(PHP_VERSION),
-        //    'memory_limit' => $this->phpIni->getBytes('memory_limit'),
-          //  'max_execution_time' => $this->phpIni->getNumeric('max_execution_time'),
-          //  'upload_max_filesize' => $this->phpIni->getBytes('upload_max_filesize'),
+            //    'memory_limit' => $this->phpIni->getBytes('memory_limit'),
+            //  'max_execution_time' => $this->phpIni->getNumeric('max_execution_time'),
+            //  'upload_max_filesize' => $this->phpIni->getBytes('upload_max_filesize'),
         ];
     }
 
@@ -61,8 +59,8 @@ class Statistics
     }
 
 
-
-    protected function databaseVersion() {
+    public function databaseVersion()
+    {
         switch ($this->server->getConfig()->db_connection) {
             case 'sqlite':
             case 'sqlite3':
@@ -74,7 +72,7 @@ class Statistics
                 $sql = 'SELECT VERSION() AS version';
                 break;
         }
-        $result =  $this->server->getDatabase()->getDatabaseEngine()->fetch($sql);
+        $result = $this->server->getDatabase()->getDatabaseEngine()->fetch($sql);
 
         if ($result) {
             return $this->cleanVersion($result->version);
@@ -91,7 +89,8 @@ class Statistics
      *
      * @return int|string
      */
-    protected function databaseSize() {
+    public function databaseSize()
+    {
         $database_size = false;
         // This code is heavily influenced by a similar routine in phpMyAdmin 2.2.0
         switch ($this->server->getConfig()->db_connection) {
@@ -120,18 +119,17 @@ class Statistics
 
                 if ($result->proname === 'pg_database_size') {
                     $database = $this->server->getConfig()->db_database;
-                    if (strpos($database, '.') !== false)
-                    {
+                    if (strpos($database, '.') !== false) {
                         [$database,] = explode('.', $database);
                     }
                     $sql = "SELECT oid
 						FROM pg_database
 						WHERE datname = ?";
-                    $result = $this->server->getDatabase()->getDatabaseEngine()->fetch($sql,$database);
+                    $result = $this->server->getDatabase()->getDatabaseEngine()->fetch($sql, $database);
 
                     $oid = $result->oid;
                     $sql = 'SELECT pg_database_size(?) as size';
-                    $result = $this->server->getDatabase()->getDatabaseEngine()->fetch($sql,$oid);
+                    $result = $this->server->getDatabase()->getDatabaseEngine()->fetch($sql, $oid);
 
                     $database_size = $result->size;
                 }
@@ -141,13 +139,19 @@ class Statistics
         return ($database_size !== false) ? $database_size : 'N/A';
     }
 
+    public function get_db_max_memory()
+    {
+        return $this->server->getDatabase()->getDatabaseEngine()->fetch('SELECT ( @@key_buffer_size + @@query_cache_size + @@innodb_buffer_pool_size + @@innodb_log_buffer_size + @@max_connections * ( @@read_buffer_size + @@read_rnd_buffer_size + @@sort_buffer_size + @@join_buffer_size + @@binlog_cache_size + @@thread_stack + @@tmp_table_size ) ) / (1024 * 1024 * 1024) AS MAX_MEMORY_GB;')->MAX_MEMORY_GB;
+    }
+
     /**
      * Try to strip away additional information
      *
      * @param string $version E.g. `5.5.30-1+deb.sury.org~trusty+1`
      * @return string `5.5.30`
      */
-    protected function cleanVersion($version) {
+    protected function cleanVersion($version)
+    {
         $matches = [];
         preg_match('/^(\d+)(\.\d+)(\.\d+)/', $version, $matches);
         if (isset($matches[0])) {
@@ -157,17 +161,18 @@ class Statistics
     }
 
 
-    public Static function getResourceUsage($timedif){
+    public static function getResourceUsage($timedif)
+    {
         $cpuUsage = [];
         foreach (getrusage() as $key => $val) {
             $cpuUsage[$key] = $val;
 
         }
         //todo
-        $time = ((time()/$timedif)*10);
+        $time = ((time() / $timedif) * 10);
 
         $userUsage = -round(($cpuUsage['ru_utime.tv_sec'] * 1e6 + $cpuUsage['ru_utime.tv_usec']) / $time / 10000);
-        $systemUsage = -round(($cpuUsage['ru_stime.tv_sec'] * 1e6 + $cpuUsage['ru_stime.tv_usec']) / ($timedif/time()) / 10000);
+        $systemUsage = -round(($cpuUsage['ru_stime.tv_sec'] * 1e6 + $cpuUsage['ru_stime.tv_usec']) / ($timedif / time()) / 10000);
 
         return array(
             'user' => $userUsage,
@@ -175,7 +180,8 @@ class Statistics
         );
     }
 
-    public static function memoryPick(){
+    public static function memoryPick()
+    {
         return number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ');
     }
 
