@@ -17,6 +17,7 @@ use Core\Joi\System\Time;
 use Core\Joi\System\Utils;
 use Core\Security\Utils\ValkyrieUtils;
 use Core\tpl\Aria;
+use Symfony\Component\Process\Process;
 
 class AnalyzeResults
 {
@@ -40,7 +41,7 @@ class AnalyzeResults
 
         }
 
-        if($blockVotes > 0){
+        if($blockVotes > 1){
             $this->blockPage();
         }
     }
@@ -71,13 +72,14 @@ class AnalyzeResults
     {
         $view = new Aria();
         $view->setThemeDir(Start::$SERVERROOT.'/core/tpl/local');
-        $view->threatcount = count($this->resultsArray);
+        $view->threatcount = count($this->resultsArray ?? []);
         $view->time = new Time();
         $view->message = $message;
         $view->ip = Utils::get_ip_address().' '.ValkyrieUtils::get_user_country_code();
         $view->version = ValkyrieConfig::getVersion();
         $view->render('valkyrie_block_page');
         die();
+
     }
 
 }

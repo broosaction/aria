@@ -89,5 +89,4 @@ class ValkyrieConfig
         return self::$version;
     }
 
-
 }

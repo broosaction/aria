@@ -15,6 +15,7 @@ namespace Core\Security;
 use Core\Security\CloudValkyrie\AnalyzeResults;
 use Core\Security\CloudValkyrie\Scanners\RequestScanner;
 use Core\Security\CloudValkyrie\ScanResults;
+use Core\Security\CloudValkyrie\ValkyrieAuthorizator;
 use Core\Security\CloudValkyrie\ValkyrieConfig;
 
 class Valkyrie
@@ -25,6 +26,7 @@ class Valkyrie
     Public RequestScanner $requestScanner;
 
     public AnalyzeResults $analyzeResults;
+    private ValkyrieAuthorizator $ValkyrieAuthorizer;
 
     /**
      * Valkyrie constructor.
@@ -34,6 +36,7 @@ class Valkyrie
         $this->requestScanner = new RequestScanner();
         $this->prepareDefaults();
         $this->analyzeResults = new AnalyzeResults();
+        $this->ValkyrieAuthorizer = new ValkyrieAuthorizator();
     }
 
     /**
@@ -86,6 +89,14 @@ class Valkyrie
     private function addScanEvent($name, $callback): void
     {
         $this->requestScanner->register($name, $callback);
+    }
+
+    /**
+     * @return ValkyrieAuthorizator
+     */
+    public function getValkyrieAuthorizer(): ValkyrieAuthorizator
+    {
+        return $this->ValkyrieAuthorizer;
     }
 
 

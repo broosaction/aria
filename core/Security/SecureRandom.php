@@ -27,11 +27,11 @@ class SecureRandom
      * Generate a random string of specified length.
      * @param int $length The length of the generated string
      * @param string $characters An optional list of characters to use if no character list is
-     * 							specified all valid base64 characters are used.
+     * specified all valid base64 characters are used.
      * @return string
      */
     public function generate(int $length,
-                             string $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'): string {
+                             string $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'): string {
         $maxCharIndex = \strlen($characters) - 1;
         $randomString = '';
 

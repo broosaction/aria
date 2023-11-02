@@ -46,6 +46,7 @@ class ReqMethodProtect extends BaseEventScan implements EventScan
                 $this->results->setAction(DefaultActions::BLOCK);
 
             }
+
             $runtime->finish();
             $this->results->setBadParameters([ValkyrieUtils::get_request_method()]);
             $this->results->setParameters([]);
