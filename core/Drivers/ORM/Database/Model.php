@@ -56,6 +56,7 @@ abstract class Model{
 	}
 
 	public static function withTrashed(){
+        include_once 'helper.php';
 		self::checkInstance();
 		if(self::$currentSubQueryNumber==NULL){
 			self::checkUnionQuery();
@@ -70,10 +71,12 @@ abstract class Model{
 	}
 
 	private static function makeSubQueryTrashTrue($where){
+        include_once 'helper.php';
 		self::${$where}[self::$currentField.self::$currentSubQueryNumber]['withTrashed']=TRUE;
 	}
 
 	private static function getSelect(){
+        include_once 'helper.php';
 		$select=self::$select;
 		if(self::$selectQuery!==NULL){
 			$i=0;
@@ -87,6 +90,7 @@ abstract class Model{
 	}
 
 	private static function getSubQuerySelect($where){
+        include_once 'helper.php';
 		if(isset(self::${$where}[self::$currentField.self::$currentSubQueryNumber])){
 			$current=self::${$where}[self::$currentField.self::$currentSubQueryNumber];
 
@@ -105,18 +109,21 @@ abstract class Model{
 	}
 
 	private static function checkInstance(){
+        include_once 'helper.php';
 		if(self::$className!==NULL && self::$className!==get_called_class()){
 			throw new \Exception(showDuplicateModelMessage(get_called_class(),self::$className), 1);
 		}
 	}
 
 	private static function checkUnionQuery(){
+        include_once 'helper.php';
 		if(isset(self::$unableUnionQuery[self::$currentUnionNumber]) && self::$unableUnionQuery[self::$currentUnionNumber]!==NULL ){
 			throw new \Exception("You are not allowed to use", 1);
 		}
 	}
 
 	private static function checkSubQueryUnionQuery($where){
+        include_once 'helper.php';
 		if(isset(self::${$where}[self::$currentField.self::$currentSubQueryNumber.'unableUnionQuery']) && 
 			self::${$where}[self::$currentField.self::$currentSubQueryNumber.'unableUnionQuery']==FALSE ){
 			throw new \Exception("You are not allowed to use", 1);
@@ -130,6 +137,7 @@ private static function checkBoot(){
 }
 
 private static function boot(){
+    include_once 'helper.php';
 	$calledClass=get_called_class();
 
 	if(self::$instance==NULL){
@@ -157,6 +165,7 @@ private static function boot(){
 }
 
 public static function groupBy(string $groupBy){
+    include_once 'helper.php';
 	self::checkInstance();
 	if(self::$currentSubQueryNumber==NULL){
 		self::checkUnionQuery();
@@ -171,6 +180,7 @@ public static function groupBy(string $groupBy){
 }
 
 public static function having(string $field,string $operator,$value){
+    include_once 'helper.php';
 	self::checkInstance();
 	if(self::$currentSubQueryNumber==NULL){
 		self::checkUnionQuery();
@@ -191,6 +201,7 @@ public static function having(string $field,string $operator,$value){
 }
 
 private static function makeSubQueryHaving($where,$field,$operator,$value){
+    include_once 'helper.php';
 	$current=self::${$where}[self::$currentField.self::$currentSubQueryNumber];
 	if($current['havingNumber']==NULL){
 		$current['havingNumber']=0;
@@ -208,6 +219,7 @@ private static function makeSubQueryGroupBy($where,$groupBy){
 private static function getGroupBy(){ return self::$groupBy; }
 
 private static function getHaving(){
+    include_once 'helper.php';
 	$string=NULL;
 	if(self::$havingNumber!==NULL){
 
@@ -220,6 +232,7 @@ private static function getHaving(){
 }
 
 private static function getSubQueryHaving($where){
+    include_once 'helper.php';
 	$string=NULL;
 	if(isset(self::${$where}[self::$currentField.self::$currentSubQueryNumber])){
 		$current=self::${$where}[self::$currentField.self::$currentSubQueryNumber];
@@ -240,6 +253,7 @@ private static function getSubQueryGroupBy($where){
 }
 
 public static function bulkUpdate(array $attributes){
+    include_once 'helper.php';
 	self::checkInstance();
 	if(empty($attributes)){
 		throw new \Exception("You need to put non-empty array data", 1);
@@ -303,6 +317,7 @@ public static function bulkUpdate(array $attributes){
 }
 
 public static function insert(array $attributes){
+    include_once 'helper.php';
 	self::checkBoot();
 	if(empty($attributes)){
 		throw new \Exception("You need to put non-empty array data", 1);
@@ -359,6 +374,8 @@ public static function insert(array $attributes){
 }
 
 public static function create(array $attribute){
+
+    include_once 'helper.php';
 	self::checkBoot();
 	if(empty($attribute)){
 		throw new \Exception("You need to put non-empty array data", 1);
@@ -416,6 +433,7 @@ public static function makeObserver(string $className , string $method , $parame
 }
 
 public function update(array $attribute){
+    include_once 'helper.php';
 	self::checkBoot();
 	if(empty($attribute)){
 		throw new \Exception("You need to put non-empty array data", 1);
@@ -454,6 +472,7 @@ public function update(array $attribute){
 }
 
 public static function find($id){
+    include_once 'helper.php';
 	self::checkBoot();
 	self::boot();
 	$pdo=self::$instance->connectDatabase();
@@ -469,10 +488,12 @@ public static function find($id){
 }
 
 private static function getObject($instance){
+    include_once 'helper.php';
 	return $instance=='' ? (new NullModel)->nullExecute() : $instance;
 }
 
 public static function findBy(string $field,$value){
+    include_once 'helper.php';
 	self::checkBoot();
 	self::boot();
 	$pdo=self::$instance->connectDatabase();
@@ -502,6 +523,7 @@ public function delete(){
 }
 
 public function forceDelete(){
+    include_once 'helper.php';
 	self::checkBoot();
 	$id=$this->getID();
 	$table=$this->getTable();
@@ -511,6 +533,7 @@ public function forceDelete(){
 }
 
 public function restore(){
+    include_once 'helper.php';
 	self::checkBoot();
 	$id=$this->getID();
 	$pdo=$this->connectDatabase();
@@ -524,6 +547,7 @@ public function restore(){
 
 
 public static function select(array  $fields){
+    include_once 'helper.php';
 	self::checkInstance();
 	if(self::$currentSubQueryNumber==NULL){
 		self::checkUnionQuery();
@@ -591,6 +615,7 @@ private static function checkSubQueryAddSelect($where){
 }
 
 public static function limit(int $limit){
+    include_once 'helper.php';
 	self::checkInstance();
 	if(self::$currentSubQueryNumber==NULL){
 		self::checkUnionQuery();
@@ -741,6 +766,7 @@ public static function orWhere(){
 }
 
 private static function makeWhereQuery(array $parameters,$where){
+    include_once 'helper.php';
 	self::checkInstance();
 	$countParameters=count($parameters);
 	$value=$operator=$field=NULL;
@@ -808,7 +834,7 @@ private static function makeWhereQuery(array $parameters,$where){
 }
 
 private static function makeInQuery($whereIn,$field,$value){
-
+    include_once 'helper.php';
 	self::checkInstance();
 
 	if(!is_array($value) && !is_callable($value) && $value!==NULL ){
@@ -857,6 +883,7 @@ public static function whereNotIn(string $field,$value){
 private static function getLimit(){ return self::$limit; }
 
 private static function getSubQueryLimit($where){
+    include_once 'helper.php';
 	if(isset(self::${$where}[self::$currentField.self::$currentSubQueryNumber])){
 		$limit= self::${$where}[self::$currentField.self::$currentSubQueryNumber]['limit'];
 		return $limit==NULL ? $limit : ' LIMIT '.$limit;
@@ -879,6 +906,7 @@ private static function checkSubQueryTrashed($where){
 }
 
 private static function getSubQueryWhere($where){
+    include_once 'helper.php';
 	$string=NULL;
 	$i=0;
 	if(isset(self::${$where}[self::$currentField.self::$currentSubQueryNumber])){
@@ -909,6 +937,7 @@ private static function getSubQueryWhere($where){
 }
 
 private static function getWhere(){
+    include_once 'helper.php';
 	$string=NULL;
 	$i=0;
 	if(self::$where!==NULL){
@@ -954,6 +983,7 @@ private static function getWhereColumn(){
 }
 
 private static function getSubQueryWhereColumn($where){
+    include_once 'helper.php';
 	$string=NULL;
 	$i=0;
 	if(isset(self::${$where}[self::$currentField.self::$currentSubQueryNumber])){
@@ -991,6 +1021,7 @@ private static function getOrWhere(){
 }
 
 private static function getSubQueryOrWhere($where){
+    include_once 'helper.php';
 	$string=NULL;
 	if(isset(self::${$where}[self::$currentField.self::$currentSubQueryNumber])){
 		$current=self::${$where}[self::$currentField.self::$currentSubQueryNumber];
@@ -1008,6 +1039,7 @@ private static function getSubQueryOrWhere($where){
 }
 
 private static function getWhereIn(){
+    include_once 'helper.php';
 	$string=NULL;
 	$i=0;
 	if(self::$whereIn!==NULL){ 
@@ -1029,6 +1061,7 @@ private static function getWhereIn(){
 }
 
 private static function getSubQueryWhereIn($where){
+    include_once 'helper.php';
 	$string=NULL;
 	$i=0;
 	if(isset(self::${$where}[self::$currentField.self::$currentSubQueryNumber])){
@@ -1248,6 +1281,7 @@ return self::$instance;
 }
 
 public static function get(){
+    include_once 'helper.php';
 	self::checkInstance();
 	if(self::$currentSubQueryNumber==NULL){
 		self::boot();
@@ -1275,6 +1309,7 @@ public static function get(){
 }
 
 public function __construct(){
+    include_once 'helper.php';
 	$class=get_called_class();
 	$selectedValues=[];
 	if(!empty(self::$selectedFields) && isset(self::$selectedFields[$class]) && self::$select!==self::$table . '.*' && self::$select!==NULL ){
@@ -1387,6 +1422,7 @@ private static function getSubQuery($where){
 }
 
 public static function toArray(){
+    include_once 'helper.php';
 	self::checkInstance();
 	if(self::$currentSubQueryNumber!==NULL){
 		throw new \Exception("Please use get() function in sub query to get sub query", 1);
@@ -1481,6 +1517,7 @@ return self::$instance;
 }
 
 public static function paginate(int $per_page=10){
+    include_once 'helper.php';
 	self::checkInstance();
 	if(self::$currentSubQueryNumber!==NULL){
 		throw new \Exception("You can't use paginate() function in sub queries.", 1);
@@ -1616,6 +1653,7 @@ public static function paginate(int $per_page=10){
 		}
 
 		protected function refersMany(string $class,string $field,string $referField='id'){
+            include_once 'helper.php';
 			checkClass($class);
 			self::checkBoot();
 			if(isset($this->{$referField})){
@@ -1627,6 +1665,7 @@ public static function paginate(int $per_page=10){
 		}
 
 		public static function observe(ModelObserver $modelObserver){
+            include_once 'helper.php';
 			self::checkBoot();
 			checkObserverFunctions($modelObserver);
 			if(self::$observerSubject==NULL){

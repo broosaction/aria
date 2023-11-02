@@ -64,7 +64,7 @@ class Cookies
     public static function set($name, $value, $expiry): bool
     {
         if(aria()->getHttpResponse()->isSent() === false) {
-            if (setcookie($name, $value, time() + $expiry, '/')) {
+            if (setcookie($name, $value, time() + $expiry, '/', true)) {
                 return true;
             }
             return false;

@@ -16,10 +16,12 @@ namespace Core\Drivers;
 
 
 
+use Core\Config\Config;
 use Core\Joi\System\Utils;
 use Core\Security\CloudValkyrie\AnalyzeResults;
 use Core\Security\CloudValkyrie\Defaults\DefaultActions;
 use Core\Security\CloudValkyrie\ScanResults;
+use Core\Security\Guid;
 
 class Sessions
 {
@@ -29,12 +31,15 @@ class Sessions
 
     private static $valid = false;
 
+    private static $active = false;
+
     public function __construct($driver='')
     {
 
         if($driver === '' || $driver==='array') {
             if (session_id() === '') {
                 session_start();
+                static::$active = true;
             }
 
             self::protect();
@@ -62,24 +67,26 @@ class Sessions
         $ip = Utils::get_ip_address();
         $user_agent = !empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
 
-        if(self::exists('config.ip')){
-            if($ip === self::get("config.ip") && $user_agent === self::get("config.user_agent")){
+        if(self::exists('config.ip') && self::exists("config.user_agent")){
+            //$ip === self::get("config.ip")
+            if( $user_agent === self::get("config.user_agent")){
 
                 self::$valid = true;
+                self::put("config.ip", $ip);
 
             }else{
 
                 self::$valid = false;
-
+               self::set("config.user_agent", $user_agent);
                $result = [];
                $scanResult = new ScanResults('Session Driver');
                $scanResult->setIsThreat(true);
-               $scanResult->setAction(DefaultActions::BLOCK);
+               $scanResult->setAction(DefaultActions::IGNORE);
                $scanResult->setSeverityLevel(10);
                $scanResult->setMessage('wow hijack');
                $scanResult->setEvent('Session');
                $result[] = $scanResult;
-                (new AnalyzeResults())->analyze($result);
+              (new AnalyzeResults())->analyze($result);
 
             }
         }else{
@@ -108,25 +115,62 @@ class Sessions
         return isset($_SESSION[$name]);
     }
 
+    public static function isActive(): bool
+    {
+        return static::$active;
+    }
+
     /**
      * @param $key
      * @param $value
      * @return mixed
      */
     public static function put($key, $value){
-        return $_SESSION[$key] = $value;
+       self::set($key, $value);
     }
+
+
+    /**
+     * @param string $id
+     * @param mixed $value
+     */
+    public static function set(string $id, $value): void
+    {
+        $data = [
+            serialize($value),
+            (new Config)->app_secrete,
+        ];
+
+        $data = Guid::encrypt((new Config)->app_secrete, implode('|', $data));
+
+        $_SESSION[$id] = $data;
+    }
+
 
     /**
      * @param $key
      * @return null
      */
-    public static function get($key)
+    public static function get($id, $defaultValue = null)
     {
-        if(self::exists($key)){
-            return $_SESSION[$key];
+        if (static::exists($id) === true) {
+
+            $value = $_SESSION[$id];
+
+            if (trim($value) !== '') {
+
+                $app_secrete = (new Config)->app_secrete;
+                $value = Guid::decrypt($app_secrete, $value);
+                $data = explode('|', $value);
+
+                if (\is_array($data) && trim(end($data)) === $app_secrete) {
+                    return unserialize($data[0], ['allowed_classes' => true]);
+                }
+
+            }
         }
-        return null;
+
+        return $defaultValue;
     }
 
     /**
